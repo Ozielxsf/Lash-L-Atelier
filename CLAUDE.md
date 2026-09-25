@@ -172,11 +172,16 @@ from the browser; the server uses the service-role key.
 
 ### Go-live steps (in order)
 1. ✅ Supabase project created, `0001_baseline` + `0002_booking` applied.
-   (The Vercel MCP connection can't write env vars on this project — 403 —
-   so step 2 is done by hand in the Vercel dashboard.)
-2. Vercel (`lash-l-atelier` project) → env vars: `NEXT_PUBLIC_SUPABASE_URL`,
-   `SUPABASE_SERVICE_ROLE_KEY`, `SESSION_SECRET` (32+ chars), `ADMIN_PASSWORD`,
-   `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, and — once the
+2. ✅ (partly, 25 Sept 2026) Vercel env set: `NEXT_PUBLIC_SUPABASE_URL`,
+   `SUPABASE_SERVICE_ROLE_KEY` (Production), `SESSION_SECRET`, `ADMIN_PASSWORD`
+   (Oziel changed it himself). Verified live: sign-in form up, wrong
+   passwords rejected, Supabase logs show the site's settings reads → 200.
+   Still to add before go-live: Turnstile pair, Upstash, Resend + sender.
+   (The Vercel MCP needed Oziel to reconnect the connector before it could
+   write env vars — it 403'd until then. Supabase secret keys can never be
+   read by a tool; the owner pastes that one into Vercel.)
+2b. Remaining Vercel env vars: `NEXT_PUBLIC_TURNSTILE_SITE_KEY`,
+   `TURNSTILE_SECRET_KEY`, and — once the
    client's domain is verified in Resend — `RESEND_API_KEY` + `BOOKING_FROM_EMAIL`.
    Add **Upstash Redis** from the Vercel marketplace (sets `KV_REST_API_*`). Redeploy.
 3. Sign in at `/admin` → Schedule: real hours, days off, alert email.
