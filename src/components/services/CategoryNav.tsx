@@ -11,7 +11,7 @@ export default function CategoryNav() {
   return (
     <nav
       aria-label="Menu sections"
-      className="sticky top-[68px] z-20 border-y border-line-dark bg-noir/90 backdrop-blur-md"
+      className="sticky top-[68px] z-20 border-y border-line-dark bg-noir/[0.97]"
     >
       <ul
         data-lenis-prevent-horizontal

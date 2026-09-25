@@ -17,10 +17,13 @@ import { lenisInstance } from "./lenis-instance";
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    // Touch devices scroll natively (Lenis doesn't smooth touch by default),
+    // so on phones it would only add per-frame work — measured as scroll jank
+    // leaving the hero. Smooth wheel scrolling is a desktop nicety.
+    if (window.matchMedia?.("(pointer: coarse)").matches) return;
 
     const lenis = new Lenis({
-      duration: motionTokens.scrollDuration,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      lerp: motionTokens.scrollLerp,
       // Same-page anchors (/#atelier) glide instead of jumping, and land
       // below the fixed header.
       anchors: { offset: -84 },

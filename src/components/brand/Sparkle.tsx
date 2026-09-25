@@ -26,26 +26,38 @@ function mulberry32(seed: number) {
   };
 }
 
-function drawStar(ctx: CanvasRenderingContext2D, s: Star, alpha: number) {
-  const { x, y, r, color } = s;
-  // Soft halo
-  const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.2);
-  g.addColorStop(0, `rgba(${color},${0.55 * alpha})`);
+/**
+ * Draw one glint (halo + four-point star) at full opacity into a small
+ * offscreen canvas. Done once per colour; every frame after that is a cheap
+ * drawImage with globalAlpha — building radial gradients per star per frame
+ * was measurable scroll jank on phones.
+ */
+const SPRITE = 64; // px, drawn at r = SPRITE / 8
+function makeSprite(color: string, dpr: number): HTMLCanvasElement {
+  const size = Math.round(SPRITE * dpr);
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const ctx = c.getContext("2d")!;
+  ctx.scale(dpr, dpr);
+  const x = SPRITE / 2;
+  const r = SPRITE / 8;
+  const g = ctx.createRadialGradient(x, x, 0, x, x, r * 3.2);
+  g.addColorStop(0, `rgba(${color},0.55)`);
   g.addColorStop(1, `rgba(${color},0)`);
   ctx.fillStyle = g;
   ctx.beginPath();
-  ctx.arc(x, y, r * 3.2, 0, Math.PI * 2);
+  ctx.arc(x, x, r * 3.2, 0, Math.PI * 2);
   ctx.fill();
-  // Four-point glint — the star shape printed across the client's flyers.
-  ctx.fillStyle = `rgba(${color},${alpha})`;
+  ctx.fillStyle = `rgb(${color})`;
   ctx.beginPath();
   const w = r * 0.22;
-  ctx.moveTo(x, y - r * 2.2);
-  ctx.quadraticCurveTo(x + w, y - w, x + r * 2.2, y);
-  ctx.quadraticCurveTo(x + w, y + w, x, y + r * 2.2);
-  ctx.quadraticCurveTo(x - w, y + w, x - r * 2.2, y);
-  ctx.quadraticCurveTo(x - w, y - w, x, y - r * 2.2);
+  ctx.moveTo(x, x - r * 2.2);
+  ctx.quadraticCurveTo(x + w, x - w, x + r * 2.2, x);
+  ctx.quadraticCurveTo(x + w, x + w, x, x + r * 2.2);
+  ctx.quadraticCurveTo(x - w, x + w, x - r * 2.2, x);
+  ctx.quadraticCurveTo(x - w, x - w, x, x - r * 2.2);
   ctx.fill();
+  return c;
 }
 
 /**
@@ -75,6 +87,7 @@ export default function Sparkle({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let stars: Star[] = [];
+    let sprites: Record<string, HTMLCanvasElement> = {};
     let raf = 0;
     let visible = false;
     let last = 0;
@@ -88,6 +101,7 @@ export default function Sparkle({
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      sprites = Object.fromEntries(COLORS.map((c) => [c, makeSprite(c, dpr)]));
       const rand = mulberry32(seed);
       const count = Math.min(60, Math.round(((w * h) / 11000) * density));
       stars = Array.from({ length: count }, () => ({
@@ -104,9 +118,13 @@ export default function Sparkle({
     const frame = (t: number) => {
       ctx.clearRect(0, 0, w, h);
       for (const s of stars) {
-        const a = reduce ? 0.75 : 0.25 + 0.75 * Math.pow((Math.sin(t / 1000 * s.speed + s.phase) + 1) / 2, 2);
-        drawStar(ctx, s, a);
+        const a = reduce ? 0.75 : 0.25 + 0.75 * Math.pow((Math.sin((t / 1000) * s.speed + s.phase) + 1) / 2, 2);
+        // The sprite is drawn at r = SPRITE/8, so scale to this star's radius.
+        const size = (SPRITE * s.r) / (SPRITE / 8);
+        ctx.globalAlpha = a;
+        ctx.drawImage(sprites[s.color], s.x - size / 2, s.y - size / 2, size, size);
       }
+      ctx.globalAlpha = 1;
     };
 
     const loop = (t: number) => {

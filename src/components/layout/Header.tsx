@@ -41,9 +41,9 @@ export default function Header() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-500 ease-soir",
+          "fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ease-soir",
           scrolled
-            ? "bg-noir/80 shadow-[0_1px_0_rgb(246_234_223/0.08)] backdrop-blur-md"
+            ? "bg-noir/95 shadow-[0_1px_0_rgb(246_234_223/0.08)]"
             : "bg-transparent",
         )}
       >

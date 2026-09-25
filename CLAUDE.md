@@ -135,6 +135,16 @@ Log every call here with its reason — without the reason, someone eventually "
   screens the name sits in the sky and the actions on the lit street; a
   radial "pool of night" behind the name lets the spire tip fade instead of
   striking through the lettering — don't remove it.
+- **Scroll performance rules (Sept 2026, after Oziel felt a "glitch lag"
+  scrolling out of the hero).** Measured on a 4×-throttled phone, then fixed:
+  the hero painting is static (no scale animation); nothing fixed or over
+  the painting uses `backdrop-filter` (header, bottom bar, menu chips and
+  hero buttons are solid, near-opaque); the sparkle canvas stamps
+  pre-rendered sprites instead of building gradients per frame; the paper
+  grain is a PNG tile, not an SVG `feTurbulence` filter; Lenis is off on
+  touch devices (it doesn't smooth touch, so it was pure overhead) and uses
+  its default `lerp` on desktop — a 1.15s duration ease felt like lag.
+  Keep these; each one was a measured cost.
 - **The link preview (OG/Twitter card) shows the shopfront** (Oziel's call,
   Sept 2026): wordmark on the left, the painted storefront with its hanging
   sign on the right. It's what people see when the link is texted or posted.

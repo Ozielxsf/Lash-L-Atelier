@@ -23,8 +23,13 @@ import heroWide from "../../../public/brand/hero-eiffel-wide.webp";
  *  - wide (landscape screens): tower on the right, open sky on the left for
  *    the name and actions — a left-aligned composition from `lg` up.
  *
- * The painting is the LCP element, so it is eager + high fetch priority. A
- * slow 9s settle (scale 1.07 → 1) gives it life once; off under reduced motion.
+ * The painting is the LCP element, so it is eager + high fetch priority.
+ *
+ * ⚠️ Performance: the painting is deliberately STATIC, and nothing over it
+ * uses backdrop-filter. A slow scale animation on it plus frosted-glass
+ * buttons and bars forced a full-screen repaint every frame and made the
+ * first scroll out of the hero hitch (measured 117ms frames on a throttled
+ * phone). The sparkle canvas carries the life instead.
  */
 export default function Hero() {
   const booking = getBookingAction();
@@ -46,7 +51,7 @@ export default function Hero() {
           {/* eslint-disable-next-line jsx-a11y/alt-text -- alt="" comes from getImageProps; decorative */}
           <img
             {...img}
-            className="hero-settle absolute inset-0 h-full w-full object-cover object-[50%_62%] [@media(min-aspect-ratio:1/1)]:object-[60%_60%]"
+            className="absolute inset-0 h-full w-full object-cover object-[50%_62%] [@media(min-aspect-ratio:1/1)]:object-[60%_60%]"
           />
         </picture>
 
@@ -108,14 +113,14 @@ export default function Hero() {
             >
               {booking.label}
             </ButtonLink>
-            <ButtonLink href="/services" variant="outline-dark" className="bg-noir/40 px-3 tracking-[0.14em] whitespace-nowrap backdrop-blur-sm sm:px-6 lg:px-8 lg:tracking-[0.2em]">
+            <ButtonLink href="/services" variant="outline-dark" className="bg-noir/70 px-3 tracking-[0.14em] whitespace-nowrap sm:px-6 lg:px-8 lg:tracking-[0.2em]">
               The menu
             </ButtonLink>
           </div>
 
           <a
             href="#welcome"
-            className="rise-in group mt-4 inline-flex items-center gap-2 rounded-full border border-gaslight/45 bg-noir/60 px-4 py-2 text-[0.8rem] text-gaslight backdrop-blur-sm transition-colors hover:border-gaslight lg:mt-6"
+            className="rise-in group mt-4 inline-flex items-center gap-2 rounded-full border border-gaslight/45 bg-noir/80 px-4 py-2 text-[0.8rem] text-gaslight transition-colors hover:border-gaslight lg:mt-6"
             style={{ "--d": "0.85s" } as React.CSSProperties}
           >
             <span className="font-display text-base font-semibold italic">${WELCOME_OFFER.amount} off</span>

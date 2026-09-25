@@ -17,7 +17,7 @@ export default function MobileActionBar() {
     "flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl text-[0.62rem] font-medium tracking-[0.16em] text-creme/85 uppercase transition-colors active:bg-creme/10";
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line-dark bg-noir/88 px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] backdrop-blur-lg lg:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line-dark bg-noir/[0.97] px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] lg:hidden">
       <nav aria-label="Quick actions" className="mx-auto grid max-w-md grid-cols-[1fr_1fr_2fr] gap-2">
         <Link href="/services" className={secondary}>
           <ScrollText className="h-5 w-5 text-rose" strokeWidth={1.5} aria-hidden="true" />

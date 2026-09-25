@@ -8,6 +8,10 @@
 export const motionTokens = {
   ease: [0.22, 0.61, 0.19, 1] as const,
   reveal: { duration: 1.05, distance: 28, stagger: 0.09 },
-  /** Lenis smooth-scroll duration. Longer = more languid. */
-  scrollDuration: 1.15,
+  /**
+   * Lenis smoothing: fraction of the remaining distance covered per frame.
+   * 0.1 is Lenis's default. A duration-based ease (1.15s) was tried first and
+   * felt like the page lagged behind the wheel — keep it snappy.
+   */
+  scrollLerp: 0.1,
 } as const;
