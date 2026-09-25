@@ -94,7 +94,8 @@ src/components/
   layout/  Header, MenuDrawer, Footer, MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
 content/legal/        generated — edit scripts/build-legal.py, not these
-public/brand/         hero-eiffel-{tall,wide}.webp (generated hero), paris-street.webp, roses.webp, seal.webp (client art)
+public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
+                      seal.webp (client's own seal, 4K-upscaled)
 supabase/schema.sql   Wallink baseline (leads, page_views, site_settings; RLS on)
 ```
 
@@ -121,15 +122,8 @@ Log every call here with its reason — without the reason, someone eventually "
   ("L'ATELIER") match the client's seal closely and stay razor-sharp at any
   size. The client's round seal (`public/brand/seal.webp`) is used as a seal —
   in the footer — not as a logo scaled up and down.
-- **Client artwork, not stock.** The painted Paris street, the roses and the
-  seal are cropped from the client's own flyer/menu/badge. The street's
-  printed lettering ("A Parisian inspired aesthetics studio") was removed by
-  rebuilding the sky from clean texture in the same image; the top of that
-  image always sits under the hero's fade, which hides the seam.
-  ⚠️ The source art is low-resolution (≈1100px wide). It holds up under the
-  hero's overlays but will look soft on large retina screens. **Ask the owner
-  for the original high-res files** (they were clearly generated/designed
-  somewhere) and drop them into `public/brand/` at the same names.
+- **No stock imagery.** Everything is the client's own art (the seal) or
+  painted for this site in their palette and motifs (hero, shopfront, roses).
 - **Hero = generated Eiffel Tower painting, full-bleed (Oziel's call, Sept 2026).**
   The first hero (night sky with the flyer's street rising from the bottom
   third) was rejected — *"I don't like the hero background or scarcity of the
@@ -140,9 +134,19 @@ Log every call here with its reason — without the reason, someone eventually "
   art-directed with `<picture>` on `min-aspect-ratio: 1/1`. On portrait
   screens the name sits in the sky and the actions on the lit street; a
   radial "pool of night" behind the name lets the spire tip fade instead of
-  striking through the lettering — don't remove it. The flyer street
-  (`paris-street.webp`) still appears in the Visit section, where its
-  Lash L'Atelier shop sign is the point. The OG card uses the wide painting.
+  striking through the lettering — don't remove it. The OG card uses the
+  wide painting.
+- **Every raster image replaced at high resolution (Sept 2026).** Oziel: the
+  flyer crops looked "pixelated and blurry". The Visit arch is now
+  `atelier-shopfront.webp` (1792×2240, generated — striped awning, lit
+  arched windows, roses, and a hanging sign that reads exactly "Lash /
+  L'ATELIER"; checked at full size before use). The menu-board roses are
+  `roses.webp`, generated on a true transparent background so there's no
+  glitter patch around them. The footer seal is the **client's real seal**,
+  upscaled 4K (ByteDance upscaler on Higgsfield) and re-cut to a circle —
+  upscaled, not redrawn, because it's their logo. `paris-street.webp` (the
+  flyer crop) is retired. If the client supplies original art files later,
+  the seal is the one to swap first.
 - **Red light wording follows the brochure, not the menu board.** The menu
   board says "Acne Treatment", "Hair Loss Scalp Regeneration"; the brochure
   softened these to "support"/"reduction". A cosmetic studio making medical

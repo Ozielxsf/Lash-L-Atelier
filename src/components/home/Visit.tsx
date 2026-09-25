@@ -9,11 +9,12 @@ import { siteConfig } from "@/config/site.config";
 import { WELCOME_OFFER } from "@/data/offers";
 import { directionsHref } from "@/lib/format";
 import { getBookingAction } from "@/lib/booking";
-import street from "../../../public/brand/paris-street.webp";
+import shopfront from "../../../public/brand/atelier-shopfront.webp";
 
 /**
- * N° 06 — Nous Trouver. The shop sign from the client's painted street,
- * framed in an arch like a window you're about to walk up to, beside the
+ * N° 06 — Nous Trouver. The atelier's own shopfront — awning, lit arched
+ * windows, roses and the hanging sign — framed in an arch like a window
+ * you're about to walk up to, beside the
  * address set large enough to read at arm's length.
  */
 export default function Visit({ number = "06" }: { number?: string | null }) {
@@ -27,11 +28,11 @@ export default function Visit({ number = "06" }: { number?: string | null }) {
           <Reveal className="order-2 lg:order-1">
             <div className="arch relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden border border-rose/30 shadow-[var(--shadow-glow-rose)]">
               <Image
-                src={street}
-                alt="Painted illustration of the Lash L’Atelier sign hanging beside a gas lamp on a Parisian street at dusk"
+                src={shopfront}
+                alt="Painted illustration of the Lash L’Atelier shopfront at dusk — a striped awning, glowing arched windows, roses and the hanging Lash L’Atelier sign beside a gas lamp"
                 placeholder="blur"
                 sizes="(min-width: 1024px) 384px, 90vw"
-                className="h-full w-full object-cover object-[100%_60%]"
+                className="h-full w-full object-cover object-[62%_40%]"
               />
             </div>
           </Reveal>

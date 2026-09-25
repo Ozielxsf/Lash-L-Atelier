@@ -23,8 +23,8 @@ export default function Footer() {
           <Image
             src="/brand/seal.webp"
             alt={`${siteConfig.name} seal — ${siteConfig.tagline}`}
-            width={320}
-            height={320}
+            width={1024}
+            height={1024}
             sizes="176px"
             className="h-44 w-44 drop-shadow-[0_18px_40px_rgb(242_167_198/0.25)]"
           />

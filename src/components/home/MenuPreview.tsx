@@ -17,7 +17,7 @@ import { formatCurrency } from "@/lib/format";
  */
 export default function MenuPreview() {
   return (
-    <section id="menu" aria-labelledby="menu-title" className="relative scroll-mt-20 overflow-x-clip bg-noir pt-20 pb-24 sm:pt-28 sm:pb-32">
+    <section id="menu" aria-labelledby="menu-title" className="relative scroll-mt-20 overflow-x-clip bg-noir pt-20 pb-28 sm:pt-28 sm:pb-32">
       <Container>
         <SectionHeading
           id="menu-title"
@@ -91,10 +91,10 @@ export default function MenuPreview() {
           <Image
             src="/brand/roses.webp"
             alt=""
-            width={470}
-            height={210}
-            sizes="220px"
-            className="pointer-events-none absolute -right-6 -bottom-12 w-[200px] rotate-[-8deg] drop-shadow-[0_14px_20px_rgb(17_10_15/0.45)] sm:-right-16 sm:w-[260px]"
+            width={1200}
+            height={787}
+            sizes="(min-width: 640px) 280px, 170px"
+            className="pointer-events-none absolute -right-4 -bottom-20 w-[170px] rotate-[-8deg] drop-shadow-[0_16px_22px_rgb(17_10_15/0.55)] sm:-right-20 sm:w-[280px]"
           />
         </Reveal>
       </Container>
