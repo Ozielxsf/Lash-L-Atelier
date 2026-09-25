@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getSlots } from "@/lib/availability";
-import { addOnServices, findBookableService } from "@/data/services";
+import { addOnServices, resolveSelection } from "@/data/services";
 import { isValidYmd, studioYmd } from "@/lib/studio-time";
 import {
   APPOINTMENT_COLUMNS,
@@ -17,7 +17,8 @@ import {
  */
 
 export type BookingInput = {
-  serviceId: string;
+  /** One per menu section; validated by resolveSelection(). */
+  serviceIds: string[];
   date: string; // studio YMD
   start: string; // ISO instant, one of the offered slots
   name: string;
@@ -25,7 +26,6 @@ export type BookingInput = {
   email: string;
   notes: string;
   addOns: string[];
-  isNewClient: boolean;
 };
 
 type Result<T> = { ok: true; value: T } | { ok: false; error: string; status: number };
@@ -37,7 +37,9 @@ const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice
 export function parseBookingInput(body: unknown): Result<BookingInput> {
   const b = (body ?? {}) as Record<string, unknown>;
   const input: BookingInput = {
-    serviceId: str(b.serviceId, 80),
+    serviceIds: Array.isArray(b.serviceIds)
+      ? b.serviceIds.filter((x): x is string => typeof x === "string").slice(0, 6)
+      : [],
     date: str(b.date, 10),
     start: str(b.start, 40),
     name: str(b.name, 120),
@@ -45,10 +47,9 @@ export function parseBookingInput(body: unknown): Result<BookingInput> {
     email: str(b.email, 254).toLowerCase(),
     notes: str(b.notes, 1000),
     addOns: Array.isArray(b.addOns) ? b.addOns.filter((x): x is string => typeof x === "string").slice(0, 10) : [],
-    isNewClient: b.isNewClient === true,
   };
   const bad = (error: string) => ({ ok: false as const, error, status: 400 });
-  if (!findBookableService(input.serviceId)) return bad("Please choose a service.");
+  if (!resolveSelection(input.serviceIds)) return bad("Please choose your services — one from each section.");
   if (!isValidYmd(input.date)) return bad("Please choose a date.");
   if (Number.isNaN(Date.parse(input.start)) || studioYmd(new Date(input.start)) !== input.date)
     return bad("Please choose a time.");
@@ -72,22 +73,23 @@ export async function createAppointment(
 ): Promise<Result<Appointment>> {
   const db = getSupabaseAdmin();
   if (!db) return { ok: false, error: "Online booking is unavailable right now.", status: 503 };
-  const service = findBookableService(input.serviceId)!;
+  const selection = resolveSelection(input.serviceIds)!;
 
-  const slots = await getSlots(input.date, service.duration);
+  const slots = await getSlots(input.date, selection.duration);
   if (!slots.some((s) => s.start === new Date(input.start).toISOString())) {
     return { ok: false, error: "Sorry — that time was just taken. Please pick another.", status: 409 };
   }
 
   const startsAt = new Date(input.start);
-  const endsAt = new Date(startsAt.getTime() + service.duration * 60_000);
+  const endsAt = new Date(startsAt.getTime() + selection.duration * 60_000);
   const { data, error } = await db
     .from("appointments")
     .insert({
-      service_id: service.id,
-      service_name: service.name.replace(/[“”]/g, '"'),
-      duration_minutes: service.duration,
-      price_dollars: service.price,
+      service_id: selection.services[0].id,
+      service_ids: selection.services.map((s) => s.id),
+      service_name: selection.name,
+      duration_minutes: selection.duration,
+      price_dollars: selection.price,
       add_ons: input.addOns,
       starts_at: startsAt.toISOString(),
       ends_at: endsAt.toISOString(),
@@ -95,7 +97,6 @@ export async function createAppointment(
       client_phone: input.phone,
       client_email: input.email,
       notes: input.notes || null,
-      is_new_client: input.isNewClient,
       status: "requested",
       source,
     })

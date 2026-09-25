@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, Clock, Loader2 } from "lucide-react";
+import { Check, Clock, Loader2, Sparkles } from "lucide-react";
 import Flourish from "@/components/brand/Flourish";
 import { useTurnstile } from "@/lib/turnstile";
 import { formatCurrency } from "@/lib/format";
@@ -9,7 +9,16 @@ import { dayParts, formatLongDate, formatMinutes } from "@/lib/studio-time";
 import type { Slot } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 
-export type FlowService = { id: string; name: string; price: number | null; duration: number; category: string; french: string };
+export type FlowService = {
+  id: string;
+  name: string;
+  price: number | null;
+  duration: number;
+  category: string;
+  french: string;
+  /** One pick per group — full sets and fills share "lashes". */
+  group: string;
+};
 export type FlowDay = { ymd: string; open: boolean };
 
 const NUMERALS = ["I", "II", "III", "IV"];
@@ -54,23 +63,30 @@ function hoursLabel(min: number) {
 }
 
 /**
- * The client booking flow. Four steps on one page — service, day, time,
+ * The client booking flow. Four steps on one page — services, day, time,
  * details — each revealed as the last is answered, and the view glides to it
  * so a phone user never hunts for what's next. Submits a REQUEST; the studio
  * confirms it from the dashboard.
+ *
+ * Step I allows ONE service per menu section (Oziel, Sept 2026) so a client
+ * can book lashes + brows + a facial as one visit; times are then found for
+ * the combined length. Full sets and fills are one choice (same lashes).
  */
 export default function BookingFlow({
   services,
   days,
   addOns,
   phone,
+  firstVisitNote,
 }: {
   services: FlowService[];
   days: FlowDay[];
   addOns: { name: string; price: number | null }[];
   phone: { display: string; href: string };
+  firstVisitNote: string;
 }) {
-  const [serviceId, setServiceId] = useState("");
+  // group → chosen service id
+  const [picks, setPicks] = useState<Record<string, string>>({});
   const [date, setDate] = useState("");
   // Times are keyed by what they were loaded for, so a stale response can
   // never show against a newly chosen day, and "loading" is simply "no result
@@ -86,13 +102,36 @@ export default function BookingFlow({
   const [reload, setReload] = useState(0);
   const topRef = useRef<HTMLDivElement>(null);
 
-  const service = services.find((s) => s.id === serviceId);
-  const categories = [...new Set(services.map((s) => s.category))];
+  // The visit, in menu order, with its totals.
+  const selected = services.filter((s) => picks[s.group] === s.id);
+  const serviceIds = selected.map((s) => s.id);
+  const hasVisit = selected.length > 0;
+  const visitName = selected.map((s) => s.name).join(" + ");
+  const totalMinutes = selected.reduce((sum, s) => sum + s.duration, 0);
+  const totalPrice = selected.some((s) => s.price === null) ? null : selected.reduce((sum, s) => sum + (s.price ?? 0), 0);
+
+  // Sections: one per booking group, each holding its menu categories.
+  const groups = [...new Set(services.map((s) => s.group))].map((group) => {
+    const inGroup = services.filter((s) => s.group === group);
+    const categories = [...new Set(inGroup.map((s) => s.category))];
+    return { group, categories, items: inGroup };
+  });
+
+  const toggle = (s: FlowService) => {
+    setPicks((p) => {
+      const next = { ...p };
+      if (next[s.group] === s.id) delete next[s.group];
+      else next[s.group] = s.id;
+      return next;
+    });
+    // The length changed, so any chosen time may no longer fit.
+    setStart("");
+  };
 
   const glide = (id: string) =>
     requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }));
 
-  const slotKey = serviceId && date ? `${serviceId}|${date}|${reload}` : "";
+  const slotKey = hasVisit && date ? `${serviceIds.join(",")}|${date}|${reload}` : "";
   const current = loaded?.key === slotKey ? loaded : null;
   const slots = current && !current.error ? current.slots : null;
   const slotsError = current?.error ?? "";
@@ -101,7 +140,7 @@ export default function BookingFlow({
   useEffect(() => {
     if (!slotKey) return;
     let cancelled = false;
-    fetch(`/api/booking/slots?service=${encodeURIComponent(serviceId)}&date=${date}`)
+    fetch(`/api/booking/slots?services=${encodeURIComponent(serviceIds.join(","))}&date=${date}`)
       .then(async (res) => {
         const data = await res.json();
         if (!cancelled) setLoaded({ key: slotKey, slots: data.slots ?? [], error: res.ok ? "" : data.error ?? "Couldn't load times." });
@@ -112,7 +151,9 @@ export default function BookingFlow({
     return () => {
       cancelled = true;
     };
-  }, [slotKey, serviceId, date]);
+    // slotKey already encodes the services and the day.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slotKey]);
 
   async function submit(form: HTMLFormElement) {
     setError("");
@@ -126,7 +167,7 @@ export default function BookingFlow({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        serviceId,
+        serviceIds,
         date,
         start,
         name: fd.get("name"),
@@ -134,7 +175,6 @@ export default function BookingFlow({
         email: fd.get("email"),
         notes: fd.get("notes"),
         addOns: fd.getAll("addOns"),
-        isNewClient: fd.get("isNewClient") === "on",
         turnstileToken: token,
       }),
     }).catch(() => null);
@@ -156,7 +196,7 @@ export default function BookingFlow({
     }
   }
 
-  if (done && service) {
+  if (done && hasVisit) {
     return (
       <div ref={topRef} className="scroll-mt-28 rounded-3xl bg-white/80 px-6 py-10 text-center shadow-soft sm:px-12">
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rouge text-white">
@@ -167,7 +207,7 @@ export default function BookingFlow({
           Your request is in.
         </h2>
         <p className="mx-auto mt-4 max-w-md leading-relaxed text-ink-soft">
-          {service.name} on {formatLongDate(date)} at {formatMinutes(minutes)}. We’ll confirm by email shortly — nothing is charged
+          {visitName} on {formatLongDate(date)} at {formatMinutes(minutes)}. We’ll confirm by email shortly — nothing is charged
           online, and you pay only when you’re served.
         </p>
         <Flourish className="mx-auto mt-6 text-rouge/50" />
@@ -181,57 +221,100 @@ export default function BookingFlow({
 
   return (
     <div ref={topRef} className="space-y-10">
-      {/* I — Service */}
-      <Step n={0} id="step-service" title="Choose your service">
+      {/* I — Services */}
+      <Step n={0} id="step-service" title="Choose your services">
+        <p className="-mt-2 mb-6 text-ink-soft">
+          Pick one from each section — lashes, brows and a facial can all be one visit. Tap again to remove.
+        </p>
         <div className="space-y-8">
-          {categories.map((cat) => {
-            const items = services.filter((s) => s.category === cat);
-            return (
-              <fieldset key={cat}>
-                <legend className="font-caps text-[0.7rem] font-semibold tracking-[0.26em] text-rouge uppercase">
-                  {cat} <span aria-hidden="true" className="ml-1 font-script text-lg tracking-normal normal-case">{items[0].french}</span>
-                </legend>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {items.map((s) => (
-                    <label
-                      key={s.id}
-                      className={cn(
-                        "flex min-h-16 cursor-pointer items-center justify-between gap-3 rounded-2xl border bg-white/70 px-4 py-3 transition-colors",
-                        serviceId === s.id ? "border-rouge ring-1 ring-rouge" : "border-ink/15 hover:border-rouge/50",
-                      )}
-                    >
-                      <input
-                        type="radio"
-                        name="service"
-                        value={s.id}
-                        checked={serviceId === s.id}
-                        onChange={() => {
-                          setServiceId(s.id);
-                          setStart("");
-                          glide("step-date");
-                        }}
-                        className="sr-only"
-                      />
-                      <span>
-                        <span className="block font-display text-lg leading-tight text-ink">{s.name}</span>
-                        <span className="mt-0.5 flex items-center gap-1 text-xs text-ink-soft">
-                          <Clock className="h-3 w-3" aria-hidden="true" /> about {hoursLabel(s.duration)}
-                        </span>
-                      </span>
-                      {s.price !== null && (
-                        <span className="nums-lining font-display text-xl text-ink">{formatCurrency(s.price)}</span>
-                      )}
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-            );
-          })}
+          {groups.map(({ group, categories, items }) => (
+            <div key={group} role="radiogroup" aria-labelledby={`group-${group}`}>
+              <p id={`group-${group}`} className="sr-only">
+                {categories.join(" or ")} — choose one
+              </p>
+              {categories.map((cat) => {
+                const catItems = items.filter((s) => s.category === cat);
+                return (
+                  <div key={cat} className="mt-6 first:mt-0">
+                    <h3 aria-hidden="true" className="font-caps text-[0.7rem] font-semibold tracking-[0.26em] text-rouge uppercase">
+                      {cat} <span className="ml-1 font-script text-lg tracking-normal normal-case">{catItems[0].french}</span>
+                    </h3>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      {catItems.map((s) => {
+                        const on = picks[s.group] === s.id;
+                        return (
+                          <button
+                            key={s.id}
+                            type="button"
+                            role="radio"
+                            aria-checked={on}
+                            onClick={() => toggle(s)}
+                            className={cn(
+                              "flex min-h-16 items-center justify-between gap-3 rounded-2xl border bg-white/70 px-4 py-3 text-left transition-colors",
+                              on ? "border-rouge ring-1 ring-rouge" : "border-ink/15 hover:border-rouge/50",
+                            )}
+                          >
+                            <span className="flex items-center gap-3">
+                              <span
+                                aria-hidden="true"
+                                className={cn(
+                                  "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border",
+                                  on ? "border-rouge bg-rouge text-white" : "border-ink/30",
+                                )}
+                              >
+                                {on && <Check className="h-3 w-3" />}
+                              </span>
+                              <span>
+                                <span className="block font-display text-lg leading-tight text-ink">{s.name}</span>
+                                <span className="mt-0.5 flex items-center gap-1 text-xs text-ink-soft">
+                                  <Clock className="h-3 w-3" aria-hidden="true" /> about {hoursLabel(s.duration)}
+                                </span>
+                              </span>
+                            </span>
+                            {s.price !== null && (
+                              <span className="nums-lining font-display text-xl text-ink">{formatCurrency(s.price)}</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+              {categories.length > 1 && (
+                <p className="mt-2 text-xs text-ink-soft">One lash service per visit — a full set or a fill.</p>
+              )}
+            </div>
+          ))}
         </div>
+
+        {/* Your visit — the running total, and the way forward. */}
+        {hasVisit && (
+          <div
+            role="status"
+            className="sticky bottom-[calc(5rem+env(safe-area-inset-bottom))] z-10 mt-8 flex flex-col gap-3 rounded-2xl bg-noir px-5 py-4 text-creme shadow-lift sm:flex-row sm:items-center sm:justify-between lg:bottom-4"
+          >
+            <div className="min-w-0">
+              <p className="font-caps text-[0.62rem] tracking-[0.26em] text-rose uppercase">Your visit</p>
+              <p className="mt-1 font-display text-lg leading-snug">{visitName}</p>
+              <p className="nums-lining mt-0.5 text-sm text-creme-muted">
+                about {hoursLabel(totalMinutes)}
+                {totalPrice !== null && ` · ${formatCurrency(totalPrice)}`}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => glide("step-date")}
+              className="min-h-12 shrink-0 rounded-full bg-rose px-6 text-[0.75rem] font-semibold tracking-[0.18em] text-noir uppercase"
+            >
+              Choose a day
+            </button>
+          </div>
+        )}
       </Step>
 
       {/* II — Day */}
-      {service && (
+      {hasVisit && (
         <Step n={1} id="step-date" title="Pick a day">
           {days.some((d) => d.open) ? (
             <div
@@ -283,7 +366,7 @@ export default function BookingFlow({
       )}
 
       {/* III — Time */}
-      {service && date && (
+      {hasVisit && date && (
         <Step n={2} id="step-time" title={`Choose a time · ${formatLongDate(date)}`}>
           {slotsError ? (
             <p role="alert" className="text-rouge">{slotsError}</p>
@@ -292,7 +375,9 @@ export default function BookingFlow({
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Finding open times…
             </p>
           ) : slots.length === 0 ? (
-            <p className="text-ink-soft">That day is fully booked for a {service.name.toLowerCase()}. Please try another day.</p>
+            <p className="text-ink-soft">
+              That day doesn’t have a {hoursLabel(totalMinutes)} opening. Please try another day{selected.length > 1 ? ", or book fewer services" : ""}.
+            </p>
           ) : (
             <div role="radiogroup" aria-label="Available times" className="grid grid-cols-3 gap-2 sm:grid-cols-5">
               {slots.map((s) => (
@@ -320,13 +405,13 @@ export default function BookingFlow({
       )}
 
       {/* IV — Details */}
-      {service && date && start && (
+      {hasVisit && date && start && (
         <Step n={3} id="step-details" title="Your details">
           <div className="mb-6 rounded-2xl bg-noir px-5 py-4 text-creme">
-            <p className="font-display text-xl">{service.name}</p>
+            <p className="font-display text-xl">{visitName}</p>
             <p className="nums-lining mt-1 text-sm text-creme-muted">
-              {formatLongDate(date)} at {formatMinutes(minutes)} · about {hoursLabel(service.duration)}
-              {service.price !== null && ` · ${formatCurrency(service.price)}`}
+              {formatLongDate(date)} at {formatMinutes(minutes)} · about {hoursLabel(totalMinutes)}
+              {totalPrice !== null && ` · ${formatCurrency(totalPrice)}`}
             </p>
           </div>
           <form
@@ -364,10 +449,11 @@ export default function BookingFlow({
               </fieldset>
             )}
 
-            <label className="flex items-center gap-3 text-sm sm:col-span-2">
-              <input type="checkbox" name="isNewClient" className="h-5 w-5 accent-rouge" />
-              This is my first visit <span className="text-rouge">— $25 off</span>
-            </label>
+            {/* A statement, not a checkbox: the welcome offer is redeemed in person. */}
+            <p className="flex items-start gap-3 rounded-2xl border border-rouge/25 bg-rouge/[0.06] px-4 py-3 text-sm text-ink sm:col-span-2">
+              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-rouge" aria-hidden="true" />
+              {firstVisitNote}
+            </p>
 
             <label className="flex flex-col gap-1 text-sm font-medium sm:col-span-2">
               Anything we should know? (optional)

@@ -38,7 +38,6 @@ export default function AppointmentList({ items, empty }: { items: Appointment[]
             </p>
             <p className="mt-1 text-sm text-ink-soft">
               <span className="font-medium text-ink">{a.client_name}</span>
-              {a.is_new_client && <span className="ml-1 text-rouge">(new client · $25 off)</span>}
               {" · "}
               <a href={`tel:${a.client_phone}`} className="underline underline-offset-2">{a.client_phone}</a>
               {" · "}

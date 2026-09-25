@@ -40,12 +40,20 @@ export type ServiceCategory = {
    *  - "add-on":  optional extras added to another appointment (no extra time)
    */
   booking: "service" | "add-on";
+  /**
+   * Online booking lets a client pick ONE service per group, so they can
+   * combine lashes + brows + a facial in one visit. Categories default to
+   * their own group; full sets and fills share "lashes" because they're the
+   * same lashes — nobody has both at one appointment.
+   */
+  bookingGroup?: string;
 };
 
 export const MENU: ServiceCategory[] = [
   {
     id: "lash-extensions",
     booking: "service",
+    bookingGroup: "lashes",
     title: "Lash Extensions",
     french: "Les Cils",
     intro:
@@ -60,6 +68,7 @@ export const MENU: ServiceCategory[] = [
   {
     id: "lash-fills",
     booking: "service",
+    bookingGroup: "lashes",
     title: "Lash Fills",
     french: "L'Entretien",
     intro: "Keep your set full as your natural lashes shed and grow.",
@@ -175,6 +184,38 @@ export function bookableServices(): (Service & { duration: number; category: Ser
 
 export function findBookableService(id: string) {
   return bookableServices().find((s) => s.id === id);
+}
+
+export function bookingGroupOf(category: ServiceCategory): string {
+  return category.bookingGroup ?? category.id;
+}
+
+export type ServiceSelection = {
+  services: (Service & { duration: number; category: ServiceCategory })[];
+  duration: number;
+  /** Total, or null when any service is priced per consultation. */
+  price: number | null;
+  name: string;
+};
+
+/**
+ * Validate and total a multi-service selection: 1+ known bookable services,
+ * at most one per booking group, returned in menu order. The booking page and
+ * the booking API both use this, so they can't disagree about what's allowed.
+ */
+export function resolveSelection(ids: string[]): ServiceSelection | null {
+  const unique = [...new Set(ids)];
+  const all = bookableServices();
+  const picked = all.filter((s) => unique.includes(s.id)); // menu order
+  if (!picked.length || picked.length !== unique.length) return null;
+  const groups = picked.map((s) => bookingGroupOf(s.category));
+  if (new Set(groups).size !== groups.length) return null;
+  return {
+    services: picked,
+    duration: picked.reduce((sum, s) => sum + s.duration, 0),
+    price: picked.some((s) => s.price === null) ? null : picked.reduce((sum, s) => sum + (s.price ?? 0), 0),
+    name: picked.map((s) => s.name.replace(/[“”]/g, '"')).join(" + "),
+  };
 }
 
 export function addOnServices(): Service[] {

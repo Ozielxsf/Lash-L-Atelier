@@ -109,12 +109,12 @@ export async function sendStudioNotification(a: Appointment, to: string) {
       "New booking request",
       details(a) +
         p(
-          `<strong>${escapeHtml(a.client_name)}</strong>${a.is_new_client ? " (new client &mdash; $25 welcome offer)" : ""}<br>${escapeHtml(a.client_phone)}<br>${escapeHtml(a.client_email)}`,
+          `<strong>${escapeHtml(a.client_name)}</strong><br>${escapeHtml(a.client_phone)}<br>${escapeHtml(a.client_email)}`,
         ) +
         (a.notes ? p(`&ldquo;${escapeHtml(a.notes)}&rdquo;`) : "") +
         p(`Confirm or decline it in the admin dashboard: ${escapeHtml(siteConfig.url)}/admin`),
     ),
-    `New booking request\n\n${plain(a)}\n\n${a.client_name}${a.is_new_client ? " (new client)" : ""}\n${a.client_phone}\n${a.client_email}${a.notes ? `\n\n"${a.notes}"` : ""}\n\n${siteConfig.url}/admin`,
+    `New booking request\n\n${plain(a)}\n\n${a.client_name}\n${a.client_phone}\n${a.client_email}${a.notes ? `\n\n"${a.notes}"` : ""}\n\n${siteConfig.url}/admin`,
     a.client_email,
   );
 }

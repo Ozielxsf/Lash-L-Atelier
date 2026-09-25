@@ -101,7 +101,11 @@ export type Appointment = {
   id: string;
   created_at: string;
   updated_at: string;
+  /** The first service booked (kept for compatibility). */
   service_id: string;
+  /** Every service booked in this visit, in menu order (migration 0003). */
+  service_ids: string[];
+  /** Combined label, e.g. "Classic Full Set + Brow Lamination". */
   service_name: string;
   duration_minutes: number;
   price_dollars: number | null;
@@ -112,6 +116,7 @@ export type Appointment = {
   client_phone: string;
   client_email: string;
   notes: string | null;
+  /** No longer collected — first visits are mentioned in person. Always false for new rows. */
   is_new_client: boolean;
   status: AppointmentStatus;
   source: "online" | "preview" | "admin";
@@ -119,4 +124,4 @@ export type Appointment = {
 
 /** Column list, as one literal so supabase-js keeps the row type (Wallink §9 note). */
 export const APPOINTMENT_COLUMNS =
-  "id, created_at, updated_at, service_id, service_name, duration_minutes, price_dollars, add_ons, starts_at, ends_at, client_name, client_phone, client_email, notes, is_new_client, status, source" as const;
+  "id, created_at, updated_at, service_id, service_ids, service_name, duration_minutes, price_dollars, add_ons, starts_at, ends_at, client_name, client_phone, client_email, notes, is_new_client, status, source" as const;

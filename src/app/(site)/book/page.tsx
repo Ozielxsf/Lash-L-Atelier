@@ -6,7 +6,8 @@ import PageHeader from "@/components/layout/PageHeader";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
 import { siteConfig } from "@/config/site.config";
-import { addOnServices, bookableServices } from "@/data/services";
+import { addOnServices, bookableServices, bookingGroupOf } from "@/data/services";
+import { WELCOME_OFFER } from "@/data/offers";
 import { HOUSE_RULES } from "@/data/promises";
 import { getBookingDays } from "@/lib/availability";
 import { bookingAccess } from "@/lib/booking-access";
@@ -56,6 +57,7 @@ export default async function BookPage() {
     duration: s.duration,
     category: s.category.title,
     french: s.category.french,
+    group: bookingGroupOf(s.category),
   }));
   const addOns = addOnServices().map((a) => ({ name: a.name, price: a.price }));
 
@@ -79,6 +81,7 @@ export default async function BookPage() {
             days={days}
             addOns={addOns}
             phone={{ display: siteConfig.phone.display, href: telHref }}
+            firstVisitNote={WELCOME_OFFER.bookingNote}
           />
         </Container>
       </div>

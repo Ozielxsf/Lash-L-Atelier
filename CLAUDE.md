@@ -112,14 +112,14 @@ src/components/
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled)
-supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql — apply in order
+supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql — apply in order
 ```
 
 ---
 
 ## Online booking (phase 2) — built, switched OFF
 
-**How it works.** A client picks a service → a day → a time → their details
+**How it works.** A client picks their services → a day → a time → their details
 at `/book`, and submits a **request** (Oziel's call: *the studio approves*,
 not instant booking). The owner confirms or declines it on `/admin`; the
 client is emailed at each step. No card, no payment — ever (house rule).
@@ -140,6 +140,21 @@ request — public pages stay static and fast.
 - **Fails safe:** no database / DB error / missing env → booking reads as OFF
   and the public site keeps working. `getSupabaseAdmin()` returns `null`
   rather than throwing (a change from the Wallink starter, on purpose).
+
+**Several services in one visit (Oziel, Sept 2026).** A client can pick
+ONE service from each menu section — e.g. a lash set + a brow service + a
+facial. Times are found for the combined length; the appointment stores the
+list (`service_ids`, migration 0003), a combined `service_name`, and the
+total length and price. **Full sets and fills are one choice** (both are
+`bookingGroup: "lashes"` in `src/data/services.ts`) — they're the same lashes,
+nobody has both at one appointment. To allow both, delete that field from
+one category. The rule lives in `resolveSelection()`, used by the page AND
+the API, so they can't disagree. Tapping a chosen service removes it.
+
+**New-client offer = a statement, not a checkbox (Oziel, Sept 2026).** The
+booking form says *"First visit? Let us know when you come in and we'll take
+$25 off!"* (`WELCOME_OFFER.bookingNote`). The offer is redeemed in person;
+`is_new_client` stays in the table but is no longer collected.
 
 **Correctness that matters:**
 - Times are studio time (America/New_York), DST-safe, whatever the server's
@@ -171,7 +186,7 @@ reports only "RLS enabled, no policy" — intentional: nothing is reachable
 from the browser; the server uses the service-role key.
 
 ### Go-live steps (in order)
-1. ✅ Supabase project created, `0001_baseline` + `0002_booking` applied.
+1. ✅ Supabase project created; `0001_baseline`, `0002_booking`, `0003_multi_service` applied.
 2. ✅ (partly, 25 Sept 2026) Vercel env set: `NEXT_PUBLIC_SUPABASE_URL`,
    `SUPABASE_SERVICE_ROLE_KEY` (Production), `SESSION_SECRET`, `ADMIN_PASSWORD`
    (Oziel changed it himself). Verified live: sign-in form up, wrong
@@ -266,8 +281,8 @@ Log every call here with its reason — without the reason, someone eventually "
   `siteConfig.hours` is `null`; set it and the footer, visit section, JSON-LD
   and llms.txt all pick it up. Never publish guessed hours.
 - **"Call to book", not "Call or text".** We don't know the number takes texts.
-- **Welcome offer redemption online = "mention this offer when you book".**
-  Print says "present this brochure". ⚠️ Confirm with the owner.
+- **Welcome offer is redeemed in person** — "let us know when you come in"
+  (Oziel, Sept 2026). Print says "present this brochure", same idea.
 - **House rules appear exactly twice** (ribbon under the hero, footer) plus in
   the promise cards — a third list in the visit section was cut as repetition.
 - **Promise cards are a swipe row on phones** (four stacked arches were
