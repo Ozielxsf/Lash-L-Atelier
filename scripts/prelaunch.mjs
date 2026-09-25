@@ -114,7 +114,12 @@ for (const p of srcFiles) {
 
 /* ── §6 — legal pages present ────────────────────────────────────────────── */
 for (const [page, label] of [["privacy", "Privacy Policy"], ["terms", "Terms of Service"], ["accessibility", "Accessibility statement"]]) {
-  if (existsSync(join(ROOT, `src/app/${page}/page.tsx`))) ok(`§6 ${label} page exists`);
+  // Route groups — (site)/privacy — don't change the URL, so look inside them too.
+  const groups = existsSync(join(ROOT, "src/app"))
+    ? readdirSync(join(ROOT, "src/app")).filter((d) => /^\(.+\)$/.test(d))
+    : [];
+  const found = ["", ...groups.map((g) => `${g}/`)].some((g) => existsSync(join(ROOT, `src/app/${g}${page}/page.tsx`)));
+  if (found) ok(`§6 ${label} page exists`);
   else bad(`§6 ${label} page is missing — required before launch`);
 }
 

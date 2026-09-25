@@ -1,42 +1,52 @@
 import "server-only";
 
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
  * Server-side Supabase client, using the service-role key.
  *
  * NEVER import this into a client component. The service-role key bypasses
  * Row-Level Security; if it reaches the browser, every row in the database is
- * readable and writable by anyone who opens dev tools.
+ * readable and writable by anyone who opens dev tools. (`server-only` makes
+ * that a build error.)
+ *
+ * Lazy on purpose. The Wallink starter threw at import when the env vars were
+ * missing — fine for a site that can't work without its database, wrong for
+ * this one: the public site must keep building and serving with no database
+ * at all, and online booking simply reads as "off". So callers ask for the
+ * client and handle `null`.
  *
  * Build Standards §4: every table gets a TypeScript type here the same day it
- * is created in Supabase. Untyped queries return `any`, which silently defeats
- * TypeScript and lets a column-name typo ship to production.
+ * is created (see supabase/migrations/).
  */
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-/**
- * Optional. Which Postgres schema this site's tables live in — defaults to
- * "public". Set SUPABASE_SCHEMA when a site shares a Supabase project with
- * others, each isolated in its own schema.
- */
-const schema = process.env.SUPABASE_SCHEMA?.trim() || undefined;
+let client: SupabaseClient | null | undefined;
 
-if (!url || !key) {
-  throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+export function getSupabaseAdmin(): SupabaseClient | null {
+  if (client === undefined) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const schema = process.env.SUPABASE_SCHEMA?.trim() || undefined;
+    client =
+      url && key
+        ? // Cast: a runtime-chosen schema widens supabase-js's schema generic to
+          // `string`. Row types are enforced by the typed selects below instead.
+          (createClient(url, key, {
+            auth: { persistSession: false },
+            ...(schema ? { db: { schema } } : {}),
+          }) as unknown as SupabaseClient)
+        : null;
+  }
+  return client;
 }
 
-export const supabaseAdmin = createClient(url, key, {
-  auth: { persistSession: false },
-  ...(schema ? { db: { schema } } : {}),
-});
+export function isDatabaseConfigured(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+}
 
-/* ── Table types ─────────────────────────────────────────────────────────────
-   These three ship with every site. Add a type here for every new table, and
-   add the matching SQL to supabase/schema.sql so the two never drift. */
+/* ── Table types ─────────────────────────────────────────────────────────── */
 
-/** Contact-form submissions. */
+/** Contact-form submissions (baseline; unused until a contact form exists). */
 export type Lead = {
   id: string;
   created_at: string;
@@ -44,13 +54,12 @@ export type Lead = {
   business_name: string | null;
   email: string;
   phone: string | null;
-  /** What they're asking about — quote, booking, general enquiry. */
   subject: string | null;
   message: string;
   status: "new" | "reviewed" | "in_progress" | "closed";
 };
 
-/** Basic page-view analytics. */
+/** Basic page-view analytics (baseline). */
 export type PageView = {
   id: string;
   created_at: string;
@@ -64,3 +73,50 @@ export type SiteSetting = {
   value: string;
   updated_at: string;
 };
+
+/** One row per weekday; 0 = Sunday. Times are "HH:MM:SS" in studio local time. */
+export type BusinessHours = {
+  weekday: number;
+  is_open: boolean;
+  open_time: string;
+  close_time: string;
+  updated_at: string;
+};
+
+export type TimeOff = {
+  id: string;
+  created_at: string;
+  starts_on: string; // YYYY-MM-DD, inclusive
+  ends_on: string; // YYYY-MM-DD, inclusive
+  reason: string | null;
+};
+
+export const APPOINTMENT_STATUSES = ["requested", "confirmed", "declined", "cancelled", "completed", "no_show"] as const;
+export type AppointmentStatus = (typeof APPOINTMENT_STATUSES)[number];
+
+/** Statuses that hold a slot — the same set the DB overlap constraint uses. */
+export const ACTIVE_STATUSES: AppointmentStatus[] = ["requested", "confirmed"];
+
+export type Appointment = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  service_id: string;
+  service_name: string;
+  duration_minutes: number;
+  price_dollars: number | null;
+  add_ons: string[];
+  starts_at: string;
+  ends_at: string;
+  client_name: string;
+  client_phone: string;
+  client_email: string;
+  notes: string | null;
+  is_new_client: boolean;
+  status: AppointmentStatus;
+  source: "online" | "preview" | "admin";
+};
+
+/** Column list, as one literal so supabase-js keeps the row type (Wallink §9 note). */
+export const APPOINTMENT_COLUMNS =
+  "id, created_at, updated_at, service_id, service_name, duration_minutes, price_dollars, add_ons, starts_at, ends_at, client_name, client_phone, client_email, notes, is_new_client, status, source" as const;

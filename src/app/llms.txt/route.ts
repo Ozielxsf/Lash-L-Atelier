@@ -4,6 +4,7 @@ import { HOUSE_RULES } from "@/data/promises";
 import { WELCOME_OFFER } from "@/data/offers";
 import { MENU, RED_LIGHT } from "@/data/services";
 import { formatPrice } from "@/lib/format";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 
 /**
  * /llms.txt — the plain-markdown brief an answer engine reads. Generated from
@@ -12,7 +13,8 @@ import { formatPrice } from "@/lib/format";
  */
 export const dynamic = "force-static";
 
-export function GET() {
+export async function GET() {
+  const online = await isOnlineBookingEnabled();
   const lines = [
     `# ${siteConfig.name}`,
     "",
@@ -21,7 +23,7 @@ export function GET() {
     `- Pronounced: ${siteConfig.pronunciation}`,
     `- Address: ${fullAddress}`,
     `- Phone: ${siteConfig.phone.display}`,
-    `- Booking: by phone`,
+    `- Booking: ${online ? `online at ${siteConfig.url}/book, or by phone` : "by phone"}`,
     `- Hours: ${siteConfig.hours ? siteConfig.hours.map((h) => `${h.days} ${h.time}`).join("; ") : "by appointment"}`,
     `- House rules: ${HOUSE_RULES.join("; ")}`,
     `- New clients: $${WELCOME_OFFER.amount} off the first visit`,

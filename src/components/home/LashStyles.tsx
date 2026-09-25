@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Phone } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import LashDiagram from "@/components/home/LashDiagram";
 import Sparkle from "@/components/brand/Sparkle";
 import ButtonLink from "@/components/ui/ButtonLink";
@@ -10,7 +10,7 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { LASH_STYLES } from "@/data/lash-styles";
 import { findService } from "@/data/services";
-import { getBookingAction } from "@/lib/booking";
+import { useBookingAction } from "@/components/booking/BookingProvider";
 import { formatPrice } from "@/lib/format";
 import { motionTokens } from "@/config/brand.config";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,7 @@ export default function LashStyles() {
   const style = LASH_STYLES[index];
   const fullSet = findService(style.fullSetId);
   const fill = findService(style.fillId);
-  const booking = getBookingAction();
+  const booking = useBookingAction();
 
   const select = (next: number) => {
     const i = (next + LASH_STYLES.length) % LASH_STYLES.length;
@@ -156,7 +156,7 @@ export default function LashStyles() {
                 ariaLabel={`${booking.ariaLabel} — ${style.name} lashes`}
                 variant="rose"
                 className="mt-8"
-                icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+                icon={<BookingIcon online={booking.online} />}
               >
                 Book {style.id === "mega" ? "Mega Volume" : style.name}
               </ButtonLink>

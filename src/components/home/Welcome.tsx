@@ -1,18 +1,19 @@
-import { Phone } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import OrnateFrame from "@/components/brand/OrnateFrame";
 import Reveal from "@/components/motion/Reveal";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
 import { WELCOME_OFFER } from "@/data/offers";
 import { getBookingAction } from "@/lib/booking";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 
 /**
  * N° 05 — the new-client offer as a keepsake ticket: blush card, the
  * ornamental frame from the flyer, a perforated stub. It is the one element
  * on the page designed to be screenshotted.
  */
-export default function Welcome() {
-  const booking = getBookingAction();
+export default async function Welcome() {
+  const booking = getBookingAction(await isOnlineBookingEnabled());
   return (
     <section id="welcome" aria-labelledby="welcome-title" className="relative scroll-mt-24 bg-noir py-20 sm:py-28">
       <Container>
@@ -41,7 +42,7 @@ export default function Welcome() {
               <ButtonLink
                 href={booking.href}
                 ariaLabel={booking.ariaLabel}
-                icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+                icon={<BookingIcon online={booking.online} />}
               >
                 {booking.label}
               </ButtonLink>

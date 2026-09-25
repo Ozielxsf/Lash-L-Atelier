@@ -1,5 +1,6 @@
 import { getImageProps } from "next/image";
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import OrnateFrame from "@/components/brand/OrnateFrame";
 import Sparkle from "@/components/brand/Sparkle";
 import Wordmark from "@/components/brand/Wordmark";
@@ -7,6 +8,7 @@ import ButtonLink from "@/components/ui/ButtonLink";
 import { siteConfig } from "@/config/site.config";
 import { WELCOME_OFFER } from "@/data/offers";
 import { getBookingAction } from "@/lib/booking";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import heroTall from "../../../public/brand/hero-eiffel-tall.webp";
 import heroWide from "../../../public/brand/hero-eiffel-wide.webp";
 
@@ -31,8 +33,8 @@ import heroWide from "../../../public/brand/hero-eiffel-wide.webp";
  * first scroll out of the hero hitch (measured 117ms frames on a throttled
  * phone). The sparkle canvas carries the life instead.
  */
-export default function Hero() {
-  const booking = getBookingAction();
+export default async function Hero() {
+  const booking = getBookingAction(await isOnlineBookingEnabled());
 
   const common = { alt: "", sizes: "100vw" } as const;
   const {
@@ -109,7 +111,7 @@ export default function Hero() {
               ariaLabel={booking.ariaLabel}
               variant="rose"
               className="px-3 tracking-[0.14em] whitespace-nowrap sm:px-6 lg:px-8 lg:tracking-[0.2em]"
-              icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+              icon={<BookingIcon online={booking.online} />}
             >
               {booking.label}
             </ButtonLink>

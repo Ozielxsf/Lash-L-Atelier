@@ -113,6 +113,13 @@ html.lenis body {
   outline-color: var(--color-rouge);
 }
 
+/* The site is dark-first (viewport colorScheme: dark), which also darkens
+   native checkboxes, date pickers and selects. On light paper — the admin,
+   the booking form — they must be light, or an unticked box reads as ticked. */
+.on-light {
+  color-scheme: light;
+}
+
 /* Old-style figures read beautifully in prose but wobble in a price column. */
 .nums-lining {
   font-variant-numeric: lining-nums tabular-nums;

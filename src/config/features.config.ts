@@ -1,16 +1,12 @@
 /**
- * Feature flags (WALLINK_STACK.md → per-client configuration).
+ * Build-time feature flags (WALLINK_STACK.md → per-client configuration).
  *
- * The roadmap for this client is online booking, then an admin dashboard,
- * then online product ordering. Each arrives behind a flag so it can ship
- * dark, be checked on a preview, and switch on with a one-line change.
+ * Online booking is NOT a flag here any more: it's built and deployed, and
+ * the owner switches it on and off from /admin (the `online_booking_enabled`
+ * setting in the database). See lib/booking-settings.ts.
  *
- * While `onlineBooking` is false every "Book" button on the site calls the
- * studio — which is how Lash L'Atelier books today. Flip it and those same
- * buttons route to /book with no other edits (see lib/booking.ts).
+ * What remains here is roadmap that isn't built yet.
  */
 export const features = {
-  onlineBooking: false,
   onlineShop: false,
-  adminDashboard: false,
 } as const;

@@ -73,7 +73,10 @@ We do not sell your personal information. We share it only as follows:
 - **Service providers (processors).** We share information with trusted vendors who perform
   services for us and process data on our behalf under contract. These may include:
   - **Hosting & infrastructure:** Vercel (site hosting)
+  - **Database:** Supabase (secure storage of form submissions and site data)
+  - **Email delivery:** Resend (sending notification and transactional emails)
   - **Security & performance:** Cloudflare (security, DDoS protection, content delivery)
+  - **Rate limiting:** Upstash (abuse prevention on forms)
   - **Website development & maintenance:** Wallink Systems (the Provider)
 - **Legal and safety.** We may disclose information if required by law, subpoena, or legal
   process, or where we believe disclosure is necessary to protect our rights, your safety or

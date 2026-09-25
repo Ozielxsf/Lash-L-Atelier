@@ -22,14 +22,16 @@ ADDRESS = "26 Campbell Street, Hickory, PA 15312"
 EFFECTIVE_DATE = "September 25, 2026"   # ⚠️ set to the launch date
 STATE, COUNTY = "Pennsylvania", "Washington County"
 
-# What the site does today. Online booking will turn on forms + Supabase +
-# Resend + Upstash; the shop will turn on orders + payments.
+# What the site does today. The shop (phase 3) will turn on orders + payments.
 KEEP_ACCOUNTS = False
 KEEP_ORDERS = False
 KEEP_MARKETING = False
 KEEP_PAYMENTS = False
 KEEP_ARBITRATION = True
-PROCESSORS_IN_USE = {"Vercel", "Cloudflare", "Wallink Systems"}
+# Online booking is built and deployed (switched on from /admin), so the
+# processors behind it are listed: Supabase stores requests, Resend sends the
+# emails, Upstash rate-limits the form, Cloudflare Turnstile guards it.
+PROCESSORS_IN_USE = {"Vercel", "Cloudflare", "Wallink Systems", "Supabase", "Resend", "Upstash"}
 
 CONTACT_INLINE = f"{PHONE} or in writing at {ADDRESS}"
 

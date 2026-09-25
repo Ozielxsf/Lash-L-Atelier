@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { MapPin, Phone, ScrollText } from "lucide-react";
+import { MapPin, ScrollText } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import { getBookingAction } from "@/lib/booking";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import { directionsHref } from "@/lib/format";
 
 /**
@@ -11,8 +13,8 @@ import { directionsHref } from "@/lib/format";
  * Sits on the safe-area inset so it clears the iPhone home indicator. The
  * footer pads itself by the bar's height so nothing is ever hidden behind it.
  */
-export default function MobileActionBar() {
-  const booking = getBookingAction();
+export default async function MobileActionBar() {
+  const booking = getBookingAction(await isOnlineBookingEnabled());
   const secondary =
     "flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl text-[0.62rem] font-medium tracking-[0.16em] text-creme/85 uppercase transition-colors active:bg-creme/10";
 
@@ -32,7 +34,7 @@ export default function MobileActionBar() {
           aria-label={booking.ariaLabel}
           className="flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-rose text-[0.78rem] font-semibold tracking-[0.18em] text-noir uppercase shadow-[0_8px_30px_-8px_rgb(242_167_198/0.7)] transition-transform active:scale-[0.97]"
         >
-          <Phone className="h-4 w-4" aria-hidden="true" />
+          <BookingIcon online={booking.online} />
           {booking.label}
         </a>
       </nav>

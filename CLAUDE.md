@@ -18,7 +18,7 @@
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
 | **Domain** | lashlatelier.com (printed on the brochure) — *client buys and owns it; never hold it on a Wallink account* |
-| **Status** | **Paid client.** Phase 1 (public site foundation) built on `claude/eyelash-services-website-xrvpzw` |
+| **Status** | **Paid client.** Phase 1 (public site) live on preview; phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
 
 **What this business actually needs from a website:** to turn a phone visitor
 into a phone call. Almost everyone arrives on a phone (social, Google Maps, a
@@ -32,14 +32,14 @@ that order. Everything on the site is arranged around that.
 
 1. **Phase 1 — public site foundation** ✅ *(this build)*
    Home, full menu with prices, visit page, legal pages, SEO/AEO, brand system.
-2. **Phase 2 — online booking + admin dashboard.** Supabase (own project),
-   Resend confirmations, Turnstile + Upstash on the booking form, iron-session
-   admin. Flip `features.onlineBooking` and every "Book" button on the site
-   re-routes to `/book` with no other edits (`src/lib/booking.ts`).
-   Service `id`s in `src/data/services.ts` are the appointment-type keys —
-   don't rename them once booking is live.
-   ⚠️ The house rule is **no card on file / no pre-charging**. Booking must
-   honour that — no deposit capture unless the owner explicitly changes the rule.
+2. **Phase 2 — online booking + admin dashboard** ✅ *built, switched OFF.*
+   The client doesn't want online booking live yet (Oziel, Sept 2026), so it
+   ships dark behind a switch on the admin dashboard. See **Online booking**
+   below. Service `id`s in `src/data/services.ts` are the appointment-type
+   keys — don't rename them once booking is live.
+   ⚠️ The house rule is **no card on file / no pre-charging**. Booking honours
+   that — it takes no payment and no card. Don't add deposits unless the owner
+   explicitly changes the rule.
 3. **Phase 3 — online product ordering.** Square/Stripe hosted checkout only.
    `features.onlineShop`.
 
@@ -73,7 +73,7 @@ npm run prelaunch    # Wallink pre-launch checks (scripts/prelaunch.mjs)
 ```
 src/config/
   site.config.ts      business facts (address, phone, hours=null, socials)
-  features.config.ts  onlineBooking / onlineShop / adminDashboard flags
+  features.config.ts  build-time flags for unbuilt roadmap (onlineShop)
   brand.config.ts     motion tokens (ease, durations, Lenis pace)
 src/data/             ALL copy and prices (Build Standard §3)
   services.ts         MENU + RED_LIGHT — the single source for every price
@@ -82,22 +82,102 @@ src/data/             ALL copy and prices (Build Standard §3)
   offers.ts           $25 welcome offer
   faqs.ts, atelier.ts, navigation.ts
 src/lib/
-  booking.ts          where every Book button goes
+  booking.ts          getBookingAction(enabled) — where every Book button goes
+  booking-settings.ts the switch + booking settings (site_settings table)
+  booking-access.ts   public / owner-preview / closed
+  booking-readiness.ts the dashboard's "ready to go" checklist
+  availability.ts     hours − days off − live bookings → open days & slots
+  slots.ts            pure slot maths (unit-tested)
+  studio-time.ts      America/New_York, DST-safe, no date library
+  appointments.ts     the only module that writes/lists appointments
+  booking-email.ts    every booking email (escapeHtml on all client input)
+  admin-auth.ts, session.ts   iron-session admin sign-in; requireAdmin()
+  turnstile.ts, verify-turnstile.ts   Wallink's Turnstile pair (fails CLOSED)
   format.ts           formatCurrency / formatPrice / telHref / directionsHref
   schema.ts           JSON-LD (BeautySalon, FAQPage, Breadcrumb) from data
   legal.ts            tiny markdown parser for content/legal/*.md
-  escape-html.ts, rate-limit.ts, supabase-admin.ts   ← Wallink starter (§1 §2 §4), unused until phase 2
+  escape-html.ts, rate-limit.ts   ← Wallink starter (§1 §2)
+  supabase-admin.ts   LAZY client (null when unconfigured) + a type per table (§4)
+src/app/(site)/        public pages (route group — URLs unchanged); /book lives here
+src/app/admin/         /admin (Bookings + the switch), /admin/schedule, /admin/login, actions.ts
+src/app/api/booking/   POST (create request), slots/ (GET open times)
 src/components/
+  booking/ BookingFlow, BookingProvider, BookingIcon
+  admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
   home/    Hero, HouseRules, Atelier, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
-  layout/  Header, MenuDrawer, Footer, MobileActionBar, PageHeader
+  layout/  SiteChrome, Header, MenuDrawer, Footer, MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled)
-supabase/schema.sql   Wallink baseline (leads, page_views, site_settings; RLS on)
+supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql — apply in order
 ```
+
+---
+
+## Online booking (phase 2) — built, switched OFF
+
+**How it works.** A client picks a service → a day → a time → their details
+at `/book`, and submits a **request** (Oziel's call: *the studio approves*,
+not instant booking). The owner confirms or declines it on `/admin`; the
+client is emailed at each step. No card, no payment — ever (house rule).
+
+**The switch** is the `online_booking_enabled` row in `site_settings`, flipped
+from the **Bookings** dashboard. OFF (today): every Book button on the site
+calls the studio, `/book` says "we take bookings by phone" and is `noindex`,
+and the booking APIs refuse the public. ON: every Book button opens `/book`,
+`/book` joins the sitemap and llms.txt. Flipping it calls
+`revalidatePath("/", "layout")` so the static pages regenerate on their next
+request — public pages stay static and fast.
+- **Owner preview:** while it's OFF, the signed-in owner still sees the full
+  flow at `/book` (with a "Preview" banner). Test requests are tagged
+  `source = 'preview'` and show a **TEST** badge on the dashboard.
+- **The switch won't turn on** (UI and server both) until the blocking
+  checklist items pass: database connected, at least one open day in studio
+  hours, Turnstile keys set. Email + Upstash are warnings, not blockers.
+- **Fails safe:** no database / DB error / missing env → booking reads as OFF
+  and the public site keeps working. `getSupabaseAdmin()` returns `null`
+  rather than throwing (a change from the Wallink starter, on purpose).
+
+**Correctness that matters:**
+- Times are studio time (America/New_York), DST-safe, whatever the server's
+  zone (`lib/studio-time.ts`; tested across both 2026 DST switches).
+- A service must END by closing time; lead time and booking window apply.
+- Double-booking is impossible: the app re-checks the slot on submit, and the
+  database has an exclusion constraint (`appointments_no_overlap`) over live
+  bookings — even two simultaneous submits can't both land.
+- Studio hours are seeded **closed**. We never guess hours; the owner sets them.
+
+**⚠️ Service lengths are ESTIMATES** (`duration` in `src/data/services.ts`):
+classic set 2h, hybrid/volume 2.5h, mega 3h, fills 1–1.5h, brows 30–60m,
+facials 45m–1h45. They drive the calendar, so **confirm them with the owner
+before switching on.** Add-ons (eye/lip masks) are extras on an appointment,
+not bookable alone. Red light therapy stays "call to plan" (priced per plan).
+
+**Tested end-to-end (Sept 2026)** against the real migrations on local
+Postgres 16 + PostgREST (Supabase's API layer): 32/32 checks — switch off →
+tel links, sign-in, schedule, owner preview, a booking request, slot removal,
+409 on overlap, confirm, switch on → every CTA → `/book`, switch off again.
+
+**Supabase project: not created yet.** Oziel chose a **dedicated project**
+(Wallink rule for paying clients; ~$10/mo on the Pro org). The Supabase MCP
+`create_project` call timed out three times without creating anything, so:
+
+### Go-live steps (in order)
+1. Supabase → new project **"Lash L'Atelier"**, org *Ozielxsf's Org*, region
+   **East US (us-east-1)**. Run `supabase/migrations/0001_baseline.sql`, then
+   `0002_booking.sql` (SQL editor). Verify every table shows `rowsecurity = true`.
+2. Vercel (`lash-l-atelier` project) → env vars: `NEXT_PUBLIC_SUPABASE_URL`,
+   `SUPABASE_SERVICE_ROLE_KEY`, `SESSION_SECRET` (32+ chars), `ADMIN_PASSWORD`,
+   `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, and — once the
+   client's domain is verified in Resend — `RESEND_API_KEY` + `BOOKING_FROM_EMAIL`.
+   Add **Upstash Redis** from the Vercel marketplace (sets `KV_REST_API_*`). Redeploy.
+3. Sign in at `/admin` → Schedule: real hours, days off, alert email.
+4. Confirm service lengths with the owner; update `duration` values.
+5. Preview `/book` as admin; make a test request; confirm it; check emails.
+6. When the client says go: flip the switch on the Bookings dashboard.
 
 ---
 
@@ -207,6 +287,9 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
 - [ ] Owner's name / esthetician names, if they want a people section
 - [ ] Confirm the domain is **lashlatelier.com** and who holds it
+- [ ] **Real appointment lengths** for every service (booking uses estimates)
+- [ ] **Opening hours** for online booking (entered in /admin/schedule)
+- [ ] Which email should receive new-booking alerts
 
 ---
 

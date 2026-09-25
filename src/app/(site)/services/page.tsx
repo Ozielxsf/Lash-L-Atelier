@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import PageHeader from "@/components/layout/PageHeader";
 import CategoryNav from "@/components/services/CategoryNav";
 import FaqList from "@/components/services/FaqList";
@@ -14,6 +14,7 @@ import { HOUSE_RULES } from "@/data/promises";
 import { MENU, RED_LIGHT, RED_LIGHT_DISCLAIMER } from "@/data/services";
 import { WELCOME_OFFER } from "@/data/offers";
 import { getBookingAction } from "@/lib/booking";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
@@ -23,8 +24,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/services" },
 };
 
-export default function ServicesPage() {
-  const booking = getBookingAction();
+export default async function ServicesPage() {
+  const booking = getBookingAction(await isOnlineBookingEnabled());
   // Lashes on the left, everything else on the right — how the board reads.
   const [lashes, fills, ...rest] = MENU;
 
@@ -111,7 +112,7 @@ export default function ServicesPage() {
               href={booking.href}
               ariaLabel={booking.ariaLabel}
               className="mt-6"
-              icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+              icon={<BookingIcon online={booking.online} />}
             >
               {booking.label}
             </ButtonLink>

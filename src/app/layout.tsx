@@ -1,12 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Great_Vibes, Jost } from "next/font/google";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import MobileActionBar from "@/components/layout/MobileActionBar";
-import LenisProvider from "@/components/motion/LenisProvider";
-import JsonLd from "@/components/seo/JsonLd";
 import { siteConfig } from "@/config/site.config";
-import { businessSchema, websiteSchema } from "@/lib/schema";
 import "./globals.css";
 
 const greatVibes = Great_Vibes({ variable: "--font-great-vibes", subsets: ["latin"], weight: "400", display: "swap" });
@@ -63,14 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <JsonLd data={businessSchema()} />
-        <JsonLd data={websiteSchema()} />
-        <LenisProvider>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <MobileActionBar />
-        </LenisProvider>
+        {children}
       </body>
     </html>
   );

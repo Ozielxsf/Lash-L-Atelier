@@ -3,13 +3,14 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { MapPin, Phone, X } from "lucide-react";
+import { MapPin, X } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import Awning from "@/components/brand/Awning";
 import Sparkle from "@/components/brand/Sparkle";
 import { lenisInstance } from "@/components/motion/lenis-instance";
 import { NAV_LINKS } from "@/data/navigation";
 import { siteConfig, fullAddress } from "@/config/site.config";
-import { getBookingAction } from "@/lib/booking";
+import { useBookingAction } from "@/components/booking/BookingProvider";
 import { directionsHref } from "@/lib/format";
 import { motionTokens } from "@/config/brand.config";
 
@@ -31,7 +32,7 @@ export default function MenuDrawer({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const booking = getBookingAction();
+  const booking = useBookingAction();
 
   useEffect(() => {
     if (!open) return;
@@ -146,8 +147,8 @@ export default function MenuDrawer({
               aria-label={booking.ariaLabel}
               className="flex min-h-14 items-center justify-center gap-3 rounded-full bg-rose text-[0.8rem] font-medium tracking-[0.2em] text-noir uppercase"
             >
-              <Phone className="h-4 w-4" aria-hidden="true" />
-              {booking.label} · {siteConfig.phone.display}
+              <BookingIcon online={booking.online} />
+              {booking.online ? booking.label : `${booking.label} · ${siteConfig.phone.display}`}
             </a>
             <a
               href={directionsHref}

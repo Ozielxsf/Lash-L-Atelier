@@ -14,12 +14,14 @@
   "dependencies": {
     "@supabase/supabase-js": "^2",
     "clsx": "^2.1.1",
+    "iron-session": "^8.0.4",
     "lenis": "^1.3.26",
     "lucide-react": "^1.47.0",
     "motion": "^13.4.1",
     "next": "16.3.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "resend": "^6.29.0",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.7.0"
   },

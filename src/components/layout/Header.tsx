@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import Wordmark from "@/components/brand/Wordmark";
 import MenuDrawer from "@/components/layout/MenuDrawer";
 import { NAV_LINKS } from "@/data/navigation";
 import { siteConfig } from "@/config/site.config";
-import { getBookingAction } from "@/lib/booking";
+import { useBookingAction } from "@/components/booking/BookingProvider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -25,7 +26,7 @@ export default function Header() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   // Stable, so the drawer's focus-trap effect doesn't re-run on every render.
   const close = useCallback(() => setOpen(false), []);
-  const booking = getBookingAction();
+  const booking = useBookingAction();
   // Only the home page has a hero wordmark to defer to.
   const pathname = usePathname();
   const showMark = scrolled || pathname !== "/";
@@ -80,8 +81,8 @@ export default function Header() {
               aria-label={booking.ariaLabel}
               className="hidden min-h-11 items-center gap-2 rounded-full border border-rose/50 px-5 text-[0.75rem] font-medium tracking-[0.2em] text-rose uppercase transition-colors hover:bg-rose hover:text-noir lg:inline-flex"
             >
-              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-              {siteConfig.phone.display}
+              <BookingIcon online={booking.online} className="h-3.5 w-3.5" />
+              {booking.online ? booking.label : siteConfig.phone.display}
             </a>
             <button
               ref={toggleRef}

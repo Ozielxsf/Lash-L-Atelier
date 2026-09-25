@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
+import BookingIcon from "@/components/booking/BookingIcon";
 import Reveal from "@/components/motion/Reveal";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Container from "@/components/ui/Container";
@@ -9,6 +10,7 @@ import { siteConfig } from "@/config/site.config";
 import { WELCOME_OFFER } from "@/data/offers";
 import { directionsHref } from "@/lib/format";
 import { getBookingAction } from "@/lib/booking";
+import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import shopfront from "../../../public/brand/atelier-shopfront.webp";
 
 /**
@@ -17,9 +19,9 @@ import shopfront from "../../../public/brand/atelier-shopfront.webp";
  * you're about to walk up to, beside the
  * address set large enough to read at arm's length.
  */
-export default function Visit({ number = "06" }: { number?: string | null }) {
+export default async function Visit({ number = "06" }: { number?: string | null }) {
   const { address, phone, hours } = siteConfig;
-  const booking = getBookingAction();
+  const booking = getBookingAction(await isOnlineBookingEnabled());
 
   return (
     <section aria-labelledby="visit-title" className="relative bg-noir pt-4 pb-24 sm:pb-32">
@@ -72,7 +74,7 @@ export default function Visit({ number = "06" }: { number?: string | null }) {
                 href={booking.href}
                 ariaLabel={booking.ariaLabel}
                 variant="rose"
-                icon={<Phone className="h-4 w-4" aria-hidden="true" />}
+                icon={<BookingIcon online={booking.online} />}
               >
                 {booking.label}
               </ButtonLink>
