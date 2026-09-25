@@ -17,8 +17,18 @@ export const siteConfig = {
   descriptor: "A Parisian-inspired luxury lash, brow & face atelier",
   description:
     "Lash L'Atelier is a Parisian-inspired lash, brow and skin studio in Hickory, Pennsylvania. Classic, hybrid, volume and mega volume lash extensions, brow lamination, organic and beef tallow facials, and red light therapy — with licensed estheticians, no card on file and no membership dues.",
-  /** Override per environment with NEXT_PUBLIC_SITE_URL (e.g. a preview URL). */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lashlatelier.com",
+  /**
+   * The canonical origin — used for the link-preview image, canonicals,
+   * sitemap and JSON-LD. NEXT_PUBLIC_SITE_URL wins if set; otherwise Vercel's
+   * production URL, which Vercel switches to the custom domain on its own once
+   * lashlatelier.com is connected. Hard-coding the domain before it resolves
+   * meant texted links showed no preview image.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://lashlatelier.com"),
 
   phone: {
     display: "(724) 467-3479",
