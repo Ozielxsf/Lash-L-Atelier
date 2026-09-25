@@ -161,14 +161,19 @@ Postgres 16 + PostgREST (Supabase's API layer): 32/32 checks — switch off →
 tel links, sign-in, schedule, owner preview, a booking request, slot removal,
 409 on overlap, confirm, switch on → every CTA → `/book`, switch off again.
 
-**Supabase project: not created yet.** Oziel chose a **dedicated project**
-(Wallink rule for paying clients; ~$10/mo on the Pro org). The Supabase MCP
-`create_project` call timed out three times without creating anything, so:
+**Supabase project: `Lash L'Atelier`** — ref `sgrwraogzdxhftkyaqhm`,
+`https://sgrwraogzdxhftkyaqhm.supabase.co`, us-east-2, org *Ozielxsf's Org*.
+Oziel chose a **dedicated project** (Wallink rule for paying clients; ~$10/mo
+on the Pro org) and created it by hand after the MCP `create_project` call
+timed out three times. Both migrations applied 25 Sept 2026 (RLS on all six
+tables, switch seeded OFF, all days closed). Supabase's security advisor
+reports only "RLS enabled, no policy" — intentional: nothing is reachable
+from the browser; the server uses the service-role key.
 
 ### Go-live steps (in order)
-1. Supabase → new project **"Lash L'Atelier"**, org *Ozielxsf's Org*, region
-   **East US (us-east-1)**. Run `supabase/migrations/0001_baseline.sql`, then
-   `0002_booking.sql` (SQL editor). Verify every table shows `rowsecurity = true`.
+1. ✅ Supabase project created, `0001_baseline` + `0002_booking` applied.
+   (The Vercel MCP connection can't write env vars on this project — 403 —
+   so step 2 is done by hand in the Vercel dashboard.)
 2. Vercel (`lash-l-atelier` project) → env vars: `NEXT_PUBLIC_SUPABASE_URL`,
    `SUPABASE_SERVICE_ROLE_KEY`, `SESSION_SECRET` (32+ chars), `ADMIN_PASSWORD`,
    `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, and — once the

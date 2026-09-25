@@ -5,7 +5,10 @@
 -- server-side with the service-role key; the browser can never read or write
 -- them, so a leaked anon key exposes nothing.
 
-create extension if not exists btree_gist;
+-- In the `extensions` schema, as Supabase recommends (its security advisor
+-- flags extensions in `public`). Plain Postgres: create the schema first.
+create schema if not exists extensions;
+create extension if not exists btree_gist with schema extensions;
 
 -- ── Weekly studio hours ─────────────────────────────────────────────────────
 -- One row per weekday (0 = Sunday … 6 = Saturday, matching JS getDay()).
