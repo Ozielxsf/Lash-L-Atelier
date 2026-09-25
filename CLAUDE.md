@@ -134,8 +134,10 @@ Log every call here with its reason — without the reason, someone eventually "
   art-directed with `<picture>` on `min-aspect-ratio: 1/1`. On portrait
   screens the name sits in the sky and the actions on the lit street; a
   radial "pool of night" behind the name lets the spire tip fade instead of
-  striking through the lettering — don't remove it. The OG card uses the
-  wide painting.
+  striking through the lettering — don't remove it.
+- **The link preview (OG/Twitter card) shows the shopfront** (Oziel's call,
+  Sept 2026): wordmark on the left, the painted storefront with its hanging
+  sign on the right. It's what people see when the link is texted or posted.
 - **Every raster image replaced at high resolution (Sept 2026).** Oziel: the
   flyer crops looked "pixelated and blurry". The Visit arch is now
   `atelier-shopfront.webp` (1792×2240, generated — striped awning, lit
