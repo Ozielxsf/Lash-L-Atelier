@@ -66,7 +66,7 @@ export default function LashStyles() {
           role="tablist"
           aria-label="Lash styles"
           onKeyDown={onKeyDown}
-          className="mx-auto mt-10 grid max-w-xl grid-cols-4 gap-1 rounded-full border border-line-dark bg-noir-soft/80 p-1 backdrop-blur"
+          className="mx-auto mt-10 grid max-w-xl grid-cols-4 gap-1 rounded-full border border-line-dark bg-noir-soft p-1"
         >
           {LASH_STYLES.map((s, i) => {
             const active = i === index;

@@ -33,7 +33,7 @@ export default function RedLight() {
             {RED_LIGHT.focuses.map((focus) => (
               <li
                 key={focus}
-                className="flex min-h-20 items-center justify-center rounded-2xl border border-rose/20 bg-noir/60 px-3 py-4 text-center font-display text-[1.15rem] leading-tight text-creme backdrop-blur-sm"
+                className="flex min-h-20 items-center justify-center rounded-2xl border border-rose/20 bg-noir/80 px-3 py-4 text-center font-display text-[1.15rem] leading-tight text-creme"
               >
                 {focus}
               </li>
