@@ -94,7 +94,7 @@ src/components/
   layout/  Header, MenuDrawer, Footer, MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
 content/legal/        generated — edit scripts/build-legal.py, not these
-public/brand/         paris-street.webp, roses.webp, seal.webp (client art)
+public/brand/         hero-eiffel-{tall,wide}.webp (generated hero), paris-street.webp, roses.webp, seal.webp (client art)
 supabase/schema.sql   Wallink baseline (leads, page_views, site_settings; RLS on)
 ```
 
@@ -130,6 +130,19 @@ Log every call here with its reason — without the reason, someone eventually "
   hero's overlays but will look soft on large retina screens. **Ask the owner
   for the original high-res files** (they were clearly generated/designed
   somewhere) and drop them into `public/brand/` at the same names.
+- **Hero = generated Eiffel Tower painting, full-bleed (Oziel's call, Sept 2026).**
+  The first hero (night sky with the flyer's street rising from the bottom
+  third) was rejected — *"I don't like the hero background or scarcity of the
+  hero itself… make it more Eiffel Tower."* Replaced with two text-free
+  paintings generated on Higgsfield (`gpt_image_2_5`, 2k) in the client's
+  palette: `hero-eiffel-tall.webp` (portrait: tower centred down the street)
+  and `hero-eiffel-wide.webp` (landscape: tower right, open sky left),
+  art-directed with `<picture>` on `min-aspect-ratio: 1/1`. On portrait
+  screens the name sits in the sky and the actions on the lit street; a
+  radial "pool of night" behind the name lets the spire tip fade instead of
+  striking through the lettering — don't remove it. The flyer street
+  (`paris-street.webp`) still appears in the Visit section, where its
+  Lash L'Atelier shop sign is the point. The OG card uses the wide painting.
 - **Red light wording follows the brochure, not the menu board.** The menu
   board says "Acne Treatment", "Hair Loss Scalp Regeneration"; the brochure
   softened these to "support"/"reduction". A cosmetic studio making medical

@@ -265,6 +265,20 @@ html.lenis body {
   animation-delay: var(--d, 0s);
 }
 
+/* The hero painting settles once, like eyes adjusting to the night. */
+@keyframes settle {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.hero-settle {
+  animation: settle 9s var(--ease-soir) both;
+  transform-origin: 50% 60%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

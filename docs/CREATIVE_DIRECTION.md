@@ -14,7 +14,7 @@ lamps, café tables and roses; a striped awning; and hanging from a lamp post,
 the Lash L'Atelier sign. The website doesn't reinvent that — it **walks into
 it**. The page is paced like an evening stroll that ends at the studio door:
 
-1. **The street at night** (hero) — sky, sparkle, their painted street rising from below.
+1. **The street at night** (hero) — a full-bleed painting: the Eiffel Tower lit gold at the end of a rain-wet street of gas lamps, roses and the striped café awning, under their glitter sky.
 2. **The house rules** — what's different here, said before anything else.
 3. **The atelier** — what the word means; how they work.
 4. **The lashes** — the core decision, *drawn* so it can be understood.
