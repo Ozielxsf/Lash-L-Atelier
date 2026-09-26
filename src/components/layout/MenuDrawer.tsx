@@ -105,10 +105,13 @@ export default function MenuDrawer({
             <Awning height={30} />
           </motion.div>
 
+          {/* z-10: the nav below is `relative` and comes later in the DOM, so
+              without it the nav's top padding sits over this button and
+              swallows every tap. Solid, not backdrop-blur (perf rules). */}
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-[58px] right-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-noir/70 text-creme backdrop-blur transition-colors hover:text-rose"
+            className="absolute top-[58px] right-4 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-noir/90 text-creme transition-colors hover:text-rose"
           >
             <X className="h-6 w-6" strokeWidth={1.5} aria-hidden="true" />
             <span className="sr-only">Close menu</span>
