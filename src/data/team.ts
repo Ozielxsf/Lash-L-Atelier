@@ -6,9 +6,9 @@ import arianna from "../../public/brand/arianna.webp";
 /**
  * "Meet the Team" — the people behind the atelier.
  *
- * The owner is `featured`: a large portrait beside her own words. Everyone
- * else renders as an arched portrait card in the row beneath, so adding a
- * team member is one entry here — no layout changes. Real photos only (the
+ * Each person is one slide in the sideways gallery (TeamCarousel); the
+ * `featured` owner comes first. Adding a team member is one entry here — no
+ * layout changes. Real photos only (the
  * site's "no stock imagery" rule applies doubly to people).
  *
  * Only publish what each person has approved: name, role, photo and bio.
