@@ -3,6 +3,7 @@ import { FAQS } from "@/data/faqs";
 import { HOUSE_RULES } from "@/data/promises";
 import { WELCOME_OFFER } from "@/data/offers";
 import { MENU, RED_LIGHT } from "@/data/services";
+import { TEAM } from "@/data/team";
 import { formatPrice } from "@/lib/format";
 import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 
@@ -27,6 +28,9 @@ export async function GET() {
     `- Hours: ${siteConfig.hours ? siteConfig.hours.map((h) => `${h.days} ${h.time}`).join("; ") : "by appointment"}`,
     `- House rules: ${HOUSE_RULES.join("; ")}`,
     `- New clients: $${WELCOME_OFFER.amount} off the first visit`,
+    "",
+    "## Team",
+    ...TEAM.map((m) => `- ${m.name}, ${m.role}`),
     "",
     "## Menu (USD)",
     ...MENU.flatMap((c) => [

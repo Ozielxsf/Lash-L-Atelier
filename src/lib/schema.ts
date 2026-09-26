@@ -1,6 +1,7 @@
 import { siteConfig } from "@/config/site.config";
 import { MENU, RED_LIGHT } from "@/data/services";
 import type { Faq } from "@/data/faqs";
+import { TEAM } from "@/data/team";
 
 /**
  * Structured data, generated from the same data files the pages render —
@@ -10,6 +11,7 @@ import type { Faq } from "@/data/faqs";
 export function businessSchema() {
   const { address, phone, url, social, hours } = siteConfig;
   const sameAs = Object.values(social).filter(Boolean);
+  const owner = TEAM.find((m) => m.featured);
 
   return {
     "@context": "https://schema.org",
@@ -23,6 +25,9 @@ export function businessSchema() {
     telephone: phone.e164,
     image: `${url}/brand/seal.webp`,
     logo: `${url}/brand/seal.webp`,
+    ...(owner
+      ? { founder: { "@type": "Person", name: owner.name, jobTitle: owner.role, image: `${url}${owner.photo.src}` } }
+      : {}),
     priceRange: "$$",
     paymentAccepted: "Pay at time of service",
     address: {

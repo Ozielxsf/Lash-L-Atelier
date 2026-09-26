@@ -8,7 +8,7 @@ import { formatPrice, telHref } from "@/lib/format";
 import { siteConfig } from "@/config/site.config";
 
 /**
- * N° 04 — La Lumière Rouge. The one place on the site the rose is allowed to
+ * N° 05 — La Lumière Rouge. The one place on the site the rose is allowed to
  * glow: a soft red halo behind the list, standing in for the light itself.
  * Every claim here is the brochure's cosmetic wording, and the disclaimer is
  * never separated from it (see RED_LIGHT in data/services.ts).
@@ -21,7 +21,7 @@ export default function RedLight() {
       <Container>
         <SectionHeading
           id="red-light-title"
-          number="04"
+          number="05"
           eyebrow="Red Light Therapy"
           french={RED_LIGHT.french}
           title="A gentle glow, planned around your skin."

@@ -14,7 +14,7 @@
 |---|---|
 | **Business** | Lash L'Atelier *(lah-tell-yay)* — "A Parisian Inspired Aesthetics Studio" |
 | **Trade** | Lash extensions, brows, facials, red light therapy (licensed estheticians) |
-| **Owner** | *(name not yet supplied)* |
+| **Owner** | Lisa (Owner & Founder) — surname not supplied |
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
 | **Domain** | lashlatelier.com (printed on the brochure) — *client buys and owns it; never hold it on a Wallink account* |
@@ -80,6 +80,7 @@ src/data/             ALL copy and prices (Build Standard §3)
   lash-styles.ts      the 4 looks; points at service ids, never retypes prices
   promises.ts         HOUSE_RULES + PROMISES + LOYALTY
   offers.ts           $25 welcome offer
+  team.ts             "Meet the Team" — owner featured, others as cards
   faqs.ts, atelier.ts, navigation.ts
 src/lib/
   booking.ts          getBookingAction(enabled) — where every Book button goes
@@ -105,13 +106,14 @@ src/components/
   booking/ BookingFlow, BookingProvider, BookingIcon
   admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
-  home/    Hero, HouseRules, Atelier, LashStyles + LashDiagram, MenuPreview,
+  home/    Hero, HouseRules, Atelier, Team, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
   layout/  SiteChrome, Header, MenuDrawer, Footer, MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
-                      seal.webp (client's own seal, 4K-upscaled)
+                      seal.webp (client's own seal, 4K-upscaled);
+                      lisa.webp (owner's own portrait, supplied Sept 2026)
 supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql — apply in order
 ```
 
@@ -264,6 +266,16 @@ Log every call here with its reason — without the reason, someone eventually "
   upscaled, not redrawn, because it's their logo. `paris-street.webp` (the
   flyer crop) is retired. If the client supplies original art files later,
   the seal is the one to swap first.
+- **"Meet the Team", not "Meet Lisa" (Oziel, Sept 2026).** Two more team
+  members are coming. `src/data/team.ts` is the list: the `featured` person
+  (Lisa, the owner) gets the large arched portrait + her note signed in
+  script; everyone else appears as arched portrait cards below — adding one
+  is a data entry, no layout work. Section N° 02 (`#about`, nav "About"),
+  so later sections were renumbered 03–07. Lisa's bio is her own words,
+  refined for tone; "considerably lower than … Pittsburgh" is her claim —
+  kept with "typically" so it isn't an absolute price guarantee. Her role
+  says "Owner & Founder" only — don't add "licensed esthetician" unless
+  confirmed. The owner also feeds JSON-LD `founder` and llms.txt.
 - **Red light wording follows the brochure, not the menu board.** The menu
   board says "Acne Treatment", "Hair Loss Scalp Regeneration"; the brochure
   softened these to "support"/"reduction". A cosmetic studio making medical
@@ -310,7 +322,9 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] **High-resolution originals** of the flyer artwork / seal
 - [ ] **Real photos** of the studio and of their lash work (a gallery section is the obvious next add once they exist — never stock)
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
-- [ ] Owner's name / esthetician names, if they want a people section
+- [x] Owner's name + photo + bio (Lisa)
+- [ ] Two more team members: name, role, photo, short bio → `src/data/team.ts`
+- [ ] Lisa's role — is she also a licensed esthetician? (would go in `role`)
 - [ ] Confirm the domain is **lashlatelier.com** and who holds it
 - [ ] **Real appointment lengths** for every service (booking uses estimates)
 - [ ] **Opening hours** for online booking (entered in /admin/schedule)

@@ -11,7 +11,7 @@ import { MENU, RED_LIGHT, startingPrice } from "@/data/services";
 import { formatCurrency } from "@/lib/format";
 
 /**
- * N° 03 — La Carte. The client's menu board, rebuilt: the striped awning,
+ * N° 04 — La Carte. The client's menu board, rebuilt: the striped awning,
  * an arched blush card, and every category with its starting price. The
  * whole card is a doorway to the full menu — each row links to its section.
  */
@@ -21,7 +21,7 @@ export default function MenuPreview() {
       <Container>
         <SectionHeading
           id="menu-title"
-          number="03"
+          number="04"
           eyebrow="The Menu"
           french="La Carte"
           title="Lashes, brows & skin — priced plainly."

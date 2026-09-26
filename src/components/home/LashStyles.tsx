@@ -16,7 +16,7 @@ import { motionTokens } from "@/config/brand.config";
 import { cn } from "@/lib/utils";
 
 /**
- * N° 02 — "Choose your look". The four lash styles are the studio's core
+ * N° 03 — "Choose your look". The four lash styles are the studio's core
  * decision for a new client, and the words alone (classic / hybrid / volume)
  * mean nothing to most people. So each one is *drawn*: tap a style and the
  * lash map redraws at that density, with its full-set and fill price beside it.
@@ -55,7 +55,7 @@ export default function LashStyles() {
       <Container>
         <SectionHeading
           id="lashes-title"
-          number="02"
+          number="03"
           eyebrow="Lash Extensions"
           french="Les Cils"
           title="Choose your look."

@@ -14,12 +14,12 @@ import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import shopfront from "../../../public/brand/atelier-shopfront.webp";
 
 /**
- * N° 06 — Nous Trouver. The atelier's own shopfront — awning, lit arched
+ * N° 07 — Nous Trouver. The atelier's own shopfront — awning, lit arched
  * windows, roses and the hanging sign — framed in an arch like a window
  * you're about to walk up to, beside the
  * address set large enough to read at arm's length.
  */
-export default async function Visit({ number = "06" }: { number?: string | null }) {
+export default async function Visit({ number = "07" }: { number?: string | null }) {
   const { address, phone, hours } = siteConfig;
   const booking = getBookingAction(await isOnlineBookingEnabled());
 
