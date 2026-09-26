@@ -6,8 +6,8 @@ import arianna from "../../public/brand/arianna.webp";
 /**
  * "Meet the Team" — the people behind the atelier.
  *
- * Each person is one slide in the sideways gallery (TeamCarousel); the
- * `featured` owner comes first. Adding a team member is one entry here — no
+ * Each person gets a name pill and a panel (TeamTabs); the `featured`
+ * owner comes first. Adding a team member is one entry here — no
  * layout changes. Real photos only (the
  * site's "no stock imagery" rule applies doubly to people).
  *

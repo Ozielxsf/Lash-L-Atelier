@@ -80,7 +80,7 @@ src/data/             ALL copy and prices (Build Standard §3)
   lash-styles.ts      the 4 looks; points at service ids, never retypes prices
   promises.ts         HOUSE_RULES + PROMISES + LOYALTY
   offers.ts           $25 welcome offer
-  team.ts             "Meet the Team" — one slide per person, owner first
+  team.ts             "Meet the Team" — one panel per person, owner first
   faqs.ts, atelier.ts, navigation.ts
 src/lib/
   booking.ts          getBookingAction(enabled) — where every Book button goes
@@ -106,7 +106,7 @@ src/components/
   booking/ BookingFlow, BookingProvider, BookingIcon
   admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
-  home/    Hero, HouseRules, Atelier, Team + TeamCarousel, LashStyles + LashDiagram, MenuPreview,
+  home/    Hero, HouseRules, Atelier, Team + TeamTabs, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
   layout/  SiteChrome, Header, MenuDrawer, Footer, MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
@@ -268,13 +268,13 @@ Log every call here with its reason — without the reason, someone eventually "
   the seal is the one to swap first.
 - **"Meet the Team", not "Meet Lisa" (Oziel, Sept 2026).** `src/data/team.ts`
   is the list; adding a person is a data entry, no layout work.
-- **The team is a sideways gallery (Oziel, Sept 2026: "site seems like a lot
-  of vertical scrolling").** `TeamCarousel`: one slide per person (arched
-  portrait + their note, signed in script), `featured` owner first, the next
-  slide peeking in from the edge. Native CSS scroll-snap moves it; name tabs
-  (+ arrows from `sm` up) jump between people. Three stacked profiles were
-  ~2,800px on a phone; the gallery is ~1,400px. Keep the row `relative`
-  (slide offsets are measured from it) and `data-lenis-prevent-horizontal`. Section N° 02 (`#about`, nav "About"),
+- **One team member at a time, picked from name pills (Oziel, Sept 2026).**
+  Started as three stacked profiles (~2,800px on a phone — "a lot of
+  vertical scrolling"), then a swipe row; Oziel preferred just the pills
+  with one person showing. `TeamTabs`: ARIA tabs like the lash styles; all
+  panels are rendered and stacked in one grid cell, so the section is as
+  tall as the longest bio (no page jump on switching) and every bio stays
+  in the HTML for search. The owner (`featured`) is first. Section N° 02 (`#about`, nav "About"),
   so later sections were renumbered 03–07. Lisa's bio is her own words,
   refined for tone; "considerably lower than … Pittsburgh" is her claim —
   kept with "typically" so it isn't an absolute price guarantee. Her role
