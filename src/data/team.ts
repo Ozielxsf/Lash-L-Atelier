@@ -1,6 +1,7 @@
 import type { StaticImageData } from "next/image";
 import lisa from "../../public/brand/lisa.webp";
 import hanna from "../../public/brand/hanna.webp";
+import arianna from "../../public/brand/arianna.webp";
 
 /**
  * "Meet the Team" — the people behind the atelier.
@@ -54,6 +55,19 @@ export const TEAM: TeamMember[] = [
     bio: [
       "Hi, I’m Hanna! Nothing makes my day like the moment a client opens their eyes, sees the mirror and lights up.",
       "I love taking the time to find what suits you — your eyes, your skin, your everyday — so you leave feeling like the most polished version of yourself.",
+    ],
+  },
+  {
+    id: "arianna",
+    name: "Arianna",
+    role: "Esthetician",
+    photo: arianna,
+    alt: "Arianna, esthetician at Lash L’Atelier, with long wavy honey-brown hair and a white blazer",
+    // ⚠️ MOCK-UP bio written for the layout — replace with Arianna's own words
+    // once she's approved them (CLAUDE.md → content still needed).
+    bio: [
+      "Hi, I’m Arianna! To me, the best beauty looks effortless — like you, on your very best day.",
+      "I love the calm of a treatment room: a little quiet, a little pampering, and an hour that’s all yours. My goal is for you to walk out glowing and already looking forward to coming back.",
     ],
   },
 ];
