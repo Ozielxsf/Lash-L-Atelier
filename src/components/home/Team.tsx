@@ -70,9 +70,9 @@ export default function Team() {
         {others.length > 0 && (
           <>
             <Flourish className="mx-auto mt-20 w-32 text-rose/40" />
-            <ul className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-12 flex flex-wrap justify-center gap-12">
               {others.map((member, i) => (
-                <Reveal as="li" key={member.id} delay={i * motionTokens.reveal.stagger} className="text-center">
+                <Reveal as="li" key={member.id} delay={i * motionTokens.reveal.stagger} className="w-full text-center sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)]">
                   <div className="arch relative mx-auto aspect-[4/5] w-full max-w-[280px] overflow-hidden border border-rose/30">
                     <Image
                       src={member.photo}

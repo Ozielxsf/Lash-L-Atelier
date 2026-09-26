@@ -1,5 +1,6 @@
 import type { StaticImageData } from "next/image";
 import lisa from "../../public/brand/lisa.webp";
+import hanna from "../../public/brand/hanna.webp";
 
 /**
  * "Meet the Team" — the people behind the atelier.
@@ -40,6 +41,19 @@ export const TEAM: TeamMember[] = [
       "I started Lash L’Atelier to bring something truly different — and a little extraordinary — to our small country town. I wanted our neighbors to have a place of their own for high-end beauty services, without the drive into the city.",
       "Convenience was only half of it. I wanted it to be affordable, too. Our prices aren’t just competitive — they’re considerably lower than what you’ll typically find at studios in and around Pittsburgh, with the same care in every appointment.",
       "I can’t wait to welcome you in.",
+    ],
+  },
+  {
+    id: "hanna",
+    name: "Hanna",
+    role: "Esthetician",
+    photo: hanna,
+    alt: "Hanna, esthetician at Lash L’Atelier, with dark hair pulled back, gold earrings and a black blazer",
+    // ⚠️ MOCK-UP bio written for the layout — replace with Hanna's own words
+    // once she's approved them (CLAUDE.md → content still needed).
+    bio: [
+      "Hi, I’m Hanna! Nothing makes my day like the moment a client opens their eyes, sees the mirror and lights up.",
+      "I love taking the time to find what suits you — your eyes, your skin, your everyday — so you leave feeling like the most polished version of yourself.",
     ],
   },
 ];

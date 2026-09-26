@@ -113,7 +113,7 @@ src/components/
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled);
-                      lisa.webp (owner's own portrait, supplied Sept 2026)
+                      lisa.webp, hanna.webp (team's own portraits, supplied Sept 2026)
 supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql — apply in order
 ```
 
@@ -323,7 +323,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] **Real photos** of the studio and of their lash work (a gallery section is the obvious next add once they exist — never stock)
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
 - [x] Owner's name + photo + bio (Lisa)
-- [ ] Two more team members: name, role, photo, short bio → `src/data/team.ts`
+- [x] Hanna (Esthetician) — photo added; ⚠️ her bio is a MOCK-UP, replace with her own words
+- [ ] Third team member: name, role, photo, short bio → `src/data/team.ts`
 - [ ] Lisa's role — is she also a licensed esthetician? (would go in `role`)
 - [ ] Confirm the domain is **lashlatelier.com** and who holds it
 - [ ] **Real appointment lengths** for every service (booking uses estimates)
