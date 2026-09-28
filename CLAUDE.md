@@ -17,7 +17,7 @@
 | **Owner** | Lisa (Owner & Founder) — surname not supplied |
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
-| **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). DNS at GoDaddy: `A @ 76.76.21.21`, `CNAME www cname.vercel-dns.com` (www → apex, 308). The other records are the client's **Microsoft 365 email** — never touch MX/TXT/autodiscover etc. |
+| **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). DNS at GoDaddy (Vercel's recommended records): `A @ 216.150.1.1`, `CNAME www 0fe2a1fbbb6986c5.vercel-dns-016.com` (www → apex, 308). The other records are the client's **Microsoft 365 email** — never touch MX/TXT/autodiscover etc. |
 | **Status** | **Paid client.** Phase 1 (public site) live on preview; phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
 
 **What this business actually needs from a website:** to turn a phone visitor
