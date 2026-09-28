@@ -17,7 +17,7 @@
 | **Owner** | Lisa (Owner & Founder) — surname not supplied |
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
-| **Domain** | lashlatelier.com (printed on the brochure) — *client buys and owns it; never hold it on a Wallink account* |
+| **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). DNS at GoDaddy: `A @ 76.76.21.21`, `CNAME www cname.vercel-dns.com` (www → apex, 308). The other records are the client's **Microsoft 365 email** — never touch MX/TXT/autodiscover etc. |
 | **Status** | **Paid client.** Phase 1 (public site) live on preview; phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
 
 **What this business actually needs from a website:** to turn a phone visitor
@@ -55,8 +55,11 @@ Next.js 16 (App Router, Turbopack) · TypeScript strict · Tailwind v4 (`@theme`
 in `globals.css`) · Motion · Lenis · lucide-react · clsx + tailwind-merge.
 Supabase / Resend / Upstash / Turnstile arrive with phase 2 (see `.env.example`).
 
-Deploys are automatic from `main` once the Vercel project exists. **Never push
-to `main` without the owner saying so** — that is a production deploy.
+⚠️ **Vercel's production branch is currently `claude/eyelash-services-website-xrvpzw`**
+(no `main` yet), so **every push to it goes live on lashlatelier.com.** Before
+customers are relying on the site, split it: production from `main`, this
+branch as preview. **Never push to the production branch without the owner
+saying so.**
 
 ```bash
 npm run dev          # local
@@ -330,7 +333,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - [x] Hanna (Esthetician) — photo added; ⚠️ her bio is a MOCK-UP, replace with her own words
 - [x] Arianna (Esthetician) — photo added; ⚠️ her bio is a MOCK-UP, replace with her own words
 - [ ] Lisa's role — is she also a licensed esthetician? (would go in `role`)
-- [ ] Confirm the domain is **lashlatelier.com** and who holds it
+- [x] Domain: lashlatelier.com, client's GoDaddy account, connected 28 Sept 2026
+- [ ] Public email: the client already has **Microsoft 365 mail on lashlatelier.com** — ask which address to publish / use for booking alerts
 - [ ] **Real appointment lengths** for every service (booking uses estimates)
 - [ ] **Opening hours** for online booking (entered in /admin/schedule)
 - [ ] Which email should receive new-booking alerts
@@ -343,10 +347,11 @@ Log every call here with its reason — without the reason, someone eventually "
 - [x] `npm run build` clean
 - [ ] `node scripts/prelaunch.mjs` — zero failures (see its output for current state)
 - [ ] Vercel project created (Wallink team), Deployment Protection off for client preview
-- [ ] Domain connected; Cloudflare live: DDoS + Bot Fight + leaked credentials
+- [x] Domain connected (28 Sept 2026, GoDaddy DNS → Vercel; https + www redirect verified)
+- [ ] Cloudflare live: DDoS + Bot Fight + leaked credentials (move DNS to Cloudflare, keeping the M365 records)
       (⚠️ Bot Fight Mode blocks AI answer engines — only disable it once every
       public form has Turnstile + Upstash; see Wallink CLAUDE.md AEO notes)
-- [ ] `NEXT_PUBLIC_SITE_URL` correct in production
+- [x] `NEXT_PUBLIC_SITE_URL` = https://lashlatelier.com in production (28 Sept 2026)
 - [ ] WCAG AA contrast measured (tokens in `globals.css` carry measured ratios), keyboard nav, focus visible
 - [ ] Privacy + Terms + Accessibility live, effective date = launch date
 - [ ] Live URL opened inside Instagram, Facebook and TikTok on a real phone
