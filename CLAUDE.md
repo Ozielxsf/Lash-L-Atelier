@@ -17,7 +17,7 @@
 | **Owner** | Lisa (Owner & Founder) — surname not supplied |
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
-| **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). DNS at GoDaddy (Vercel's recommended records): `A @ 216.150.1.1`, `CNAME www 0fe2a1fbbb6986c5.vercel-dns-016.com` (www → apex, 308). The other records are the client's **Microsoft 365 email** — never touch MX/TXT/autodiscover etc. |
+| **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). **DNS is on Cloudflare** (nameservers `malcolm`/`melody.ns.cloudflare.com`, zone in Oziel's Cloudflare account for now — add Lisa or move it to her account): `A @ 216.150.1.1` and `CNAME www 0fe2a1fbbb6986c5.vercel-dns-016.com` are **Proxied** (orange); everything else is **DNS only**. SSL Full (strict), Always Use HTTPS. The other records are the client's **Microsoft 365 email** — keep them grey, never proxy or delete MX/TXT/SRV/autodiscover etc. ⚠️ SPF is `v=spf1 include:secureserver.net -all` (GoDaddy only) — likely should be `include:spf.protection.outlook.com`; confirm with the client first. |
 | **Status** | **Paid client.** Phase 1 (public site) live on preview; phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
 
 **What this business actually needs from a website:** to turn a phone visitor
@@ -348,7 +348,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] `node scripts/prelaunch.mjs` — zero failures (see its output for current state)
 - [ ] Vercel project created (Wallink team), Deployment Protection off for client preview
 - [x] Domain connected (28 Sept 2026, GoDaddy DNS → Vercel; https + www redirect verified)
-- [ ] Cloudflare live: DDoS + Bot Fight + leaked credentials (move DNS to Cloudflare, keeping the M365 records)
+- [x] Cloudflare live (30 Sept 2026): DNS moved from GoDaddy, website records proxied, SSL Full (strict), Always Use HTTPS; verified `server: cloudflare` + 200s, www/http → https 30x, M365 records intact. Leaked-credentials detection on.
+- [ ] Bot Fight Mode — deliberately OFF until booking has Turnstile + Upstash (it blocks AI answer engines)
       (⚠️ Bot Fight Mode blocks AI answer engines — only disable it once every
       public form has Turnstile + Upstash; see Wallink CLAUDE.md AEO notes)
 - [x] `NEXT_PUBLIC_SITE_URL` = https://lashlatelier.com in production (28 Sept 2026)
