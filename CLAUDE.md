@@ -200,11 +200,16 @@ from the browser; the server uses the service-role key.
    (The Vercel MCP needed Oziel to reconnect the connector before it could
    write env vars — it 403'd until then. Supabase secret keys can never be
    read by a tool; the owner pastes that one into Vercel.)
-2b. Remaining Vercel env vars: `NEXT_PUBLIC_TURNSTILE_SITE_KEY`,
-   `TURNSTILE_SECRET_KEY`, and — once the
-   client's domain is verified in Resend — `RESEND_API_KEY` + `BOOKING_FROM_EMAIL`.
-   Add **Upstash Redis** from the Vercel marketplace (sets `KV_REST_API_*`). Redeploy.
-3. Sign in at `/admin` → Schedule: real hours, days off, alert email.
+2b. ✅ (30 Sept 2026) Turnstile widget "Lash L'Atelier booking" (hostnames
+   lashlatelier.com + www, Managed) in Oziel's Cloudflare account;
+   `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (Config) + `TURNSTILE_SECRET_KEY` (Secret)
+   set for Production. Upstash Redis (Pay As You Go, Washington D.C.) connected
+   with prefix `KV` → `KV_REST_API_URL` / `KV_REST_API_TOKEN` (Prod + Preview).
+   Still to do: Resend — once `lashlatelier.com` is verified in Resend (DNS
+   records go in Cloudflare, on the `send.` subdomain, M365 untouched), add
+   `RESEND_API_KEY` + `BOOKING_FROM_EMAIL`.
+3. Sign in at `/admin` → Schedule: hours are entered (every day 10:00–18:00,
+   30 Sept 2026 — **confirm with Lisa that's real**), days off, alert email (still empty).
 4. Confirm service lengths with the owner; update `duration` values.
 5. Preview `/book` as admin; make a test request; confirm it; check emails.
 6. When the client says go: flip the switch on the Bookings dashboard.
