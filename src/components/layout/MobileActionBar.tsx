@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin, ScrollText } from "lucide-react";
 import BookingIcon from "@/components/booking/BookingIcon";
+import ActionBarVisibility from "@/components/layout/ActionBarVisibility";
 import { getBookingAction } from "@/lib/booking";
 import { isOnlineBookingEnabled } from "@/lib/booking-settings";
 import { directionsHref } from "@/lib/format";
@@ -12,6 +13,8 @@ import { directionsHref } from "@/lib/format";
  *
  * Sits on the safe-area inset so it clears the iPhone home indicator. The
  * footer pads itself by the bar's height so nothing is ever hidden behind it.
+ * ActionBarVisibility hides it while the keyboard is up (iOS floats fixed
+ * bars over form fields then) and on /book.
  */
 export default async function MobileActionBar() {
   const booking = getBookingAction(await isOnlineBookingEnabled());
@@ -19,6 +22,7 @@ export default async function MobileActionBar() {
     "flex min-h-[52px] flex-col items-center justify-center gap-1 rounded-2xl text-[0.62rem] font-medium tracking-[0.16em] text-creme/85 uppercase transition-colors active:bg-creme/10";
 
   return (
+    <ActionBarVisibility>
     <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line-dark bg-noir/[0.97] px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] lg:hidden">
       <nav aria-label="Quick actions" className="mx-auto grid max-w-md grid-cols-[1fr_1fr_2fr] gap-2">
         <Link href="/services" className={secondary}>
@@ -39,5 +43,6 @@ export default async function MobileActionBar() {
         </a>
       </nav>
     </div>
+    </ActionBarVisibility>
   );
 }

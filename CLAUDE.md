@@ -337,6 +337,11 @@ Log every call here with its reason — without the reason, someone eventually "
 - **Phone-first CTA.** Every "Book" button calls the studio today. A fixed
   bottom bar (Menu · Directions · Call to book) is always under the thumb on
   phones; it hides from `lg` up where the header carries the phone number.
+  `ActionBarVisibility` also hides it **while a typing field has focus** and
+  for 400ms after (iOS positions fixed bottom bars against a viewport that
+  still thinks the keyboard is open, so the bar floated over /book's form
+  fields — Oziel's screenshots, Oct 2026), and **on /book entirely** (the
+  form has its own button; "Call to book" there only competes with it).
 - **No hours shown — "By appointment".** Hours weren't on any print piece.
   `siteConfig.hours` is `null`; set it and the footer, visit section, JSON-LD
   and llms.txt all pick it up. Never publish guessed hours.
