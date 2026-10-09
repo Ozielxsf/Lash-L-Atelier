@@ -11,6 +11,11 @@ export const INSTALL = {
   /** Shown under the icon on the phone's home screen. Short on purpose:
    *  iPhone and Android truncate labels past ~12 characters. */
   homeScreenName: "L’Atelier",
+  /** The studio dashboard installs as its own app (app/admin/manifest.webmanifest). */
+  admin: {
+    name: "Lash L’Atelier — Studio Admin",
+    homeScreenName: "Studio Admin",
+  },
   invite: {
     eyebrow: "Keep us close",
     title: "Add L’Atelier to your home screen",

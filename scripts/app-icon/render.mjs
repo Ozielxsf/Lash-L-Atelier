@@ -26,6 +26,8 @@ async function shot(query) {
 const full = await shot("");
 const safe = await shot("?safe=1");
 const fav = await shot("?fav=1");
+const admin = await shot("?admin=1");
+const adminSafe = await shot("?admin=1&safe=1");
 await browser.close();
 
 const out = (size, buf, file) => sharp(buf).resize(size, size, { kernel: "lanczos3" }).png({ compressionLevel: 9 }).toFile(path.join(root, file));
@@ -35,6 +37,12 @@ await Promise.all([
   out(192, full, "public/icons/icon-192.png"),
   out(512, full, "public/icons/icon-512.png"),
   out(512, safe, "public/icons/icon-maskable-512.png"), // Android shaped icons
+  // The studio dashboard's own home-screen app (see app/admin/manifest.webmanifest)
+  out(180, admin, "public/icons/admin-180.png"),
+  out(192, admin, "public/icons/admin-192.png"),
+  out(512, admin, "public/icons/admin-512.png"),
+  out(512, adminSafe, "public/icons/admin-maskable-512.png"),
+  out(1024, admin, "scripts/app-icon/preview-admin.png"),
   out(1024, full, "scripts/app-icon/preview-1024.png"),
   out(1024, fav, "scripts/app-icon/preview-favicon.png"),
 ]);

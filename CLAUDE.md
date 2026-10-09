@@ -116,8 +116,9 @@ src/components/
   layout/  SiteChrome, Header, MenuDrawer, Footer (+ AddToHomeScreen), MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
 src/app/manifest.ts   web app manifest (name, colours, icons) — what makes Android's install prompt possible
+src/app/admin/manifest.webmanifest/route.ts   the dashboard's OWN manifest (start_url /admin) — linked from admin/layout.tsx
 scripts/app-icon/     icon.html (the icon artwork, brand fonts bundled) + render.mjs → src/app/icon.png,
-                      src/app/apple-icon.png, public/icons/*.png. Edit the HTML, re-run, never hand-edit PNGs
+                      src/app/apple-icon.png, public/icons/*.png (incl. admin-*.png). Edit the HTML, re-run, never hand-edit PNGs
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled);
@@ -315,6 +316,14 @@ Log every call here with its reason — without the reason, someone eventually "
   bold ring) because the full artwork turns to noise at 16–32px; the
   maskable Android variant is scaled into the safe zone. Tested on iPhone
   rounded-square, Android circle, and tab sizes.
+- **The admin dashboard installs as its own app (Oziel, Oct 2026).** Adding
+  /admin to the home screen used to open the public site, because the only
+  manifest said `start_url: "/"`. The admin layout now links its own manifest
+  (`id`/`scope`/`start_url` = `/admin`, label "Studio Admin") and its own
+  apple-touch-icon — the monogram inverted onto blush paper, lettered ADMIN,
+  so it can't be confused with the public icon. Both apps can sit on one
+  phone. On iPhone the home-screen app keeps its own cookies, so the owner
+  signs in once inside it; the session lasts 7 days (`lib/session.ts`).
 - **Red light wording follows the brochure, not the menu board.** The menu
   board says "Acne Treatment", "Hair Loss Scalp Regeneration"; the brochure
   softened these to "support"/"reduction". A cosmetic studio making medical

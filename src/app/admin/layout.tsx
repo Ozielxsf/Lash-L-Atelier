@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { INSTALL } from "@/data/install";
 
 /*
  * Private area. `noindex` keeps it out of search results; it stays crawlable
@@ -9,6 +10,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Studio admin",
   robots: { index: false, follow: false },
+  // "Add to Home Screen" from here installs the dashboard as its own app —
+  // opens on /admin, labelled "Studio Admin", with the blush ADMIN icon —
+  // instead of the public site. See app/admin/manifest.webmanifest.
+  manifest: "/admin/manifest.webmanifest",
+  icons: { icon: "/icon.png", apple: "/icons/admin-180.png" },
+  appleWebApp: { capable: true, title: INSTALL.admin.homeScreenName, statusBarStyle: "black" },
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

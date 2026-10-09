@@ -6,7 +6,9 @@
   inside the central 80% so Android's "maskable" crops never cut it.
   ?safe=1 shrinks the artwork for the maskable variant; ?fav=1 is the
   browser-tab favicon — a bigger L and one bolder ring, no fine detail that
-  would turn to mush at 16–32px.
+  would turn to mush at 16–32px. ?admin=1 is the studio dashboard's icon:
+  the same monogram inverted onto blush paper and lettered ADMIN, so the
+  owner never mixes it up with the public site's icon.
 -->
 <html><head><meta charset="utf-8"><style>
 @font-face { font-family: "GV"; src: url(great-vibes-latin.woff2) format("woff2"); }
@@ -42,7 +44,7 @@ svg { display: block; }
     </filter>
   </defs>
 
-  <rect width="1024" height="1024" fill="url(#night)"/>
+  <rect id="bg" width="1024" height="1024" fill="url(#night)"/>
 
   <g id="mark">
     <circle cx="512" cy="512" r="300" fill="url(#glow)"/>
@@ -70,7 +72,7 @@ svg { display: block; }
     </g>
 
     <!-- L'ATELIER, small, on a hairline — the seal's lower lettering -->
-    <text class="detail" x="519" y="812" text-anchor="middle" font-family="CZ" font-weight="600" font-size="50" letter-spacing="14" fill="url(#rosegold)">L’ATELIER</text>
+    <text id="label" class="detail" x="519" y="812" text-anchor="middle" font-family="CZ" font-weight="600" font-size="50" letter-spacing="14" fill="url(#rosegold)">L’ATELIER</text>
 
     <!-- A single sparkle, the brand's star -->
     <path id="spark" fill="#fbe6c4" d="M0 -46 C4 -10 10 -4 46 0 C10 4 4 10 0 46 C-4 10 -10 4 -46 0 C-10 -4 -4 -10 0 -46Z"/>
@@ -81,6 +83,19 @@ svg { display: block; }
   // then perch the sparkle on its top-right curl.
   const params = new URLSearchParams(location.search);
   const fav = params.get("fav") === "1";
+  if (params.get("admin") === "1") {
+    // Blush paper, rouge-and-antique-gold ink.
+    const stops = (id, colours) =>
+      document.querySelectorAll(`#${id} stop`).forEach((s, i) => s.setAttribute("stop-color", colours[i]));
+    stops("night", ["#fdf5f8", "#f7e6ec", "#e9c9d6"]);
+    stops("rosegold", ["#c9a063", "#a8264f", "#861c3e", "#5a1e38"]);
+    stops("glow", ["#a8264f", "#a8264f"]);
+    document.querySelector("#glow stop").setAttribute("stop-opacity", "0.10");
+    document.querySelector("#sheen stop").setAttribute("stop-opacity", "0.25");
+    document.querySelector("#soft feDropShadow").setAttribute("flood-opacity", "0.18");
+    document.getElementById("spark").setAttribute("fill", "#c9a063");
+    document.getElementById("label").textContent = "ADMIN";
+  }
   if (fav) {
     document.querySelectorAll(".detail").forEach((el) => el.remove());
     const o = document.getElementById("outer");
