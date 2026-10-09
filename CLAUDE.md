@@ -84,6 +84,7 @@ src/data/             ALL copy and prices (Build Standard §3)
   promises.ts         HOUSE_RULES + PROMISES + LOYALTY
   offers.ts           $25 welcome offer
   team.ts             "Meet the Team" — one panel per person, owner first
+  install.ts          "Add to Home Screen" copy + iPhone/Android steps
   faqs.ts, atelier.ts, navigation.ts
 src/lib/
   booking.ts          getBookingAction(enabled) — where every Book button goes
@@ -98,6 +99,7 @@ src/lib/
   admin-auth.ts, session.ts   iron-session admin sign-in; requireAdmin()
   turnstile.ts, verify-turnstile.ts   Wallink's Turnstile pair (fails CLOSED)
   format.ts           formatCurrency / formatPrice / telHref / directionsHref
+  device.ts           platform / in-app-browser / standalone detection (install button only)
   schema.ts           JSON-LD (BeautySalon, FAQPage, Breadcrumb) from data
   legal.ts            tiny markdown parser for content/legal/*.md
   escape-html.ts, rate-limit.ts   ← Wallink starter (§1 §2)
@@ -111,8 +113,11 @@ src/components/
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
   home/    Hero, HouseRules, Atelier, Team + TeamTabs, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
-  layout/  SiteChrome, Header, MenuDrawer, Footer, MobileActionBar, PageHeader
+  layout/  SiteChrome, Header, MenuDrawer, Footer (+ AddToHomeScreen), MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
+src/app/manifest.ts   web app manifest (name, colours, icons) — what makes Android's install prompt possible
+scripts/app-icon/     icon.html (the icon artwork, brand fonts bundled) + render.mjs → src/app/icon.png,
+                      src/app/apple-icon.png, public/icons/*.png. Edit the HTML, re-run, never hand-edit PNGs
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled);
@@ -288,6 +293,28 @@ Log every call here with its reason — without the reason, someone eventually "
   kept with "typically" so it isn't an absolute price guarantee. Her role
   says "Owner & Founder" only — don't add "licensed esthetician" unless
   confirmed. The owner also feeds JSON-LD `founder` and llms.txt.
+- **"Add to Home Screen" in the footer (Oziel, Oct 2026).** `AddToHomeScreen`
+  reads the device after hydration (renders nothing on the server, so no
+  flash): **Android + Chrome** → the browser's real install prompt (Chrome
+  fires `beforeinstallprompt` once at load, so an inline script in
+  `app/layout.tsx` catches it before React is ready and parks it on
+  `window.__lashInstall` — don't move it into a component); **Android without
+  a prompt** (Samsung Internet, Firefox) → 3 short steps; **iPhone/iPad** →
+  Apple's steps, step 1 always "Open this website in Safari" (auto-ticked in
+  real Safari; a Copy-link button inside Instagram/Facebook/TikTok browsers,
+  which can't add to the home screen). Hidden on desktop and once opened
+  from the home screen. Step 2 covers both Safari layouts (Share in the
+  toolbar, or behind ••• since iOS 26). The sheet is a native `<dialog>`.
+  No browser can add an icon *silently* — Android always shows its own
+  confirm; that's the "automatic" path. Home-screen label is "L'Atelier"
+  (`INSTALL.homeScreenName`) because labels truncate past ~12 characters.
+- **The app icon is a monogram, not the seal (Oct 2026).** Rose-gold script
+  "L" (Great Vibes) with the brand sparkle, inside the seal's double ring and
+  fleurons, "L'ATELIER" in Cinzel, on plum-to-noir. The seal itself is far
+  too detailed at 60px. The favicon is a simplified variant (bigger L, one
+  bold ring) because the full artwork turns to noise at 16–32px; the
+  maskable Android variant is scaled into the safe zone. Tested on iPhone
+  rounded-square, Android circle, and tab sizes.
 - **Red light wording follows the brochure, not the menu board.** The menu
   board says "Acne Treatment", "Hair Loss Scalp Regeneration"; the brochure
   softened these to "support"/"reduction". A cosmetic studio making medical

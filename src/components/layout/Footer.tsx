@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Flourish from "@/components/brand/Flourish";
+import AddToHomeScreen from "@/components/layout/AddToHomeScreen";
 import Container from "@/components/ui/Container";
 import { siteConfig } from "@/config/site.config";
 import { HOUSE_RULES } from "@/data/promises";
@@ -74,6 +75,9 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
+        {/* Phones only — renders nothing on desktop or once installed. */}
+        <AddToHomeScreen />
 
         <nav aria-label="Footer" className="mt-14 border-t border-line-dark pt-8">
           <ul className="flex flex-wrap justify-center gap-x-7 gap-y-3 text-[0.75rem] font-medium tracking-[0.2em] uppercase">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Great_Vibes, Jost } from "next/font/google";
 import { siteConfig } from "@/config/site.config";
+import { INSTALL } from "@/data/install";
 import "./globals.css";
 
 const greatVibes = Great_Vibes({ variable: "--font-great-vibes", subsets: ["latin"], weight: "400", display: "swap" });
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title, description: siteConfig.description },
   formatDetection: { telephone: false },
+  // Home-screen behaviour on iPhone: opens full-screen, labelled "L'Atelier".
+  // "black" (not black-translucent) keeps the page below the status bar, so
+  // the fixed header never slides under the clock.
+  appleWebApp: { capable: true, title: INSTALL.homeScreenName, statusBarStyle: "black" },
 };
 
 export const viewport: Viewport = {
@@ -58,6 +63,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
+        {/* Android Chrome fires "beforeinstallprompt" once, as the page loads —
+            possibly before React hydrates the footer's install button. Catch it
+            here and park it on window; AddToHomeScreen picks it up. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__lashInstall=e;window.dispatchEvent(new Event("lash:installable"))});',
+          }}
+        />
       </body>
     </html>
   );
