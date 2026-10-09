@@ -36,7 +36,7 @@ export const TEAM: TeamMember[] = [
     name: "Lisa",
     role: "Owner & Founder",
     photo: lisa,
-    alt: "Lisa, owner of Lash L’Atelier, smiling in a black blazer with long auburn hair",
+    alt: "Lisa, owner of Lash L’Atelier, with long copper-red hair and a black blazer, in the studio",
     featured: true,
     bio: [
       "I started Lash L’Atelier to bring something truly different — and a little extraordinary — to our small country town. I wanted our neighbors to have a place of their own for high-end beauty services, without the drive into the city.",
