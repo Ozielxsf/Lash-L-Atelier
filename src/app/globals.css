@@ -205,14 +205,14 @@ html.lenis body {
 }
 
 /* Blush paper with a whisper of grain, like the menu board's card stock.
-   The grain is a 160px PNG tile, NOT an SVG feTurbulence filter: the filter
+   The grain is a 160px tile (lossless WebP), NOT an SVG feTurbulence filter: the filter
    version had to be rasterised live and caused a visible hitch the first time
    a paper section scrolled into view on phones. */
 .papier {
   background-color: var(--color-papier);
   background-image:
     radial-gradient(120% 80% at 50% 0%, rgb(253 245 248 / 0.9), transparent 60%),
-    url("/brand/grain.png");
+    url("/brand/grain.webp");
   color: var(--color-ink);
 }
 

@@ -6,14 +6,19 @@ import "./globals.css";
 
 const greatVibes = Great_Vibes({ variable: "--font-great-vibes", subsets: ["latin"], weight: "400", display: "swap" });
 const cinzel = Cinzel({ variable: "--font-cinzel", subsets: ["latin"], weight: ["400", "600"], display: "swap" });
+// Only the hero wordmark's two faces (Great Vibes + Cinzel) are preloaded:
+// they're the first thing painted. Cormorant and Jost still load at once from
+// the stylesheet, behind metric-matched fallbacks (no layout shift), but no
+// longer compete with the hero for the first bytes on a slow connection.
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   display: "swap",
+  preload: false,
 });
-const jost = Jost({ variable: "--font-jost", subsets: ["latin"], weight: ["400", "500", "600"], display: "swap" });
+const jost = Jost({ variable: "--font-jost", subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", preload: false });
 
 const title = `${siteConfig.name} | Lash Extensions, Brows & Facials in Hickory, PA`;
 

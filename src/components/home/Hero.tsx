@@ -50,9 +50,13 @@ export default async function Hero() {
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <picture>
           <source media="(min-aspect-ratio: 1/1)" srcSet={wideSrcSet} />
+          {/* srcSet must be passed back explicitly — it was destructured out
+              above and once went missing, so phones downloaded the 3840px
+              desktop file (337 KB) instead of a ~800px one (PSI, Oct 2026). */}
           {/* eslint-disable-next-line jsx-a11y/alt-text -- alt="" comes from getImageProps; decorative */}
           <img
             {...img}
+            srcSet={tallSrcSet}
             className="absolute inset-0 h-full w-full object-cover object-[50%_62%] [@media(min-aspect-ratio:1/1)]:object-[60%_60%]"
           />
         </picture>

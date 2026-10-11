@@ -262,7 +262,7 @@ Log every call here with its reason — without the reason, someone eventually "
   the painting uses `backdrop-filter` (header, bottom bar, menu chips and
   hero buttons are solid, near-opaque); the sparkle canvas stamps
   pre-rendered sprites instead of building gradients per frame; the paper
-  grain is a PNG tile, not an SVG `feTurbulence` filter; Lenis is off on
+  grain is a raster tile (lossless WebP), not an SVG `feTurbulence` filter; Lenis is off on
   touch devices (it doesn't smooth touch, so it was pure overhead) and uses
   its default `lerp` on desktop — a 1.15s duration ease felt like lag.
   Keep these; each one was a measured cost.
@@ -277,6 +277,17 @@ Log every call here with its reason — without the reason, someone eventually "
   (3) **The sparkle canvas waits** for `load` + browser idle before it
   twinkles (it competed with hydration). Results: home LCP 2.4s, /services
   1.9s, /visit 2.2s, /privacy 2.0s; Accessibility/Best Practices/SEO 100.
+  (4) **The hero `<img>` must keep its `srcSet`** (Hero.tsx destructures it
+  out of `getImageProps` for the `<picture>`): it once went missing, so every
+  phone downloaded the 3840px desktop painting — 337 KB where 93 KB does.
+  Live PSI before that fix (10 Oct): mobile 78, LCP 5.2s, TBT 30ms, CLS 0.
+  (5) **Only the hero's fonts are preloaded** (Great Vibes + Cinzel);
+  Cormorant and Jost have `preload: false` — they load from the stylesheet
+  straight after, behind next/font's metric-matched fallbacks (CLS stayed 0).
+  The grain tile is lossless WebP. Local PSI-style runs after (4)+(5): 84–87,
+  page weight 905 → 659 KB, Speed Index 4.0 → 2.2s. The lab LCP (~4s) is
+  Lighthouse's *estimate*; in the recorded load the hero text paints at
+  ~0.26s. The remaining lab cost is the JS bundle (React + Motion).
 - **The link preview (OG/Twitter card) shows the shopfront** (Oziel's call,
   Sept 2026): wordmark on the left, the painted storefront with its hanging
   sign on the right. It's what people see when the link is texted or posted.
