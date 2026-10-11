@@ -398,8 +398,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] **Real photos** of the studio and of their lash work (a gallery section is the obvious next add once they exist — never stock)
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
 - [x] Owner's name + photo + bio (Lisa)
-- [x] Hanna (Esthetician) — photo added; ⚠️ her bio is a MOCK-UP, replace with her own words
-- [x] Arianna (Esthetician) — photo added; ⚠️ her bio is a MOCK-UP, replace with her own words
+- [x] Hanna (Esthetician) — photo + bio approved by her (Oct 2026); she may send updates
+- [x] Arianna (Esthetician) — photo + bio approved by her (Oct 2026); she may send updates
 - [ ] Lisa's role — is she also a licensed esthetician? (would go in `role`)
 - [x] Domain: lashlatelier.com, client's GoDaddy account, connected 28 Sept 2026
 - [ ] Public email: the client already has **Microsoft 365 mail on lashlatelier.com** — ask which address to publish / use for booking alerts
