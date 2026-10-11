@@ -226,11 +226,20 @@ from the browser; the server uses the service-role key.
    `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (Config) + `TURNSTILE_SECRET_KEY` (Secret)
    set for Production. Upstash Redis (Pay As You Go, Washington D.C.) connected
    with prefix `KV` → `KV_REST_API_URL` / `KV_REST_API_TOKEN` (Prod + Preview).
-   Still to do: Resend — once `lashlatelier.com` is verified in Resend (DNS
-   records go in Cloudflare, on the `send.` subdomain, M365 untouched), add
-   `RESEND_API_KEY` + `BOOKING_FROM_EMAIL`.
+2c. ✅ (11 Oct 2026) Resend: domain `lashlatelier.com` added (us-east-1, no
+   tracking); a **send-only key restricted to that domain** created and stored
+   straight into Vercel as `RESEND_API_KEY` (Sensitive, Production) — it was
+   never shown to anyone; if lost, make a new one in Resend. `BOOKING_FROM_EMAIL`
+   = `bookings@lashlatelier.com` (Production). Client emails reply-to the Gmail.
+   ⏳ **Waiting on 4 DNS records in Cloudflare (all DNS only / grey):**
+   TXT `resend._domainkey` (DKIM), MX `send` → `feedback-smtp.us-east-1.amazonses.com`
+   (priority 10), TXT `send` → `v=spf1 include:amazonses.com ~all`, CNAME
+   `rsend` → `send.forge.rmta.net` — then "Verify" in Resend. None clash with
+   M365 (root MX/SPF untouched); existing DMARC (p=quarantine, relaxed) passes
+   via the DKIM alignment.
 3. Sign in at `/admin` → Schedule: hours are entered (every day 10:00–18:00,
-   30 Sept 2026 — **confirm with Lisa that's real**), days off, alert email (still empty).
+   30 Sept 2026 — **placeholder; replace with Lisa's real hours**), days off.
+   Alert email set to `luvlashlatelier@gmail.com` (11 Oct 2026).
 4. Confirm service lengths with the owner; update `duration` values.
 5. Preview `/book` as admin; make a test request; confirm it; check emails.
 6. When the client says go: flip the switch on the Bookings dashboard.
@@ -437,7 +446,7 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] The client also has **Microsoft 365 mail on lashlatelier.com** but publishes the Gmail address — ask whether the M365 mailboxes are used at all (affects the SPF fix). Resend's *sender* must still be on lashlatelier.com (a Gmail address can't be a Resend sender); replies go to the Gmail
 - [ ] **Real appointment lengths** for every service (booking uses estimates)
 - [ ] **Opening hours** for online booking (entered in /admin/schedule)
-- [ ] Which email should receive new-booking alerts
+- [x] New-booking alerts → `luvlashlatelier@gmail.com` (set 11 Oct 2026; change on /admin → Schedule)
 
 ---
 
