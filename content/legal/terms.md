@@ -1,7 +1,7 @@
 # Terms of Service
 
 **Lash L’Atelier**
-Effective date: September 25, 2026
+Effective date: October 12, 2026
 
 These Terms of Service ("Terms") govern your access to and use of the website located at
 lashlatelier.com and any related pages, features, content, forms, and services (together, the

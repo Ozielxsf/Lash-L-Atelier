@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Lash L’Atelier**
-Effective date: September 25, 2026
+Effective date: October 12, 2026
 
 This Privacy Policy explains how Lash L’Atelier ("we," "us," "our") collects, uses,
 shares, and protects information about you when you visit or interact with our website at

@@ -19,7 +19,7 @@ BUSINESS_NAME = "Lash L’Atelier"
 WEBSITE_URL = "lashlatelier.com"
 PHONE = "(724) 467-3479"
 ADDRESS = "26 Campbell Street, Hickory, PA 15312"
-EFFECTIVE_DATE = "September 25, 2026"   # ⚠️ set to the launch date
+EFFECTIVE_DATE = "October 12, 2026"   # launch day (Oziel, Oct 2026)
 STATE, COUNTY = "Pennsylvania", "Washington County"
 
 # What the site does today. The shop (phase 3) will turn on orders + payments.

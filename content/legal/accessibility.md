@@ -1,7 +1,7 @@
 # Accessibility Statement
 
 **Lash L’Atelier**
-Effective date: September 25, 2026
+Effective date: October 12, 2026
 
 Lash L’Atelier is committed to ensuring that our website at lashlatelier.com (the "Site") is
 accessible to everyone, including people with disabilities. We believe every visitor deserves

@@ -422,7 +422,7 @@ Log every call here with its reason — without the reason, someone eventually "
       public form has Turnstile + Upstash; see Wallink CLAUDE.md AEO notes)
 - [x] `NEXT_PUBLIC_SITE_URL` = https://lashlatelier.com in production (28 Sept 2026)
 - [x] WCAG 2.1 AA (11 Oct 2026): axe-core on 9 pages × phone/desktop → 0 violations (fixed: button labels now start with their visible words — WCAG 2.5.3; team panel element; admin sign-in h1). Keyboard: 69 tab stops on home, all with a visible focus ring; skip link first and working
-- [ ] Privacy + Terms + Accessibility live, effective date = launch date
+- [x] Privacy + Terms + Accessibility live, effective date = launch date (October 12, 2026 — regenerated from the Wallink templates; only the date changed)
 - [ ] Live URL opened inside Instagram, Facebook and TikTok on a real phone
 - [ ] PageSpeed Insights on the live URL (mobile) — LCP < 2.5s. Local Lighthouse (real throttling) passes: home 2.4s, /services 1.9s, /visit 2.2s. Re-check on PSI after deploy (the PSI API was over quota from here)
 - [ ] Google Business Profile updated with the site URL; submit sitemap in Search Console
