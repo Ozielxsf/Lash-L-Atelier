@@ -424,8 +424,9 @@ Log every call here with its reason — without the reason, someone eventually "
 
 - [x] `npx tsc --noEmit` clean
 - [x] `npm run build` clean
-- [ ] `node scripts/prelaunch.mjs` — zero failures (see its output for current state)
-- [ ] Vercel project created (Wallink team), Deployment Protection off for client preview
+- [x] `node scripts/prelaunch.mjs` — 11 passed, 0 failures (11 Oct 2026)
+- [x] Vercel project `lash-l-atelier` (Wallink team); protection = "all except custom domains" (domain public, preview URLs behind Vercel sign-in)
+- [x] Live smoke test (11 Oct 2026): every page 200, unknown URL 404, http/www → https://lashlatelier.com, HSTS/nosniff/DENY headers via Cloudflare, canonical + OG image (200, jpeg) + sitemap (6 URLs) + robots + llms.txt + both manifests, /book and /admin noindex, hero `srcSet` live
 - [x] Domain connected (28 Sept 2026, GoDaddy DNS → Vercel; https + www redirect verified)
 - [x] Cloudflare live (30 Sept 2026): DNS moved from GoDaddy, website records proxied, SSL Full (strict), Always Use HTTPS; verified `server: cloudflare` + 200s, www/http → https 30x, M365 records intact. Leaked-credentials detection on.
 - [ ] Bot Fight Mode — deliberately OFF until booking has Turnstile + Upstash (it blocks AI answer engines)
