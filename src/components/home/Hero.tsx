@@ -81,12 +81,12 @@ export default async function Hero() {
             className="pointer-events-none absolute -inset-x-10 -top-6 -bottom-10 -z-10 bg-[radial-gradient(closest-side,rgb(17_10_15/0.82),rgb(17_10_15/0.55)_55%,transparent)] lg:hidden"
           />
           <p className="rise-in font-caps text-[0.68rem] font-semibold tracking-[0.34em] text-creme/85 uppercase">
-            Hickory <span className="text-rose">✦</span> Pennsylvania
+            Avella <span className="text-rose">✦</span> Pennsylvania
           </p>
 
           <h1 id="hero-title" className="mt-4 lg:mt-8">
             <Wordmark size="hero" animate />
-            <span className="sr-only"> — lash extensions, brows and facials in Hickory, Pennsylvania</span>
+            <span className="sr-only"> — lash extensions, brows and facials in Avella, Pennsylvania</span>
           </h1>
 
           <p

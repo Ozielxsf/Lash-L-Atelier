@@ -1,5 +1,5 @@
 /**
- * Studio-local time. Hickory, PA is America/New_York; the server (Vercel) runs
+ * Studio-local time. Avella, PA is America/New_York; the server (Vercel) runs
  * in UTC and a visitor's phone may be anywhere. Every booking calculation goes
  * through these helpers so "10:00" always means 10:00 at the studio —
  * including across daylight-saving changes — and never the server's clock.

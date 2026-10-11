@@ -32,7 +32,7 @@ The Site is operated by Lash L’Atelier.
 
 - **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
-- **Address:** 26 Campbell Street, Hickory, PA 15312
+- **Address:** 26 Campbell Street, Avella, PA 15312
 
 If you have questions about these Terms, contact us using the details above.
 
@@ -214,4 +214,4 @@ Questions about these Terms may be directed to:
 
 **Lash L’Atelier**
 luvlashlatelier@gmail.com · (724) 467-3479
-26 Campbell Street, Hickory, PA 15312
+26 Campbell Street, Avella, PA 15312

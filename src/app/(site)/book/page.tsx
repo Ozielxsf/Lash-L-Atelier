@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const live = await isOnlineBookingEnabled();
   return {
     title: "Book an Appointment",
-    description: `Request a lash, brow or facial appointment at ${siteConfig.name} in Hickory, PA. No card on file — pay only when you're served.`,
+    description: `Request a lash, brow or facial appointment at ${siteConfig.name} in Avella, PA. No card on file — pay only when you're served.`,
     alternates: { canonical: "/book" },
     // Only indexable while booking is actually open to the public.
     robots: live ? undefined : { index: false, follow: true },

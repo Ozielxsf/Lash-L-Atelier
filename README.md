@@ -1,7 +1,7 @@
 # Lash L'Atelier
 
 The website for **Lash L'Atelier** *(lah-tell-yay)* — a Parisian-inspired lash,
-brow & face atelier at 26 Campbell Street, Hickory, PA.
+brow & face atelier at 26 Campbell Street, Avella, PA.
 
 Built and maintained by [Wallink Systems](https://wallinksystems.com).
 

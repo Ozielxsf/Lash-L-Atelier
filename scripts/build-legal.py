@@ -19,7 +19,7 @@ BUSINESS_NAME = "Lash L’Atelier"
 WEBSITE_URL = "lashlatelier.com"
 PHONE = "(724) 467-3479"
 EMAIL = "luvlashlatelier@gmail.com"   # public address (Oziel, 11 Oct 2026)
-ADDRESS = "26 Campbell Street, Hickory, PA 15312"
+ADDRESS = "26 Campbell Street, Avella, PA 15312"
 EFFECTIVE_DATE = "October 12, 2026"   # launch day (Oziel, Oct 2026)
 STATE, COUNTY = "Pennsylvania", "Washington County"
 

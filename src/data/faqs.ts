@@ -35,6 +35,6 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Where is Lash L’Atelier?",
-    a: `${fullAddress} — in Hickory, Washington County, Pennsylvania.`,
+    a: `${fullAddress} — in Avella, Washington County, Pennsylvania.`,
   },
 ];

@@ -78,7 +78,7 @@ assistive technology you were using:
 
 - **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
-- **Address:** 26 Campbell Street, Hickory, PA 15312
+- **Address:** 26 Campbell Street, Avella, PA 15312
 
 We aim to respond to accessibility feedback promptly and to resolve valid issues as quickly as
 is reasonably possible. If you need assistance with anything on the Site in the meantime,

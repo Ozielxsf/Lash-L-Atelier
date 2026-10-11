@@ -21,7 +21,7 @@ import { breadcrumbSchema, faqSchema } from "@/lib/schema";
 export const metadata: Metadata = {
   title: "Menu & Prices — Lash Extensions, Brows & Facials",
   description:
-    "Lash L'Atelier's full menu: classic, hybrid, volume and mega volume lash extensions and fills, brow wax, tint and lamination, organic and beef tallow facials, red light therapy and add-ons. Hickory, PA.",
+    "Lash L'Atelier's full menu: classic, hybrid, volume and mega volume lash extensions and fills, brow wax, tint and lamination, organic and beef tallow facials, red light therapy and add-ons. Avella, PA.",
   alternates: { canonical: "/services" },
 };
 

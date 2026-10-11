@@ -2,7 +2,7 @@
   "name": "lash-l-atelier",
   "version": "0.1.0",
   "private": true,
-  "description": "Lash L'Atelier — a Parisian-inspired lash, brow & face atelier in Hickory, PA. A Wallink Systems build.",
+  "description": "Lash L'Atelier — a Parisian-inspired lash, brow & face atelier in Avella, PA. A Wallink Systems build.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

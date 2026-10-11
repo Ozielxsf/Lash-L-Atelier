@@ -40,7 +40,7 @@ export function businessSchema() {
       addressCountry: address.country,
     },
     areaServed: [
-      { "@type": "City", name: "Hickory, Pennsylvania" },
+      { "@type": "City", name: "Avella, Pennsylvania" },
       { "@type": "AdministrativeArea", name: "Washington County, Pennsylvania" },
     ],
     ...(sameAs.length ? { sameAs } : {}),

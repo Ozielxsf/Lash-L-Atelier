@@ -1,0 +1,77 @@
+<!doctype html>
+<!--
+  The link-preview card (OG + Twitter, 1200×630): what people see when the
+  site is texted or posted. Wordmark on the left, the painted shopfront on
+  the right (Oziel's call, Sept 2026). Edit the text here, then re-render:
+    PW=<path to playwright> node scripts/og-image/render.mjs
+  Never hand-edit src/app/opengraph-image.jpg / twitter-image.jpg.
+  The address line must match siteConfig (src/config/site.config.ts).
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: "Great Vibes"; src: url("great-vibes-latin.woff2") format("woff2"); }
+  @font-face { font-family: "Cinzel"; src: url("cinzel-latin.woff2") format("woff2"); font-weight: 400 900; }
+  @font-face { font-family: "Cormorant"; src: url("cormorant-italic-latin.woff2") format("woff2"); font-style: italic; }
+  @font-face { font-family: "Jost"; src: url("jost-latin.woff2") format("woff2"); }
+
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #110a0f; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #150d12; }
+
+  /* The painting, anchored right, fading into the night on its left edge. */
+  .painting {
+    position: absolute; top: 0; right: 0; width: 790px; height: auto;
+    object-fit: cover; object-position: top;
+  }
+  .fade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, #150d12 0%, #150d12 37%, rgb(21 13 18 / 0.86) 45%, rgb(21 13 18 / 0.35) 55%, rgb(21 13 18 / 0) 64%);
+  }
+  .frame { position: absolute; inset: 18px; border: 1px solid rgb(242 167 198 / 0.28); pointer-events: none; }
+
+  .copy {
+    position: absolute; left: 0; top: 0; width: 690px; height: 630px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; color: #f6eadf;
+  }
+  .place {
+    font-family: "Cinzel"; font-weight: 600; font-size: 15px; letter-spacing: 0.32em;
+    color: #e3c7d2; margin: 0 0 4px;
+  }
+  .place b { color: #f2a7c6; font-weight: 400; margin: 0 0.35em; }
+  .lash {
+    font-family: "Great Vibes"; font-size: 186px; line-height: 1; color: #f2a7c6;
+    text-shadow: 0 0 46px rgb(242 167 198 / 0.35); margin: 0;
+  }
+  .atelier {
+    display: flex; align-items: center; gap: 26px; margin-top: -26px;
+    font-family: "Cinzel"; font-weight: 500; font-size: 46px; letter-spacing: 0.16em; color: #f6eadf;
+  }
+  .atelier::before, .atelier::after { content: ""; width: 54px; height: 1px; background: rgb(246 234 223 / 0.55); }
+  .say { font-family: "Cormorant"; font-style: italic; font-size: 24px; color: #b9a6ae; margin-top: 14px; }
+  .what { font-family: "Cormorant"; font-style: italic; font-size: 31px; color: #f6eadf; margin-top: 26px; }
+  .where { font-family: "Jost"; font-size: 19px; letter-spacing: 0.06em; color: #d8c8cc; margin-top: 22px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="painting" src="../../public/brand/atelier-shopfront.webp" alt="" />
+    <div class="fade"></div>
+    <div class="frame"></div>
+    <div class="copy">
+      <p class="place">AVELLA<b>✦</b>PENNSYLVANIA</p>
+      <p class="lash">Lash</p>
+      <div class="atelier">L’ATELIER</div>
+      <div class="say">(lah-tell-yay)</div>
+      <div class="what">Lash extensions · Brows · Facials</div>
+      <div class="where">26 Campbell Street, Avella, PA · (724) 467-3479</div>
+    </div>
+  </div>
+  <script>
+    Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode())])
+      .then(() => document.body.setAttribute("data-ready", ""));
+  </script>
+</body>
+</html>

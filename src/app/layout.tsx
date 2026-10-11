@@ -20,7 +20,7 @@ const cormorant = Cormorant_Garamond({
 });
 const jost = Jost({ variable: "--font-jost", subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", preload: false });
 
-const title = `${siteConfig.name} | Lash Extensions, Brows & Facials in Hickory, PA`;
+const title = `${siteConfig.name} | Lash Extensions, Brows & Facials in Avella, PA`;
 
 /*
  * ⚠️ No `alternates.canonical` here. Metadata is inherited, so a canonical in

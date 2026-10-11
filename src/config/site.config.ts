@@ -16,7 +16,7 @@ export const siteConfig = {
   /** The brochure's longer line — used where there's room to say what we do. */
   descriptor: "A Parisian-inspired luxury lash, brow & face atelier",
   description:
-    "Lash L'Atelier is a Parisian-inspired lash, brow and skin studio in Hickory, Pennsylvania. Classic, hybrid, volume and mega volume lash extensions, brow lamination, organic and beef tallow facials, and red light therapy — with licensed estheticians, no card on file and no membership dues.",
+    "Lash L'Atelier is a Parisian-inspired lash, brow and skin studio in Avella, Pennsylvania. Classic, hybrid, volume and mega volume lash extensions, brow lamination, organic and beef tallow facials, and red light therapy — with licensed estheticians, no card on file and no membership dues.",
   /**
    * The canonical origin — used for the link-preview image, canonicals,
    * sitemap and JSON-LD. NEXT_PUBLIC_SITE_URL wins if set; otherwise Vercel's
@@ -43,7 +43,7 @@ export const siteConfig = {
 
   address: {
     street: "26 Campbell Street",
-    city: "Hickory",
+    city: "Avella",
     region: "PA",
     regionName: "Pennsylvania",
     postalCode: "15312",

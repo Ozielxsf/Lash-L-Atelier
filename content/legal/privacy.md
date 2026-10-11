@@ -24,7 +24,7 @@ Site (the "data controller" for users in applicable jurisdictions). You can reac
 
 - **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
-- **Address:** 26 Campbell Street, Hickory, PA 15312
+- **Address:** 26 Campbell Street, Avella, PA 15312
 
 ## 2. Information we collect
 
@@ -178,4 +178,4 @@ contact:
 
 **Lash L’Atelier**
 luvlashlatelier@gmail.com · (724) 467-3479
-26 Campbell Street, Hickory, PA 15312
+26 Campbell Street, Avella, PA 15312

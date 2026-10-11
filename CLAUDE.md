@@ -15,7 +15,7 @@
 | **Business** | Lash L'Atelier *(lah-tell-yay)* — "A Parisian Inspired Aesthetics Studio" |
 | **Trade** | Lash extensions, brows, facials, red light therapy (licensed estheticians) |
 | **Owner** | Lisa (Owner & Founder) — surname not supplied |
-| **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
+| **Where** | 26 Campbell Street, Avella, PA 15312 (Washington County) — the city was first set as Hickory; corrected to Avella by Oziel, 11 Oct 2026 (15312 is Avella's ZIP) |
 | **Phone** | (724) 467-3479 |
 | **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). **DNS is on Cloudflare** (nameservers `malcolm`/`melody.ns.cloudflare.com`, zone in Oziel's Cloudflare account for now — add Lisa or move it to her account): `A @ 216.150.1.1` and `CNAME www 0fe2a1fbbb6986c5.vercel-dns-016.com` are **Proxied** (orange); everything else is **DNS only**. SSL Full (strict), Always Use HTTPS. The other records are the client's **Microsoft 365 email** — keep them grey, never proxy or delete MX/TXT/SRV/autodiscover etc. ⚠️ SPF is `v=spf1 include:secureserver.net -all` (GoDaddy only) — likely should be `include:spf.protection.outlook.com`; confirm with the client first. |
 | **Status** | **Paid client.** Phase 1 (public site) live on lashlatelier.com (from `main`); phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
@@ -130,6 +130,8 @@ src/components/
   motion/  LenisProvider, Reveal
 src/app/manifest.ts   web app manifest (name, colours, icons) — what makes Android's install prompt possible
 src/app/admin/manifest.webmanifest/route.ts   the dashboard's OWN manifest (start_url /admin) — linked from admin/layout.tsx
+scripts/og-image/     og.html (the link-preview card: wordmark + shopfront painting, fonts bundled) + render.mjs →
+                      src/app/opengraph-image.jpg + twitter-image.jpg. Edit the HTML (e.g. the address line), re-run
 scripts/app-icon/     icon.html (the icon artwork, brand fonts bundled) + render.mjs → src/app/icon.png,
                       src/app/apple-icon.png, public/icons/*.png (incl. admin-*.png). Edit the HTML, re-run, never hand-edit PNGs
 content/legal/        generated — edit scripts/build-legal.py, not these
@@ -315,6 +317,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - **The link preview (OG/Twitter card) shows the shopfront** (Oziel's call,
   Sept 2026): wordmark on the left, the painted storefront with its hanging
   sign on the right. It's what people see when the link is texted or posted.
+  Its source is `scripts/og-image/og.html` (rebuilt 11 Oct 2026 when the city
+  changed to Avella — the old card had "Hickory" baked into the pixels).
 - **Every raster image replaced at high resolution (Sept 2026).** Oziel: the
   flyer crops looked "pixelated and blurry". The Visit arch is now
   `atelier-shopfront.webp` (1792×2240, generated — striped awning, lit
