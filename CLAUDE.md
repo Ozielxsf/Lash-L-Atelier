@@ -231,7 +231,9 @@ from the browser; the server uses the service-role key.
 2c. ✅ (11 Oct 2026) Resend: domain `lashlatelier.com` added (us-east-1, no
    tracking); a **send-only key restricted to that domain** created and stored
    straight into Vercel as `RESEND_API_KEY` (Sensitive, Production) — it was
-   never shown to anyone; if lost, make a new one in Resend. `BOOKING_FROM_EMAIL`
+   never shown to anyone; if lost, make a new one in Resend. (First copy was
+   saved one character short → "API key is invalid" on the first test booking,
+   11 Oct 2026; corrected + production redeployed. Env changes need a redeploy.) `BOOKING_FROM_EMAIL`
    = `bookings@lashlatelier.com` (Production). Client emails reply-to the Gmail.
    ✅ **Domain verified 11 Oct 2026** — 4 DNS records added in Cloudflare (all DNS only / grey):
    TXT `resend._domainkey` (DKIM), MX `send` → `feedback-smtp.us-east-1.amazonses.com`
