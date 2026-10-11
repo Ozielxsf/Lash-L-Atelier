@@ -55,11 +55,22 @@ Next.js 16 (App Router, Turbopack) · TypeScript strict · Tailwind v4 (`@theme`
 in `globals.css`) · Motion · Lenis · lucide-react · clsx + tailwind-merge.
 Supabase / Resend / Upstash / Turnstile arrive with phase 2 (see `.env.example`).
 
-⚠️ **Vercel's production branch is currently `claude/eyelash-services-website-xrvpzw`**
-(no `main` yet), so **every push to it goes live on lashlatelier.com.** Before
-customers are relying on the site, split it: production from `main`, this
-branch as preview. **Never push to the production branch without the owner
-saying so.**
+**Live vs preview (split 11 Oct 2026, before the 12 Oct launch).**
+- `main` = **the live site** (lashlatelier.com). Created at the launch-ready
+  commit. **Never push or merge to `main` without the owner saying so** —
+  that is a production deploy.
+- `claude/eyelash-services-website-xrvpzw` = **the preview**. Work lands here
+  first; Vercel builds a preview URL behind Vercel sign-in (SSO protection is
+  "all except custom domains", so previews are private, the domain public).
+- **Releasing** = once the owner approves a preview, fast-forward `main` to it
+  (`git push origin <commit>:main`) and confirm the production deploy.
+- ⚠️ Preview deployments don't have the production-only env vars
+  (`SUPABASE_SERVICE_ROLE_KEY`, Turnstile keys, `NEXT_PUBLIC_SITE_URL`), so on
+  a preview URL booking reads OFF and /admin sign-in can't reach the
+  database — test those on the live site (preview mode) instead.
+- Owner-side settings (can't be changed from a session): Vercel → Settings →
+  Environments → Production → Branch Tracking = `main`; GitHub → Settings →
+  Default branch = `main`.
 
 ```bash
 npm run dev          # local
