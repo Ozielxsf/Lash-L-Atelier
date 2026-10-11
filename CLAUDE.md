@@ -231,10 +231,10 @@ from the browser; the server uses the service-role key.
    straight into Vercel as `RESEND_API_KEY` (Sensitive, Production) — it was
    never shown to anyone; if lost, make a new one in Resend. `BOOKING_FROM_EMAIL`
    = `bookings@lashlatelier.com` (Production). Client emails reply-to the Gmail.
-   ⏳ **Waiting on 4 DNS records in Cloudflare (all DNS only / grey):**
+   ✅ **Domain verified 11 Oct 2026** — 4 DNS records added in Cloudflare (all DNS only / grey):
    TXT `resend._domainkey` (DKIM), MX `send` → `feedback-smtp.us-east-1.amazonses.com`
    (priority 10), TXT `send` → `v=spf1 include:amazonses.com ~all`, CNAME
-   `rsend` → `send.forge.rmta.net` — then "Verify" in Resend. None clash with
+   `rsend` → `send.forge.rmta.net`. None clash with
    M365 (root MX/SPF untouched); existing DMARC (p=quarantine, relaxed) passes
    via the DKIM alignment.
 3. Sign in at `/admin` → Schedule: hours are entered (every day 10:00–18:00,
