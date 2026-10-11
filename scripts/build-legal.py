@@ -18,6 +18,7 @@ OUT = pathlib.Path(__file__).resolve().parent.parent / "content" / "legal"
 BUSINESS_NAME = "Lash L’Atelier"
 WEBSITE_URL = "lashlatelier.com"
 PHONE = "(724) 467-3479"
+EMAIL = "luvlashlatelier@gmail.com"   # public address (Oziel, 11 Oct 2026)
 ADDRESS = "26 Campbell Street, Hickory, PA 15312"
 EFFECTIVE_DATE = "October 12, 2026"   # launch day (Oziel, Oct 2026)
 STATE, COUNTY = "Pennsylvania", "Washington County"
@@ -33,8 +34,6 @@ KEEP_ARBITRATION = True
 # emails, Upstash rate-limits the form, Cloudflare Turnstile guards it.
 PROCESSORS_IN_USE = {"Vercel", "Cloudflare", "Wallink Systems", "Supabase", "Resend", "Upstash"}
 
-CONTACT_INLINE = f"{PHONE} or in writing at {ADDRESS}"
-
 
 def strip_block(text: str, marker: str, keep: bool) -> str:
     """Remove (or unwrap) an <!-- OPTIONAL ... marker ... --> … <!-- END OPTIONAL … --> block."""
@@ -46,15 +45,11 @@ def strip_block(text: str, marker: str, keep: bool) -> str:
 
 
 def fill(text: str) -> str:
-    # Email isn't published yet — route every "email us" to phone / post instead.
-    text = re.sub(r"^- \*\*Email:\*\* \{\{BUSINESS_EMAIL\}\}\n", "", text, flags=re.M)
-    text = text.replace("{{BUSINESS_EMAIL}} · {{BUSINESS_PHONE}}", "{{BUSINESS_PHONE}}")
-    text = text.replace("contact us at {{BUSINESS_EMAIL}}", f"contact us by phone at {CONTACT_INLINE}")
-    text = text.replace("contacting us at {{BUSINESS_EMAIL}}", f"contacting us by phone at {CONTACT_INLINE}")
     for k, v in {
         "BUSINESS_NAME": BUSINESS_NAME,
         "WEBSITE_URL": WEBSITE_URL,
         "BUSINESS_PHONE": PHONE,
+        "BUSINESS_EMAIL": EMAIL,
         "BUSINESS_ADDRESS": ADDRESS,
         "EFFECTIVE_DATE": EFFECTIVE_DATE,
         "GOVERNING_STATE": STATE,

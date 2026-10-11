@@ -9,7 +9,7 @@ import { TEAM } from "@/data/team";
  * what a visitor sees.
  */
 export function businessSchema() {
-  const { address, phone, url, social, hours } = siteConfig;
+  const { address, phone, email, url, social, hours } = siteConfig;
   const sameAs = Object.values(social).filter(Boolean);
   const owner = TEAM.find((m) => m.featured);
 
@@ -23,6 +23,7 @@ export function businessSchema() {
     slogan: siteConfig.tagline,
     url,
     telephone: phone.e164,
+    ...(email ? { email } : {}),
     image: `${url}/brand/seal.webp`,
     logo: `${url}/brand/seal.webp`,
     ...(owner

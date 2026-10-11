@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import BookingIcon from "@/components/booking/BookingIcon";
 import Reveal from "@/components/motion/Reveal";
 import ButtonLink from "@/components/ui/ButtonLink";
@@ -20,7 +20,7 @@ import shopfront from "../../../public/brand/atelier-shopfront.webp";
  * address set large enough to read at arm's length.
  */
 export default async function Visit({ number = "07" }: { number?: string | null }) {
-  const { address, phone, hours } = siteConfig;
+  const { address, phone, hours, email } = siteConfig;
   const booking = getBookingAction(await isOnlineBookingEnabled());
 
   return (
@@ -59,6 +59,17 @@ export default async function Visit({ number = "07" }: { number?: string | null 
               <span className="mx-1 text-creme/30">·</span>
               {hours ? "See hours below" : "By appointment"}
             </p>
+            {email && (
+              <p className="mt-2 flex items-center gap-2 text-creme-muted">
+                <Mail className="h-4 w-4 shrink-0 text-rose" aria-hidden="true" />
+                <a
+                  href={`mailto:${email}`}
+                  className="break-all underline decoration-rose/40 underline-offset-4 hover:text-rose hover:decoration-rose"
+                >
+                  {email}
+                </a>
+              </p>
+            )}
             {hours && (
               <dl className="mt-4 space-y-1 text-creme">
                 {hours.map((h) => (

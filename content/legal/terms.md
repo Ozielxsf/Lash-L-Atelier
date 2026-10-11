@@ -30,6 +30,7 @@ of the Site after any change to these Terms constitutes your acceptance of the r
 
 The Site is operated by Lash L’Atelier.
 
+- **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
 - **Address:** 26 Campbell Street, Hickory, PA 15312
 
@@ -101,7 +102,7 @@ subject to their terms.
 ## 8. Copyright complaints (DMCA)
 
 We respect intellectual-property rights. If you believe content on the Site infringes your
-copyright, contact us by phone at (724) 467-3479 or in writing at 26 Campbell Street, Hickory, PA 15312 with: a description of the copyrighted work; the
+copyright, contact us at luvlashlatelier@gmail.com with: a description of the copyrighted work; the
 location (URL) of the material you claim is infringing; your contact information; a statement
 that you have a good-faith belief the use is not authorized; and a statement, under penalty of
 perjury, that your notice is accurate and that you are the owner or authorized to act on the
@@ -176,7 +177,7 @@ party is entitled to recover its reasonable attorneys' fees and costs.
 **Please read this section carefully — it affects your legal rights.**
 
 **Informal resolution first.** Before starting any formal proceeding, you agree to first
-contact us by phone at (724) 467-3479 or in writing at 26 Campbell Street, Hickory, PA 15312 and give us at least 30 days to resolve the matter informally
+contact us at luvlashlatelier@gmail.com and give us at least 30 days to resolve the matter informally
 and in good faith.
 
 **Binding arbitration.** If we cannot resolve a dispute informally, any dispute, claim, or
@@ -192,7 +193,7 @@ other only in an individual capacity, and not as a plaintiff or class member in 
 class or representative proceeding. The arbitrator may not consolidate more than one person's
 claims.
 
-You may opt out of this arbitration agreement by contacting us by phone at (724) 467-3479 or in writing at 26 Campbell Street, Hickory, PA 15312 within 30
+You may opt out of this arbitration agreement by contacting us at luvlashlatelier@gmail.com within 30
 days of first accepting these Terms. If any part of this Section is found unenforceable, the
 rest of this Section will remain in effect, except that the class-action waiver is not
 severable — if it is found unenforceable, this entire Section does not apply.
@@ -212,5 +213,5 @@ natural disasters, outages, or failures of third-party services.
 Questions about these Terms may be directed to:
 
 **Lash L’Atelier**
-(724) 467-3479
+luvlashlatelier@gmail.com · (724) 467-3479
 26 Campbell Street, Hickory, PA 15312

@@ -76,6 +76,7 @@ alternative format, please tell us — your feedback helps us improve. Contact u
 possible, include the page address (URL), a description of the issue, and the browser or
 assistive technology you were using:
 
+- **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
 - **Address:** 26 Campbell Street, Hickory, PA 15312
 

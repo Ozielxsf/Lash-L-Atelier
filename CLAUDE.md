@@ -393,7 +393,8 @@ Log every call here with its reason — without the reason, someone eventually "
 - **Legal pages are generated** from the Wallink templates by
   `scripts/build-legal.py`: accounts/orders/payments/marketing blocks removed,
   processors limited to what's actually in use (Vercel, Cloudflare, Wallink),
-  email references routed to phone/post because no public email exists yet.
+  contact lines use the public email (`EMAIL`, added 11 Oct 2026; before that
+  they were routed to phone/post).
   Arbitration block kept (Wallink default for consumer sites). Governing law:
   Pennsylvania, Washington County.
 
@@ -401,7 +402,7 @@ Log every call here with its reason — without the reason, someone eventually "
 
 ## Content still needed from the owner
 
-- [ ] **Public email address** (then add to `siteConfig.email` and re-run build-legal with it)
+- [x] **Public email address** — `luvlashlatelier@gmail.com` (Oziel, 11 Oct 2026): `siteConfig.email` + `EMAIL` in build-legal.py; shown in footer + Visit section, JSON-LD `email`, llms.txt, legal contact lines, and the reply-to on client booking emails
 - [ ] **Opening hours** (or confirm "by appointment only")
 - [ ] **Instagram / Facebook / TikTok** URLs → `siteConfig.social` (feeds JSON-LD `sameAs`)
 - [ ] **Legal business name** (LLC?) for the legal pages
@@ -413,7 +414,7 @@ Log every call here with its reason — without the reason, someone eventually "
 - [x] Arianna (Esthetician) — photo + bio approved by her (Oct 2026); she may send updates
 - [ ] Lisa's role — is she also a licensed esthetician? (would go in `role`)
 - [x] Domain: lashlatelier.com, client's GoDaddy account, connected 28 Sept 2026
-- [ ] Public email: the client already has **Microsoft 365 mail on lashlatelier.com** — ask which address to publish / use for booking alerts
+- [ ] The client also has **Microsoft 365 mail on lashlatelier.com** but publishes the Gmail address — ask whether the M365 mailboxes are used at all (affects the SPF fix). Resend's *sender* must still be on lashlatelier.com (a Gmail address can't be a Resend sender); replies go to the Gmail
 - [ ] **Real appointment lengths** for every service (booking uses estimates)
 - [ ] **Opening hours** for online booking (entered in /admin/schedule)
 - [ ] Which email should receive new-booking alerts

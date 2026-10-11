@@ -24,6 +24,7 @@ export async function GET() {
     `- Pronounced: ${siteConfig.pronunciation}`,
     `- Address: ${fullAddress}`,
     `- Phone: ${siteConfig.phone.display}`,
+    ...(siteConfig.email ? [`- Email: ${siteConfig.email}`] : []),
     `- Booking: ${online ? `online at ${siteConfig.url}/book, or by phone` : "by phone"}`,
     `- Hours: ${siteConfig.hours ? siteConfig.hours.map((h) => `${h.days} ${h.time}`).join("; ") : "by appointment"}`,
     `- House rules: ${HOUSE_RULES.join("; ")}`,

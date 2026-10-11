@@ -22,6 +22,7 @@ Policy. If you do not agree, please do not use the Site.
 Lash L’Atelier is the party responsible for the personal information collected through the
 Site (the "data controller" for users in applicable jurisdictions). You can reach us at:
 
+- **Email:** luvlashlatelier@gmail.com
 - **Phone:** (724) 467-3479
 - **Address:** 26 Campbell Street, Hickory, PA 15312
 
@@ -141,7 +142,7 @@ by California law) your personal information.
 **EU/UK residents (GDPR):** You have the rights listed above and the right to lodge a
 complaint with your local data-protection authority.
 
-To exercise any right, contact us by phone at (724) 467-3479 or in writing at 26 Campbell Street, Hickory, PA 15312. We may need to verify your identity
+To exercise any right, contact us at luvlashlatelier@gmail.com. We may need to verify your identity
 before responding, and we will respond within the timeframes required by applicable law.
 
 ## 11. Children's privacy
@@ -176,5 +177,5 @@ If you have questions or requests regarding this Privacy Policy or your personal
 contact:
 
 **Lash L’Atelier**
-(724) 467-3479
+luvlashlatelier@gmail.com · (724) 467-3479
 26 Campbell Street, Hickory, PA 15312

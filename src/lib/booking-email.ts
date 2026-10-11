@@ -22,7 +22,8 @@ export function isEmailConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY && process.env.BOOKING_FROM_EMAIL);
 }
 
-async function send(to: string, subject: string, html: string, text: string, replyTo?: string) {
+/** Client emails reply to the studio's public address; the studio's alert replies to the client. */
+async function send(to: string, subject: string, html: string, text: string, replyTo = siteConfig.email) {
   if (!isEmailConfigured() || !to) {
     console.warn(`booking email skipped (${!to ? "no recipient" : "email not configured"}): ${subject}`);
     return;

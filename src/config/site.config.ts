@@ -2,7 +2,7 @@
  * Business facts — the non-design content the owner doesn't edit through an
  * admin panel (yet). Everything here was taken from the client's own flyer,
  * menu and brochure. Nothing is invented: where we don't know something yet
- * (hours, email, socials), the field is `null` and the UI hides it rather
+ * (hours, socials), the field is `null` and the UI hides it rather
  * than showing a placeholder.
  */
 
@@ -34,8 +34,12 @@ export const siteConfig = {
     display: "(724) 467-3479",
     e164: "+17244673479",
   },
-  /** Not supplied yet. The footer and legal pages fall back to the phone. */
-  email: null as string | null,
+  /**
+   * The studio's public address (Oziel, 11 Oct 2026). Shown in the footer and
+   * Visit section, in JSON-LD and llms.txt, and used as the reply-to on every
+   * booking email to a client. `null` hides it everywhere.
+   */
+  email: "luvlashlatelier@gmail.com" as string | null,
 
   address: {
     street: "26 Campbell Street",
