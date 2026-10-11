@@ -14,7 +14,7 @@ export default async function AdminLoginPage() {
       <div className="w-full max-w-sm rounded-3xl bg-noir px-7 pt-10 pb-8 text-creme shadow-lift">
         <div className="text-center">
           <Wordmark size="footer" showPronunciation={false} />
-          <p className="mt-4 font-caps text-[0.68rem] tracking-[0.3em] text-creme-muted uppercase">Studio admin</p>
+          <h1 className="mt-4 font-caps text-[0.68rem] tracking-[0.3em] text-creme-muted uppercase">Studio admin sign-in</h1>
         </div>
         {configured ? (
           <div className="rounded-2xl bg-papier p-5 text-ink [&_form]:mt-0">

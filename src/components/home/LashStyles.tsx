@@ -14,6 +14,7 @@ import { useBookingAction } from "@/components/booking/BookingProvider";
 import { formatPrice } from "@/lib/format";
 import { motionTokens } from "@/config/brand.config";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site.config";
 
 /**
  * N° 03 — "Choose your look". The four lash styles are the studio's core
@@ -28,6 +29,7 @@ export default function LashStyles() {
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const reduce = useReducedMotion();
   const style = LASH_STYLES[index];
+  const styleLabel = style.id === "mega" ? "Mega Volume" : style.name;
   const fullSet = findService(style.fullSetId);
   const fill = findService(style.fillId);
   const booking = useBookingAction();
@@ -153,12 +155,12 @@ export default function LashStyles() {
 
               <ButtonLink
                 href={booking.href}
-                ariaLabel={`${booking.ariaLabel} — ${style.name} lashes`}
+                ariaLabel={`Book ${styleLabel} lashes — ${booking.online ? "online" : `call ${siteConfig.phone.display}`}`}
                 variant="rose"
                 className="mt-8"
                 icon={<BookingIcon online={booking.online} />}
               >
-                Book {style.id === "mega" ? "Mega Volume" : style.name}
+                Book {styleLabel}
               </ButtonLink>
             </motion.div>
           </AnimatePresence>

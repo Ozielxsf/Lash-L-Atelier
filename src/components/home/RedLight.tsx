@@ -47,7 +47,7 @@ export default function RedLight() {
             <ButtonLink
               href={telHref}
               variant="outline-dark"
-              ariaLabel={`Call ${siteConfig.name} about red light therapy`}
+              ariaLabel={`Ask about a plan — call ${siteConfig.name} about red light therapy`}
               icon={<Phone className="h-4 w-4" aria-hidden="true" />}
             >
               Ask about a plan

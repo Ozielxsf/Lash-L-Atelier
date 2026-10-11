@@ -51,7 +51,6 @@ export default function Header() {
         <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between px-5 sm:px-8">
           <Link
             href="/"
-            aria-label={`${siteConfig.name} — home`}
             className={cn(
               "-ml-1 rounded-md px-1 pt-1 transition-opacity duration-500 ease-soir",
               showMark ? "opacity-100" : "opacity-0 focus-visible:opacity-100",

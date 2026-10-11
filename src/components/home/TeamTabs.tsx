@@ -80,7 +80,7 @@ export default function TeamTabs({ members }: { members: TeamMember[] }) {
         {members.map((m, i) => {
           const active = i === index;
           return (
-            <article
+            <div
               key={m.id}
               role="tabpanel"
               id={`team-panel-${m.id}`}
@@ -123,7 +123,7 @@ export default function TeamTabs({ members }: { members: TeamMember[] }) {
                   {m.name}
                 </p>
               </div>
-            </article>
+            </div>
           );
         })}
       </div>

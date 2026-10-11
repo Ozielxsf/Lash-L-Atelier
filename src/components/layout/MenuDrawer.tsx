@@ -147,7 +147,6 @@ export default function MenuDrawer({
           >
             <a
               href={booking.href}
-              aria-label={booking.ariaLabel}
               className="flex min-h-14 items-center justify-center gap-3 rounded-full bg-rose text-[0.8rem] font-medium tracking-[0.2em] text-noir uppercase"
             >
               <BookingIcon online={booking.online} />

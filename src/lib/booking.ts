@@ -12,7 +12,11 @@ import { telHref } from "@/lib/format";
 export type BookingAction = {
   href: string;
   label: string;
-  /** Screen-reader label; says what will actually happen on tap. */
+  /**
+   * Screen-reader label; says what will actually happen on tap. Must START
+   * with the visible words (WCAG 2.5.3 "Label in Name") so voice-control users
+   * can say "tap Call to book" — the phone number then follows.
+   */
   ariaLabel: string;
   external: boolean;
   online: boolean;
@@ -20,12 +24,12 @@ export type BookingAction = {
 
 export function getBookingAction(enabled: boolean): BookingAction {
   if (enabled) {
-    return { href: "/book", label: "Book online", ariaLabel: "Book an appointment online", external: false, online: true };
+    return { href: "/book", label: "Book online", ariaLabel: "Book online — an appointment request", external: false, online: true };
   }
   return {
     href: telHref,
     label: "Call to book",
-    ariaLabel: `Call ${siteConfig.name} to book at ${siteConfig.phone.display}`,
+    ariaLabel: `Call to book, ${siteConfig.phone.display}`,
     external: true,
     online: false,
   };

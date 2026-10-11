@@ -52,15 +52,24 @@ export default function Wordmark({
       <span aria-hidden="true" className="flex flex-col items-center">
         <span
           className={cn(
-            "font-script text-rose [text-shadow:0_2px_24px_rgb(242_167_198/0.35)]",
+            "relative font-script text-rose [text-shadow:0_2px_24px_rgb(242_167_198/0.35)]",
             // Script swashes overhang their box; a little padding keeps the
             // clip-path reveal from shaving the loop of the L.
             "px-[0.12em]",
             s.script,
-            animate && "ink-in",
           )}
         >
           Lash
+          {/* Hero only: a gilded stroke writes across the word, then fades.
+              The word itself is painted from the first frame — it's the
+              page's largest element (LCP), and hiding it behind a clip-path
+              wipe kept it invisible until the page's scripts had finished
+              (6s on a mid-range phone). */}
+          {animate && (
+            <span className="ink-glint pointer-events-none absolute inset-0 px-[0.12em] text-[#fbe6c4] [text-shadow:0_0_28px_rgb(251_230_196/0.6)]">
+              Lash
+            </span>
+          )}
         </span>
         <span
           className={cn("mt-[-0.02em] flex items-center", s.gap, animate && "rise-in")}

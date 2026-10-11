@@ -266,6 +266,17 @@ Log every call here with its reason — without the reason, someone eventually "
   touch devices (it doesn't smooth touch, so it was pure overhead) and uses
   its default `lerp` on desktop — a 1.15s duration ease felt like lag.
   Keep these; each one was a measured cost.
+- **Launch speed rules (Oct 2026, Lighthouse with real mobile throttling).**
+  (1) **Never ship the page's main text hidden.** The hero "Lash" is painted
+  from the first frame; the intro is a gilded stroke (`.ink-glint`) writing
+  OVER it, not a clip-path wipe revealing it — clip-path animations run on the
+  main thread, so the word stayed invisible until hydration (LCP 6.1s).
+  (2) **`Reveal` ships visible.** Only elements that start below the fold are
+  hidden — in a layout effect, before first paint — and fade in on scroll;
+  on-screen content is just shown (/services and /visit LCP 5.4s → ~2s).
+  (3) **The sparkle canvas waits** for `load` + browser idle before it
+  twinkles (it competed with hydration). Results: home LCP 2.4s, /services
+  1.9s, /visit 2.2s, /privacy 2.0s; Accessibility/Best Practices/SEO 100.
 - **The link preview (OG/Twitter card) shows the shopfront** (Oziel's call,
   Sept 2026): wordmark on the left, the painted storefront with its hanging
   sign on the right. It's what people see when the link is texted or posted.
@@ -399,10 +410,10 @@ Log every call here with its reason — without the reason, someone eventually "
       (⚠️ Bot Fight Mode blocks AI answer engines — only disable it once every
       public form has Turnstile + Upstash; see Wallink CLAUDE.md AEO notes)
 - [x] `NEXT_PUBLIC_SITE_URL` = https://lashlatelier.com in production (28 Sept 2026)
-- [ ] WCAG AA contrast measured (tokens in `globals.css` carry measured ratios), keyboard nav, focus visible
+- [x] WCAG 2.1 AA (11 Oct 2026): axe-core on 9 pages × phone/desktop → 0 violations (fixed: button labels now start with their visible words — WCAG 2.5.3; team panel element; admin sign-in h1). Keyboard: 69 tab stops on home, all with a visible focus ring; skip link first and working
 - [ ] Privacy + Terms + Accessibility live, effective date = launch date
 - [ ] Live URL opened inside Instagram, Facebook and TikTok on a real phone
-- [ ] PageSpeed Insights on the live URL (mobile) — LCP < 2.5s
+- [ ] PageSpeed Insights on the live URL (mobile) — LCP < 2.5s. Local Lighthouse (real throttling) passes: home 2.4s, /services 1.9s, /visit 2.2s. Re-check on PSI after deploy (the PSI API was over quota from here)
 - [ ] Google Business Profile updated with the site URL; submit sitemap in Search Console
 - [ ] Client walkthrough done, remaining balance collected
 - [ ] Monthly plan starts

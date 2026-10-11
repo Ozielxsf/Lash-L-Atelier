@@ -90,6 +90,12 @@ export default function Sparkle({
     let sprites: Record<string, HTMLCanvasElement> = {};
     let raf = 0;
     let visible = false;
+    // Stay still until the page has finished loading and the browser is idle:
+    // twinkling from the first frame competed with hydration and pushed the
+    // hero's first paint back (Lighthouse, Oct 2026). One still frame is drawn
+    // immediately, so nothing looks missing meanwhile.
+    let ready = false;
+    let idleHandle = 0;
     let last = 0;
     let w = 0;
     let h = 0;
@@ -136,7 +142,7 @@ export default function Sparkle({
 
     const start = () => {
       if (reduce) return frame(0);
-      if (!raf && visible && !document.hidden) raf = requestAnimationFrame(loop);
+      if (!raf && ready && visible && !document.hidden) raf = requestAnimationFrame(loop);
     };
     const stop = () => {
       cancelAnimationFrame(raf);
@@ -162,8 +168,25 @@ export default function Sparkle({
     const onVisibility = () => (document.hidden ? stop() : start());
     document.addEventListener("visibilitychange", onVisibility);
 
+    const begin = () => {
+      ready = true;
+      start();
+    };
+    const whenIdle = () => {
+      // Safari has no requestIdleCallback — fall back to a short delay.
+      idleHandle =
+        typeof window.requestIdleCallback === "function"
+          ? window.requestIdleCallback(begin, { timeout: 2500 })
+          : (setTimeout(begin, 1200) as unknown as number);
+    };
+    if (document.readyState === "complete") whenIdle();
+    else window.addEventListener("load", whenIdle, { once: true });
+
     return () => {
       stop();
+      window.removeEventListener("load", whenIdle);
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleHandle);
+      clearTimeout(idleHandle);
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
