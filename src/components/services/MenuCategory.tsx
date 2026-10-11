@@ -1,10 +1,17 @@
+import Image from "next/image";
 import Flourish from "@/components/brand/Flourish";
 import Reveal from "@/components/motion/Reveal";
+import type { MenuPhoto } from "@/data/menu-photos";
 import type { ServiceCategory } from "@/data/services";
 import { formatPrice } from "@/lib/format";
 
-/** One section of the full menu: the café-menu layout, dotted leaders to each price. */
-export default function MenuCategory({ category }: { category: ServiceCategory }) {
+/**
+ * One section of the full menu: the café-menu layout, dotted leaders to each
+ * price. Photos (data/menu-photos.ts) sit under the prices — the menu is read
+ * for prices first, then the photos show what they buy. Several photos stack
+ * edge to edge like one comparison card, each labelled in the site's type.
+ */
+export default function MenuCategory({ category, photos = [] }: { category: ServiceCategory; photos?: MenuPhoto[] }) {
   return (
     <Reveal>
       <section id={category.id} aria-labelledby={`${category.id}-title`} className="scroll-mt-36">
@@ -33,6 +40,24 @@ export default function MenuCategory({ category }: { category: ServiceCategory }
             </li>
           ))}
         </ul>
+        {photos.length > 0 && (
+          <ul className="mt-6 overflow-hidden rounded-[14px] border border-rouge/20 shadow-soft">
+            {photos.map((photo) => (
+              <li key={photo.label} className="relative border-b-2 border-papier last:border-0">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  placeholder="blur"
+                  sizes="(min-width: 1024px) 520px, calc(100vw - 40px)"
+                  className="block h-auto w-full"
+                />
+                <span className="absolute bottom-2.5 left-2.5 rounded-full bg-noir/85 px-3 py-1 font-caps text-[0.62rem] font-semibold tracking-[0.22em] text-creme uppercase">
+                  {photo.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </Reveal>
   );

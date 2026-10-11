@@ -1,5 +1,6 @@
 import Flourish from "@/components/brand/Flourish";
 import Reveal from "@/components/motion/Reveal";
+import StudioGallery from "@/components/home/StudioGallery";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { ATELIER } from "@/data/atelier";
@@ -12,7 +13,8 @@ const NUMERALS = ["I", "II", "III", "IV"];
  * N° 01 — what the name means and how the studio works. The first light
  * section: stepping from the night street onto the blush paper of the menu
  * board. The dictionary entry answers the question every new client has
- * ("what's an atelier?") before they have to ask it.
+ * ("what's an atelier?") before they have to ask it. Then the studio's own
+ * photos prove the roses-and-lamplight promise before the house rules.
  */
 export default function Atelier() {
   const { definition } = ATELIER;
@@ -58,6 +60,8 @@ export default function Atelier() {
             </p>
           </Reveal>
         </div>
+
+        <StudioGallery />
 
         {/* A swipeable row on a phone (four stacked arches were ~1,100px of
             scrolling), a grid from sm up. One set of markup either way.

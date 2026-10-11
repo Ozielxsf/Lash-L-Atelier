@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import BookingIcon from "@/components/booking/BookingIcon";
 import LashDiagram from "@/components/home/LashDiagram";
@@ -21,6 +22,8 @@ import { siteConfig } from "@/config/site.config";
  * decision for a new client, and the words alone (classic / hybrid / volume)
  * mean nothing to most people. So each one is *drawn*: tap a style and the
  * lash map redraws at that density, with its full-set and fill price beside it.
+ * Above the map, the same look on a real eye — the same eye in every tab, so
+ * the only thing that changes is the lashes.
  *
  * WAI-ARIA tabs pattern: arrow keys move between styles, Home/End jump.
  */
@@ -111,12 +114,35 @@ export default function LashStyles() {
           {/* The lash map, on a blush card shaped like a shop window. */}
           <div className="arch papier relative mx-auto w-full max-w-md overflow-hidden px-6 pt-16 pb-6 shadow-[var(--shadow-glow-rose)] sm:px-10">
             <p className="text-center font-caps text-[0.65rem] font-semibold tracking-[0.3em] text-rouge uppercase">
+              On the eye
+            </p>
+            {/* All four stacked and cross-faded, so switching tabs never waits on a download. */}
+            <div className="relative mt-3 grid aspect-[850/276] overflow-hidden rounded-lg border border-rouge/20 bg-papier-lift">
+              {LASH_STYLES.map((s) => {
+                const active = s.id === style.id;
+                return (
+                  <Image
+                    key={s.id}
+                    src={s.photo.src}
+                    alt={active ? s.photo.alt : ""}
+                    aria-hidden={!active}
+                    placeholder="blur"
+                    sizes="(min-width: 640px) 368px, calc(100vw - 88px)"
+                    className={cn(
+                      "h-full w-full object-cover transition-opacity duration-500 [grid-area:1/1]",
+                      active ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                );
+              })}
+            </div>
+            <p className="mt-6 text-center font-caps text-[0.65rem] font-semibold tracking-[0.3em] text-rouge uppercase">
               Lash map
             </p>
             <div className="mt-4">
               <LashDiagram style={style} />
             </div>
-            <p className="mt-2 text-center text-xs text-ink-soft">Illustrative — your set is mapped to your eyes.</p>
+            <p className="mt-2 text-center text-xs text-ink-soft">The map is illustrative — your set is mapped to your eyes.</p>
           </div>
 
           <AnimatePresence mode="wait" initial={false}>

@@ -12,6 +12,7 @@ import Flourish from "@/components/brand/Flourish";
 import { FAQS } from "@/data/faqs";
 import { HOUSE_RULES } from "@/data/promises";
 import { MENU, RED_LIGHT, RED_LIGHT_DISCLAIMER } from "@/data/services";
+import { MENU_PHOTOS } from "@/data/menu-photos";
 import { WELCOME_OFFER } from "@/data/offers";
 import { getBookingAction } from "@/lib/booking";
 import { isOnlineBookingEnabled } from "@/lib/booking-settings";
@@ -49,12 +50,12 @@ export default async function ServicesPage() {
         <Container>
           <div className="grid gap-16 lg:grid-cols-2 lg:gap-x-20">
             <div className="space-y-16">
-              <MenuCategory category={lashes} />
+              <MenuCategory category={lashes} photos={MENU_PHOTOS[lashes.id]} />
               <MenuCategory category={fills} />
             </div>
             <div className="space-y-16">
               {rest.map((category) => (
-                <MenuCategory key={category.id} category={category} />
+                <MenuCategory key={category.id} category={category} photos={MENU_PHOTOS[category.id]} />
               ))}
             </div>
           </div>

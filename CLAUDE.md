@@ -95,8 +95,9 @@ src/data/             ALL copy and prices (Build Standard §3)
   promises.ts         HOUSE_RULES + PROMISES + LOYALTY
   offers.ts           $25 welcome offer
   team.ts             "Meet the Team" — one panel per person, owner first
+  menu-photos.ts      photos under /services sections (lash comparison, brow lamination)
   install.ts          "Add to Home Screen" copy + iPhone/Android steps
-  faqs.ts, atelier.ts, navigation.ts
+  faqs.ts, atelier.ts (+ STUDIO_GALLERY), navigation.ts
 src/lib/
   booking.ts          getBookingAction(enabled) — where every Book button goes
   booking-settings.ts the switch + booking settings (site_settings table)
@@ -122,7 +123,7 @@ src/components/
   booking/ BookingFlow, BookingProvider, BookingIcon
   admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
-  home/    Hero, HouseRules, Atelier, Team + TeamTabs, LashStyles + LashDiagram, MenuPreview,
+  home/    Hero, HouseRules, Atelier + StudioGallery, Team + TeamTabs, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
   layout/  SiteChrome, Header, MenuDrawer, Footer (+ AddToHomeScreen), MobileActionBar, PageHeader
   motion/  LenisProvider, Reveal
@@ -133,7 +134,9 @@ scripts/app-icon/     icon.html (the icon artwork, brand fonts bundled) + render
 content/legal/        generated — edit scripts/build-legal.py, not these
 public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, roses.webp (generated, Higgsfield);
                       seal.webp (client's own seal, 4K-upscaled);
-                      lisa.webp, hanna.webp, arianna.webp (team's own portraits, supplied Sept 2026)
+                      lisa.webp, hanna.webp, arianna.webp (team's own portraits, supplied Sept 2026);
+                      studio-{treatment-room,lash-bar,lounge}.webp, lashes-{classic,hybrid,volume,mega}.webp,
+                      brow-lamination.webp (supplied by the owner, Oct 2026 — see decisions)
 supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql — apply in order
 ```
 
@@ -313,6 +316,20 @@ Log every call here with its reason — without the reason, someone eventually "
   upscaled, not redrawn, because it's their logo. `paris-street.webp` (the
   flyer crop) is retired. If the client supplies original art files later,
   the seal is the one to swap first.
+- **Photo placements (Oziel, Oct 2026: "be strategic with each photo").**
+  Studio photos → a "Step inside" gallery in the Atelier section (N° 01),
+  straight after the copy that promises "roses, lamplight and a little
+  sparkle" — the treatment room with the Eiffel Tower mural leads; a swipe
+  row on phones like the promise cards. The four-look lash comparison was
+  cut into four label-free strips (the site's own type labels them): each
+  "Choose your look" tab shows its strip ("On the eye") above the lash map,
+  all four stacked and cross-faded so a tab switch never waits on a
+  download; the menu page stacks all four under the Lash Extensions prices.
+  Brow lamination → under the Brows & Beauty prices (the priciest brow
+  service, and the hardest to picture). Photos sit *under* prices on the
+  menu: it's read for prices first. All re-encoded to WebP with metadata
+  stripped (the iPhone originals carried EXIF). The brow photo also shows a
+  lash lift — not on the menu, so the alt text and label say brows only.
 - **"Meet the Team", not "Meet Lisa" (Oziel, Sept 2026).** `src/data/team.ts`
   is the list; adding a person is a data entry, no layout work.
 - **One team member at a time, picked from name pills (Oziel, Sept 2026).**
@@ -407,7 +424,9 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] **Instagram / Facebook / TikTok** URLs → `siteConfig.social` (feeds JSON-LD `sameAs`)
 - [ ] **Legal business name** (LLC?) for the legal pages
 - [ ] **High-resolution originals** of the flyer artwork / seal
-- [ ] **Real photos** of the studio and of their lash work (a gallery section is the obvious next add once they exist — never stock)
+- [x] **Real photos** of the studio (3, Oct 2026) — in the Atelier section's "Step inside" gallery
+- [ ] Confirm the **lash comparison** and **brow lamination** photos are the studio's own work or licensed — they look like widely shared industry images; if not theirs, swap for their own work (same files, same crops)
+- [ ] More of their **own lash/brow work** — a portfolio section is the next add once there's enough
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
 - [x] Owner's name + photo + bio (Lisa)
 - [x] Hanna (Esthetician) — photo + bio approved by her (Oct 2026); she may send updates
