@@ -18,7 +18,7 @@
 | **Where** | 26 Campbell Street, Hickory, PA 15312 (Washington County) |
 | **Phone** | (724) 467-3479 |
 | **Domain** | **lashlatelier.com — connected 28 Sept 2026.** Client's own GoDaddy account (renews 12 Feb 2027). **DNS is on Cloudflare** (nameservers `malcolm`/`melody.ns.cloudflare.com`, zone in Oziel's Cloudflare account for now — add Lisa or move it to her account): `A @ 216.150.1.1` and `CNAME www 0fe2a1fbbb6986c5.vercel-dns-016.com` are **Proxied** (orange); everything else is **DNS only**. SSL Full (strict), Always Use HTTPS. The other records are the client's **Microsoft 365 email** — keep them grey, never proxy or delete MX/TXT/SRV/autodiscover etc. ⚠️ SPF is `v=spf1 include:secureserver.net -all` (GoDaddy only) — likely should be `include:spf.protection.outlook.com`; confirm with the client first. |
-| **Status** | **Paid client.** Phase 1 (public site) live on preview; phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
+| **Status** | **Paid client.** Phase 1 (public site) live on lashlatelier.com (from `main`); phase 2 (booking + admin) built and switched **OFF** — client doesn't want it live yet |
 
 **What this business actually needs from a website:** to turn a phone visitor
 into a phone call. Almost everyone arrives on a phone (social, Google Maps, a
@@ -68,9 +68,10 @@ Supabase / Resend / Upstash / Turnstile arrive with phase 2 (see `.env.example`)
   (`SUPABASE_SERVICE_ROLE_KEY`, Turnstile keys, `NEXT_PUBLIC_SITE_URL`), so on
   a preview URL booking reads OFF and /admin sign-in can't reach the
   database — test those on the live site (preview mode) instead.
-- Owner-side settings (can't be changed from a session): Vercel → Settings →
-  Environments → Production → Branch Tracking = `main`; GitHub → Settings →
-  Default branch = `main`.
+- ✅ **Switched 11 Oct 2026:** Oziel set Vercel's production branch to `main`
+  (verified: `main` @ 61bf1e1 deployed with target *production*; a push to
+  this branch afterwards built as *preview*). Still optional: GitHub →
+  Settings → Default branch = `main` (a session can't change repo settings).
 
 ```bash
 npm run dev          # local
