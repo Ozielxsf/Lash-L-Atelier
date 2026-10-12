@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateAppointmentStatus } from "@/app/admin/actions";
+import { removeTestAppointment, updateAppointmentStatus } from "@/app/admin/actions";
 import type { AppointmentStatus } from "@/lib/supabase-admin";
 import { cn } from "@/lib/utils";
 
@@ -21,10 +21,10 @@ const CONFIRM_FIRST: Partial<Record<AppointmentStatus, string>> = {
   no_show: "Mark as a no-show?",
 };
 
-export default function AppointmentActions({ id, next }: { id: string; next: AppointmentStatus[] }) {
+export default function AppointmentActions({ id, next, test = false }: { id: string; next: AppointmentStatus[]; test?: boolean }) {
   const [pending, start] = useTransition();
   const [error, setError] = useState("");
-  if (!next.length) return null;
+  if (!next.length && !test) return null;
   return (
     <div className="flex flex-wrap items-center gap-2">
       {next.map((status) => {
@@ -51,6 +51,22 @@ export default function AppointmentActions({ id, next }: { id: string; next: App
           </button>
         );
       })}
+      {test && (
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => {
+            if (!window.confirm("Remove this test booking?")) return;
+            start(async () => {
+              const res = await removeTestAppointment(id);
+              setError(res.ok ? "" : res.error);
+            });
+          }}
+          className="min-h-10 rounded-full px-3 text-sm text-rouge hover:underline disabled:opacity-50"
+        >
+          Remove test
+        </button>
+      )}
       {error && <p role="alert" className="w-full text-sm text-rouge">{error}</p>}
     </div>
   );

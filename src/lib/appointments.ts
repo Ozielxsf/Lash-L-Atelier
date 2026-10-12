@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getSlots } from "@/lib/availability";
+import { linkAppointmentToClient } from "@/lib/clients";
 import { addOnServices, resolveSelection } from "@/data/services";
 import { isValidYmd, studioYmd } from "@/lib/studio-time";
 import {
@@ -111,7 +112,9 @@ export async function createAppointment(
     console.error("appointment insert failed:", error.message);
     return { ok: false, error: "We couldn't save your request. Please call us instead.", status: 500 };
   }
-  return { ok: true, value: data as Appointment };
+  const appt = data as Appointment;
+  await linkAppointmentToClient(appt); // first booking creates the client's card
+  return { ok: true, value: appt };
 }
 
 /* ── Admin reads & writes ───────────────────────────────────────────────── */
@@ -186,4 +189,12 @@ export async function setAppointmentStatus(id: string, status: AppointmentStatus
     .single();
   if (error) throw new Error(error.message);
   return data as Appointment;
+}
+
+/** Remove a TEST booking (made by the owner in preview). Real bookings are never deleted here. */
+export async function deleteTestAppointment(id: string): Promise<void> {
+  const db = getSupabaseAdmin();
+  if (!db) throw new Error("Database is not configured");
+  const { error } = await db.from("appointments").delete().eq("id", id).eq("source", "preview");
+  if (error) throw new Error(error.message);
 }

@@ -108,6 +108,7 @@ src/lib/
   slots.ts            pure slot maths (unit-tested)
   studio-time.ts      America/New_York, DST-safe, no date library
   appointments.ts     the only module that writes/lists appointments
+  clients.ts          the only module for client cards + visit notes; links bookings to cards
   booking-email.ts    every booking email (escapeHtml on all client input)
   admin-auth.ts, session.ts   iron-session admin sign-in; requireAdmin()
   turnstile.ts, verify-turnstile.ts   Wallink's Turnstile pair (fails CLOSED)
@@ -118,11 +119,13 @@ src/lib/
   escape-html.ts, rate-limit.ts   ← Wallink starter (§1 §2)
   supabase-admin.ts   LAZY client (null when unconfigured) + a type per table (§4)
 src/app/(site)/        public pages (route group — URLs unchanged); /book lives here
-src/app/admin/         /admin (Bookings + the switch), /admin/schedule, /admin/login, actions.ts
+src/app/admin/         /admin (Bookings + the switch), /admin/clients (list · new = walk-in · [id] card ·
+                       export CSV · [id]/export JSON), /admin/schedule, /admin/login, actions.ts
 src/app/api/booking/   POST (create request), slots/ (GET open times)
 src/components/
   booking/ BookingFlow, BookingProvider, BookingIcon
-  admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms
+  admin/   AdminShell, BookingToggle, AppointmentList/Actions, Hours/TimeOff/Preferences forms;
+           clients/ (ClientFields, NewClientForm, EditClientForm, AddNoteForm, VisitNoteFields, …)
   brand/   Wordmark, Flourish, OrnateFrame, Awning, Sparkle (canvas)
   home/    Hero, HouseRules, Atelier + StudioGallery, Team + TeamTabs, LashStyles + LashDiagram, MenuPreview,
            RedLight, Welcome, Visit
@@ -140,7 +143,8 @@ public/brand/         hero-eiffel-{tall,wide}.webp, atelier-shopfront.webp, rose
                       lisa.webp, hanna.webp, arianna.webp (team's own portraits, supplied Sept 2026);
                       studio-{treatment-room,lash-bar,lounge}.webp, lashes-{classic,hybrid,volume,mega}.webp,
                       brow-lamination.webp (supplied by the owner, Oct 2026 — see decisions)
-supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql — apply in order
+supabase/migrations/  0001_baseline.sql (Wallink starter), 0002_booking.sql, 0003_multi_service.sql,
+                      0004_clients.sql — apply in order
 ```
 
 ---
@@ -249,6 +253,44 @@ from the browser; the server uses the service-role key.
 6. When the client says go: flip the switch on the Bookings dashboard.
 
 ---
+
+## Client records — built Oct 2026
+
+**What it is (Oziel, 12 Oct 2026: "build it in" + "a section they can add a
+customer in manually if the customer is just a walk in").** Admin → **Clients**.
+A card per client: name, phone, email, birthday, **allergies & sensitivities**
+(shown in a red box at the top of the card and as an "Allergy note" tag in the
+list), preferences, general notes, plus dated **visit notes** (date, service,
+note, written by). Bookings link to their card automatically; walk-ins are
+added at `/admin/clients/new` (card + optional first visit note, one save).
+
+**Rules that matter:**
+- **One card per phone.** `clients.phone_digits` is a generated column (last 10
+  digits) with a unique index — "(724) 555-0101" and "+1 724 555 0101" are the
+  same person. Adding a duplicate is refused with a link to the existing card.
+- **Bookings → cards** in `createAppointment()` → `linkAppointmentToClient()`:
+  match on phone, then email; first booking creates the card (source
+  `booking`). Fills a missing email/phone, never overwrites typed details.
+  Owner preview (TEST) bookings are never linked. Never fails a booking.
+- **"Written by"** is picked from the team list (data/team.ts) and remembered
+  per device — a stand-in until staff have their own sign-ins.
+- **Privacy tools on every card:** "Download their record" (JSON: card, notes,
+  bookings — for an access request) and "Delete this client" (typed DELETE;
+  removes card, notes and past bookings; refused while they hold an upcoming
+  appointment). All-clients CSV backup on the list page (formula-safe cells).
+- Client forms submit via `useKeepFormSubmit` — React 19 resets a
+  `<form action>` after every submit, which wiped a rejected walk-in.
+- The privacy policy says the studio keeps client records (2(b) + retention),
+  inserted by `client_records()` in build-legal.py — keep `KEEP_CLIENT_RECORDS`.
+- Dates shown are studio time (`studioYmd`), never a UTC `slice(0, 10)`.
+- Tested end-to-end on local Postgres + PostgREST (27/27): sign-in wall, CSV
+  401, walk-in + first note, author memory, duplicate guard, search by
+  name/phone, bookings joining/creating cards, TEST removal, exports, delete
+  rules. axe: 0 violations on all admin pages, phone + desktop.
+
+**Next (recommended, not built):** per-person staff sign-ins with a second
+step (code by email/app) and a who-changed-what log. Today all staff share
+the one admin password — the same wall that already guards bookings.
 
 ## Build Standards — required, not optional
 
@@ -442,6 +484,7 @@ Log every call here with its reason — without the reason, someone eventually "
 - [ ] **High-resolution originals** of the flyer artwork / seal
 - [x] **Real photos** of the studio (3, Oct 2026) — in the Atelier section's "Step inside" gallery
 - [ ] Confirm the **lash comparison** and **brow lamination** photos are the studio's own work or licensed — they look like widely shared industry images; if not theirs, swap for their own work (same files, same crops)
+- [ ] Who on the team should get their own admin sign-in (for client records) — see Client records → Next
 - [ ] More of their **own lash/brow work** — a portfolio section is the next add once there's enough
 - [ ] Confirm how the **$25 welcome offer** is redeemed online, and any conditions
 - [x] Owner's name + photo + bio (Lisa)

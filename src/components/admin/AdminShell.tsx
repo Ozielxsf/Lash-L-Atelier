@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/admin", label: "Bookings" },
+  { href: "/admin/clients", label: "Clients" },
   { href: "/admin/schedule", label: "Schedule" },
 ];
 
@@ -24,29 +25,34 @@ export default function AdminShell({
 }) {
   return (
     <>
+      {/* Phones: logo + sign-out on top, the three sections as a full-width row
+          beneath (four items in one row overflowed a 390px screen). From sm up,
+          one row. */}
       <header className="bg-noir text-creme">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
-          <Link href="/admin" aria-label="Studio admin home" className="pt-1">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-3">
+          <Link href="/admin" className="pt-1">
             <Wordmark size="header" />
           </Link>
-          <nav aria-label="Admin" className="flex items-center gap-1">
+          <div className="flex items-center gap-1 sm:order-last">
+            <Link href="/" className="hidden min-h-10 px-3 py-2 text-sm text-creme/70 hover:text-rose sm:inline-block">
+              View site ↗
+            </Link>
+            <LogoutButton />
+          </div>
+          <nav aria-label="Admin" className="grid w-full grid-cols-3 gap-1 sm:flex sm:w-auto sm:flex-1 sm:justify-end">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={active === item.href ? "page" : undefined}
                 className={cn(
-                  "min-h-10 rounded-full px-3 py-2 text-sm",
+                  "min-h-10 rounded-full px-3 py-2 text-center text-sm",
                   active === item.href ? "bg-rose text-noir" : "text-creme/85 hover:text-rose",
                 )}
               >
                 {item.label}
               </Link>
             ))}
-            <Link href="/" className="hidden min-h-10 px-3 py-2 text-sm text-creme/70 hover:text-rose sm:inline-block">
-              View site ↗
-            </Link>
-            <LogoutButton />
           </nav>
         </div>
       </header>

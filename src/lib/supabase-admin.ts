@@ -120,8 +120,48 @@ export type Appointment = {
   is_new_client: boolean;
   status: AppointmentStatus;
   source: "online" | "preview" | "admin";
+  /** The client card this booking belongs to (migration 0004); null for tests. */
+  client_id: string | null;
 };
 
 /** Column list, as one literal so supabase-js keeps the row type (Wallink §9 note). */
 export const APPOINTMENT_COLUMNS =
-  "id, created_at, updated_at, service_id, service_ids, service_name, duration_minutes, price_dollars, add_ons, starts_at, ends_at, client_name, client_phone, client_email, notes, is_new_client, status, source" as const;
+  "id, created_at, updated_at, service_id, service_ids, service_name, duration_minutes, price_dollars, add_ons, starts_at, ends_at, client_name, client_phone, client_email, notes, is_new_client, status, source, client_id" as const;
+
+/**
+ * A client card (migration 0004). Allergies/sensitivities are health-adjacent
+ * — server-only, behind the admin sign-in, never sent to the browser except
+ * on the admin pages.
+ */
+export type Client = {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  phone: string | null;
+  /** Generated: last 10 digits of `phone` — the duplicate check and booking match. */
+  phone_digits: string | null;
+  email: string | null;
+  birthday: string | null; // YYYY-MM-DD
+  allergies: string | null;
+  preferences: string | null;
+  notes: string | null;
+  source: "booking" | "walk_in" | "admin";
+};
+
+export const CLIENT_COLUMNS =
+  "id, created_at, updated_at, name, phone, phone_digits, email, birthday, allergies, preferences, notes, source" as const;
+
+/** One dated note on a client's card — usually one per visit. */
+export type ClientNote = {
+  id: string;
+  created_at: string;
+  client_id: string;
+  appointment_id: string | null;
+  visit_date: string; // YYYY-MM-DD
+  service: string | null;
+  body: string;
+  author: string | null;
+};
+
+export const CLIENT_NOTE_COLUMNS = "id, created_at, client_id, appointment_id, visit_date, service, body, author" as const;

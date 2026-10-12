@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AppointmentActions from "@/components/admin/AppointmentActions";
 import { NEXT_STATUSES } from "@/lib/appointments";
 import { formatCurrency } from "@/lib/format";
@@ -37,7 +38,13 @@ export default function AppointmentList({ items, empty }: { items: Appointment[]
               {a.add_ons.length > 0 && ` · + ${a.add_ons.join(", ")}`}
             </p>
             <p className="mt-1 text-sm text-ink-soft">
-              <span className="font-medium text-ink">{a.client_name}</span>
+              {a.client_id ? (
+                <Link href={`/admin/clients/${a.client_id}`} className="font-medium text-ink underline underline-offset-2 hover:text-rouge">
+                  {a.client_name}
+                </Link>
+              ) : (
+                <span className="font-medium text-ink">{a.client_name}</span>
+              )}
               {" · "}
               <a href={`tel:${a.client_phone}`} className="underline underline-offset-2">{a.client_phone}</a>
               {" · "}
@@ -45,7 +52,7 @@ export default function AppointmentList({ items, empty }: { items: Appointment[]
             </p>
             {a.notes && <p className="mt-1 text-sm text-ink-soft italic">“{a.notes}”</p>}
           </div>
-          <AppointmentActions id={a.id} next={NEXT_STATUSES[a.status]} />
+          <AppointmentActions id={a.id} next={NEXT_STATUSES[a.status]} test={a.source === "preview"} />
         </li>
       ))}
     </ul>

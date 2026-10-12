@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { setAppointmentStatus } from "@/lib/appointments";
+import { deleteTestAppointment, setAppointmentStatus } from "@/lib/appointments";
 import { requireAdmin } from "@/lib/admin-auth";
 import { sendStatusUpdate } from "@/lib/booking-email";
 import { getReadiness } from "@/lib/booking-readiness";
@@ -48,6 +48,18 @@ export async function updateAppointmentStatus(id: string, status: AppointmentSta
   try {
     const appt = await setAppointmentStatus(id, status);
     await sendStatusUpdate(appt);
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+  revalidatePath("/admin");
+  return { ok: true };
+}
+
+/** Clear away a TEST booking the owner made in preview. */
+export async function removeTestAppointment(id: string): Promise<ActionResult> {
+  await requireAdmin();
+  try {
+    await deleteTestAppointment(id);
   } catch (err) {
     return { ok: false, error: (err as Error).message };
   }

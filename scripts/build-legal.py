@@ -35,6 +35,43 @@ KEEP_ARBITRATION = True
 PROCESSORS_IN_USE = {"Vercel", "Cloudflare", "Wallink Systems", "Supabase", "Resend", "Upstash"}
 
 
+# The studio keeps a card per client (admin → Clients, migration 0004): contact
+# details, allergies & sensitivities, preferences and visit notes. The policy
+# must say so (Oziel, Oct 2026). Inserted as section 2(b) — the template's own
+# 2(b) is the orders/accounts block, removed above, which left a gap.
+KEEP_CLIENT_RECORDS = True
+
+CLIENT_RECORDS = """**b. Client records.** If you book with us or visit the studio, we keep a client record:
+your name and contact details, your appointment history, and notes our estheticians make to
+serve you safely and consistently — for example the lash style and products used, and any
+allergies or sensitivities you tell us about. Only the studio's staff can see these records.
+You can ask to see, correct, or delete your record at any time.
+
+"""
+
+CLIENT_RETENTION = (
+    "\n\nClient records are kept while you are a client of the studio. If you ask us to delete "
+    "yours, we delete your record, visit notes, and past appointment details."
+)
+
+
+def client_records(text: str) -> str:
+    """Privacy policy only: describe the client records the studio keeps."""
+    marker = "**c. Information collected automatically.**"
+    if marker not in text:
+        sys.exit("client_records: template changed — section 2(c) marker not found")
+    text = text.replace(marker, CLIENT_RECORDS + marker, 1)
+    text = text.replace(
+        "\nWe do not knowingly collect sensitive personal information (such as government-ID numbers,\nhealth, or financial-account information) through the Site unless you voluntarily provide it.",
+        "\nWe do not knowingly collect sensitive personal information (such as government-ID numbers,\nhealth, or financial-account information) through the Site unless you voluntarily provide it.\nAllergy or sensitivity notes in a client record are kept only so we can treat you safely.",
+        1,
+    )
+    retention = "Retention periods vary depending on the type of\ninformation and the purpose for which it was collected."
+    if retention not in text:
+        sys.exit("client_records: template changed — retention sentence not found")
+    return text.replace(retention, retention + CLIENT_RETENTION, 1)
+
+
 def strip_block(text: str, marker: str, keep: bool) -> str:
     """Remove (or unwrap) an <!-- OPTIONAL ... marker ... --> … <!-- END OPTIONAL … --> block."""
     pattern = re.compile(
@@ -111,6 +148,8 @@ def build(name: str, out: str):
     t = strip_block(t, "arbitration", KEEP_ARBITRATION)
     t = strip_block(t, "keep this notice", KEEP_ARBITRATION)
     t = processors(fill(t))
+    if name == "privacy-policy.md" and KEEP_CLIENT_RECORDS:
+        t = client_records(t)
     t = finish(renumber(t))
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / out).write_text(t)

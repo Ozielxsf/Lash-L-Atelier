@@ -35,6 +35,12 @@ similar form, or otherwise communicate with us, we collect the information you c
 provide — such as your name, business name, email address, phone number, mailing address,
 the details of your request or message, and any other information you include.
 
+**b. Client records.** If you book with us or visit the studio, we keep a client record:
+your name and contact details, your appointment history, and notes our estheticians make to
+serve you safely and consistently — for example the lash style and products used, and any
+allergies or sensitivities you tell us about. Only the studio's staff can see these records.
+You can ask to see, correct, or delete your record at any time.
+
 **c. Information collected automatically.** When you visit the Site, we and our service
 providers may automatically collect certain technical information, such as your device and
 browser type, general location (derived from IP address), pages viewed, referring pages, and
@@ -43,6 +49,7 @@ technologies (see Section 6) and is used for security, analytics, and improving 
 
 We do not knowingly collect sensitive personal information (such as government-ID numbers,
 health, or financial-account information) through the Site unless you voluntarily provide it.
+Allergy or sensitivity notes in a client record are kept only so we can treat you safely.
 
 ## 3. How we use your information
 
@@ -110,6 +117,8 @@ in this Policy — for example, to respond to and follow up on your inquiry, to 
 order, to comply with our legal obligations, resolve disputes, and enforce our agreements —
 after which we delete or de-identify it. Retention periods vary depending on the type of
 information and the purpose for which it was collected.
+
+Client records are kept while you are a client of the studio. If you ask us to delete yours, we delete your record, visit notes, and past appointment details.
 
 ## 9. How we protect your information
 
